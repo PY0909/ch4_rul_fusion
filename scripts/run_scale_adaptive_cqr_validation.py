@@ -130,6 +130,11 @@ def main(argv=None):
         ROOT / "results_v4/scale_adaptive_cqr_validation"))
     parser.add_argument("--device", default="auto")
     parser.add_argument("--eps", type=float, default=1e-6)
+    parser.add_argument("--calibration_ratio", type=float, default=0.5,
+                        help="bundle split ratio AND the retrained-checkpoint "
+                             "split it must match (0.5 = frozen stage-1 default; "
+                             "0.6/0.7 = registered extension per "
+                             "scale_adaptive_cqr_stage2_experiment_matrix.md)")
     args = parser.parse_args(argv)
     if args.eps <= 0:
         parser.error("--eps must be positive")
@@ -141,7 +146,7 @@ def main(argv=None):
     for dataset in ("FD002", "FD004"):
         bundle = build_cmapss_datasets(
             args.data_root, dataset, history=50, rul_cap=125, split_seed=0,
-            calibration_ratio=0.5, scaler_mode="grouped",
+            calibration_ratio=args.calibration_ratio, scaler_mode="grouped",
             validation_protocol="fixed_cuts")
         checkpoint = (Path(args.checkpoint_root) / dataset / "seed_0" / "best.pt")
         model = _model(bundle, checkpoint, device)
@@ -168,8 +173,8 @@ def main(argv=None):
                    f"min_{min_group_size}__tau_{shrink_tau:g}")
             results[key] = result
             rows.append({"dataset": dataset, "key": key,
-                         "checkpoint_split_ratio": 0.5,
-                         "calibration_ratio": 0.5,
+                         "checkpoint_split_ratio": args.calibration_ratio,
+                         "calibration_ratio": args.calibration_ratio,
                          "calibration_mode": calibration_mode,
                          "aggregation": aggregation,
                          "score_mode": score_mode,
@@ -195,7 +200,7 @@ def main(argv=None):
             writer.writeheader()
             writer.writerows(rows)
         summary = {"dataset": dataset, "checkpoint": str(checkpoint),
-                   "checkpoint_split_ratio": 0.5, "test_evaluated": False,
+                   "checkpoint_split_ratio": args.calibration_ratio, "test_evaluated": False,
                    "eps": args.eps, "results": results}
         (ds_out / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
         summaries.append(summary)
