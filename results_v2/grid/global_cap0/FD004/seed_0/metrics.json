@@ -1,0 +1,12 @@
+{
+  "MAE": 41.36833456200734,
+  "RMSE": 50.72392842207152,
+  "NASA_Score": 3892964.0014796164,
+  "dataset": "FD004",
+  "best_epoch": 3,
+  "val_RMSE": 48.29835309327202,
+  "selection_criterion": "val_endpoint_rmse",
+  "test_loss": 2572.9169213079635,
+  "seed": 0,
+  "device": "cuda"
+}

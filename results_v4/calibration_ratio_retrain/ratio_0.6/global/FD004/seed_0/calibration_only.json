@@ -1,0 +1,11 @@
+{
+  "dataset": "FD004",
+  "best_epoch": 41,
+  "val_q50_RMSE": 49.97278638531053,
+  "alpha": 0.2,
+  "calibration_mode": "global",
+  "seed": 0,
+  "n_calibration": 30,
+  "calibration_threshold": 85.80429077148438,
+  "test_evaluated": false
+}

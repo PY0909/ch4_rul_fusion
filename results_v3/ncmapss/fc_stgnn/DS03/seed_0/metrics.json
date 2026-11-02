@@ -1,0 +1,14 @@
+{
+  "MAE": 8.19787527124087,
+  "RMSE": 11.062183814493922,
+  "NASA_Score": 37.45971557226486,
+  "model": "fc_stgnn",
+  "dataset": "DS03",
+  "n_params": 22121,
+  "best_epoch": 107,
+  "val_RMSE": 14.265535670183757,
+  "selection_criterion": "val_endpoint_rmse_fixed_cuts",
+  "test_protocol": "fixed_cuts mid-life endpoints",
+  "seed": 0,
+  "device": "cuda"
+}

@@ -1,0 +1,125 @@
+{
+  "model": "A6",
+  "n_params": 36236,
+  "fcstgnn_dims": null,
+  "args": {
+    "dataset": "DS08a",
+    "data_root": "/home/new_work/ch3_mtk_dg_probabilistic_design-85d9365/dataset",
+    "model": "A6",
+    "output_dir": "/home/v2/code/results_v3/ncmapss_tune/t6_d32_none",
+    "seed": 0,
+    "epochs": 300,
+    "batch_size": 32,
+    "lr": 0.001,
+    "history": 16,
+    "d_model": 32,
+    "num_heads": 2,
+    "num_routers": 2,
+    "dropout": 0.1,
+    "weight_decay": 0.0,
+    "condition_mode": "none"
+  },
+  "protocol": "unit-cycle mean, X_s only, global z-score scaler on train units, unit-grouped split (split_seed=0), fixed_cuts endpoint validation, no RUL cap, single frozen test evaluation",
+  "data": {
+    "dataset": "DS08a",
+    "dev_units": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "train_units": [
+      1,
+      2,
+      3,
+      4,
+      7,
+      8,
+      9
+    ],
+    "val_units": [
+      5,
+      6
+    ],
+    "test_units": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "history": 16,
+    "include_virtual": false,
+    "uses_T": false,
+    "aggregation": "unit-cycle mean; T is degradation metadata and is excluded",
+    "split_seed": 0,
+    "scaler_mode": "global",
+    "validation_protocol": "fixed_cuts",
+    "val_endpoint_protocol": "fixed cuts at life fractions {0.25, 0.5, 0.75, 0.9} per validation unit, endpoint windows, raw remaining flight RUL labels",
+    "test_endpoint_protocol": "test trajectories in the public release run to failure (final Y=0), so the frozen evaluation uses the same fixed cuts {0.25, 0.5, 0.75, 0.9} per test unit; labels are the file's Y at each cut"
+  },
+  "endpoint_cuts": [
+    {
+      "unit": 5,
+      "frac": 0.25,
+      "cut": 14,
+      "length": 56,
+      "label_raw": 41.0
+    },
+    {
+      "unit": 5,
+      "frac": 0.5,
+      "cut": 28,
+      "length": 56,
+      "label_raw": 27.0
+    },
+    {
+      "unit": 5,
+      "frac": 0.75,
+      "cut": 41,
+      "length": 56,
+      "label_raw": 14.0
+    },
+    {
+      "unit": 5,
+      "frac": 0.9,
+      "cut": 50,
+      "length": 56,
+      "label_raw": 5.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.25,
+      "cut": 14,
+      "length": 58,
+      "label_raw": 43.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.5,
+      "cut": 28,
+      "length": 58,
+      "label_raw": 29.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.75,
+      "cut": 43,
+      "length": 58,
+      "label_raw": 14.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.9,
+      "cut": 51,
+      "length": 58,
+      "label_raw": 6.0
+    }
+  ]
+}

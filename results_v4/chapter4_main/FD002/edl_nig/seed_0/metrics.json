@@ -1,0 +1,23 @@
+{
+  "MAE": 22.845269720526737,
+  "RMSE": 30.52419236576741,
+  "NASA_Score": 14112.46640336897,
+  "NLL": 4.893859113793495,
+  "CRPS": 17.15618980445387,
+  "PICP": 0.6602316602316602,
+  "MPIW": 53.723993631973826,
+  "coverage_gap": 0.1397683397683398,
+  "IntervalScore": 123.09508950035529,
+  "dataset": "FD002",
+  "method": "edl_nig",
+  "seed": 0,
+  "device": "cuda",
+  "best_epochs": [
+    44
+  ],
+  "ensemble_members": 1,
+  "selection_criterion": "val_rmse",
+  "train_seconds": 653.2901223640001,
+  "inference_seconds": 0.018158493001465104,
+  "parameter_count": 51588
+}

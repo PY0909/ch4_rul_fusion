@@ -1,0 +1,18 @@
+{
+  "MAE": 15.814565715642509,
+  "RMSE": 22.788988647955236,
+  "NASA_Score": 3643.2285441775985,
+  "PICP": 0.8957528957528957,
+  "MPIW": 84.88908208060909,
+  "IntervalScore": 95.20220068016567,
+  "coverage_gap": 0.0957528957528957,
+  "dataset": "FD002",
+  "best_epoch": 13,
+  "val_q50_RMSE": 30.63612642399042,
+  "alpha": 0.2,
+  "calibration_mode": "hierarchical",
+  "seed": 0,
+  "device": "cuda",
+  "n_calibration": 26,
+  "corruption": {}
+}

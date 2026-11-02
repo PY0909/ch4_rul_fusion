@@ -1,0 +1,804 @@
+{
+  "device": "cuda",
+  "official_test_evaluated": true,
+  "datasets": [
+    {
+      "dataset": "FD002",
+      "checkpoint": "/home/v2/.worktrees/ch4-hcq-cqr/code/results_v4/chapter4_main/quantile_cqr/global/FD002/seed_0/best.pt",
+      "official_test_evaluated": true,
+      "warning": "ratio 0.6/0.7 overlap checkpoint-selection validation engines; exploratory only",
+      "best_validation_protocol_mode": "late",
+      "results": [
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "block_max",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.9034749034749034,
+          "MPIW": 77.07783287015661,
+          "IntervalScore": 91.23116802904596,
+          "coverage_gap": 0.1034749034749034,
+          "n_test_engines": 259,
+          "calibration_threshold": 27.027557373046875,
+          "group_thresholds": {
+            "global": 27.027557373046875
+          },
+          "group_counts": {
+            "global": 26
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6177606177606177,
+          "MPIW": 26.532216720254265,
+          "IntervalScore": 94.74074529784527,
+          "coverage_gap": -0.1822393822393823,
+          "n_test_engines": 259,
+          "calibration_threshold": 1.7547492980957031,
+          "group_thresholds": {
+            "global": 1.7547492980957031
+          },
+          "group_counts": {
+            "global": 26
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "weighted_late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6602316602316602,
+          "MPIW": 30.029972152383166,
+          "IntervalScore": 92.06636729528084,
+          "coverage_gap": -0.1397683397683398,
+          "n_test_engines": 259,
+          "calibration_threshold": 3.503627014160156,
+          "group_thresholds": {
+            "global": 3.503627014160156
+          },
+          "group_counts": {
+            "global": 26
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 8,
+          "shrink_tau": 10.0,
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6177606177606177,
+          "MPIW": 26.532216720254265,
+          "IntervalScore": 94.74074529784527,
+          "coverage_gap": -0.1822393822393823,
+          "n_test_engines": 259,
+          "calibration_threshold": 1.7547492980957031,
+          "group_thresholds": {
+            "c3|s0|q0": 1.7547492980957031
+          },
+          "group_counts": {
+            "c0|s0|q0": 1,
+            "c3|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 8,
+          "shrink_tau": 20.0,
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6177606177606177,
+          "MPIW": 26.532216720254265,
+          "IntervalScore": 94.74074529784527,
+          "coverage_gap": -0.1822393822393823,
+          "n_test_engines": 259,
+          "calibration_threshold": 1.7547492980957031,
+          "group_thresholds": {
+            "c3|s0|q0": 1.7547492980957031
+          },
+          "group_counts": {
+            "c0|s0|q0": 1,
+            "c3|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 10,
+          "shrink_tau": 10.0,
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6177606177606177,
+          "MPIW": 26.532216720254265,
+          "IntervalScore": 94.74074529784527,
+          "coverage_gap": -0.1822393822393823,
+          "n_test_engines": 259,
+          "calibration_threshold": 1.7547492980957031,
+          "group_thresholds": {
+            "c3|s0|q0": 1.7547492980957031
+          },
+          "group_counts": {
+            "c0|s0|q0": 1,
+            "c3|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 10,
+          "shrink_tau": 20.0,
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6177606177606177,
+          "MPIW": 26.532216720254265,
+          "IntervalScore": 94.74074529784527,
+          "coverage_gap": -0.1822393822393823,
+          "n_test_engines": 259,
+          "calibration_threshold": 1.7547492980957031,
+          "group_thresholds": {
+            "c3|s0|q0": 1.7547492980957031
+          },
+          "group_counts": {
+            "c0|s0|q0": 1,
+            "c3|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 15,
+          "shrink_tau": 10.0,
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6177606177606177,
+          "MPIW": 26.532216720254265,
+          "IntervalScore": 94.74074529784527,
+          "coverage_gap": -0.1822393822393823,
+          "n_test_engines": 259,
+          "calibration_threshold": 1.7547492980957031,
+          "group_thresholds": {
+            "c3|s0|q0": 1.7547492980957031
+          },
+          "group_counts": {
+            "c0|s0|q0": 1,
+            "c3|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 15,
+          "shrink_tau": 20.0,
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6177606177606177,
+          "MPIW": 26.532216720254265,
+          "IntervalScore": 94.74074529784527,
+          "coverage_gap": -0.1822393822393823,
+          "n_test_engines": 259,
+          "calibration_threshold": 1.7547492980957031,
+          "group_thresholds": {
+            "c3|s0|q0": 1.7547492980957031
+          },
+          "group_counts": {
+            "c0|s0|q0": 1,
+            "c3|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "block_max",
+          "ratio": 0.6,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.9459459459459459,
+          "MPIW": 104.80531089750036,
+          "IntervalScore": 109.0214680816446,
+          "coverage_gap": 0.1459459459459459,
+          "n_test_engines": 259,
+          "calibration_threshold": 40.89129638671875,
+          "group_thresholds": {
+            "global": 40.89129638671875
+          },
+          "group_counts": {
+            "global": 31
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.6,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6563706563706564,
+          "MPIW": 29.128270797402703,
+          "IntervalScore": 92.70416528941581,
+          "coverage_gap": -0.14362934362934365,
+          "n_test_engines": 259,
+          "calibration_threshold": 3.052776336669922,
+          "group_thresholds": {
+            "global": 3.052776336669922
+          },
+          "group_counts": {
+            "global": 31
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "weighted_late",
+          "ratio": 0.6,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.667953667953668,
+          "MPIW": 30.31891563382849,
+          "IntervalScore": 91.87055130237319,
+          "coverage_gap": -0.1320463320463321,
+          "n_test_engines": 259,
+          "calibration_threshold": 3.6480987548828128,
+          "group_thresholds": {
+            "global": 3.6480987548828128
+          },
+          "group_counts": {
+            "global": 31
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "block_max",
+          "ratio": 0.7,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.9459459459459459,
+          "MPIW": 101.57232444730505,
+          "IntervalScore": 106.6622617531237,
+          "coverage_gap": 0.1459459459459459,
+          "n_test_engines": 259,
+          "calibration_threshold": 39.274803161621094,
+          "group_thresholds": {
+            "global": 39.274803161621094
+          },
+          "group_counts": {
+            "global": 36
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "late",
+          "ratio": 0.7,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.6563706563706564,
+          "MPIW": 28.77433174100622,
+          "IntervalScore": 92.9583454611909,
+          "coverage_gap": -0.14362934362934365,
+          "n_test_engines": 259,
+          "calibration_threshold": 2.8758068084716797,
+          "group_thresholds": {
+            "global": 2.8758068084716797
+          },
+          "group_counts": {
+            "global": 36
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD002",
+          "aggregation": "weighted_late",
+          "ratio": 0.7,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 15.531943593706403,
+          "RMSE": 22.655610046150997,
+          "NASA_Score": 3086.0497427236724,
+          "PICP": 0.667953667953668,
+          "MPIW": 30.650834731728875,
+          "IntervalScore": 91.6514078053038,
+          "coverage_gap": -0.1320463320463321,
+          "n_test_engines": 259,
+          "calibration_threshold": 3.814058303833008,
+          "group_thresholds": {
+            "global": 3.814058303833008
+          },
+          "group_counts": {
+            "global": 36
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        }
+      ]
+    },
+    {
+      "dataset": "FD004",
+      "checkpoint": "/home/v2/.worktrees/ch4-hcq-cqr/code/results_v4/chapter4_main/quantile_cqr/global/FD004/seed_0/best.pt",
+      "official_test_evaluated": true,
+      "warning": "ratio 0.6/0.7 overlap checkpoint-selection validation engines; exploratory only",
+      "best_validation_protocol_mode": "late",
+      "results": [
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "block_max",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 1.0,
+          "MPIW": 248.44295140812474,
+          "IntervalScore": 248.44295140812474,
+          "coverage_gap": 0.19999999999999996,
+          "n_test_engines": 248,
+          "calibration_threshold": 110.97898864746094,
+          "group_thresholds": {
+            "global": 110.97898864746094
+          },
+          "group_counts": {
+            "global": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "global": 0.0
+          },
+          "group_counts": {
+            "global": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "weighted_late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.7459677419354839,
+          "MPIW": 45.96015416691379,
+          "IntervalScore": 96.65705914920377,
+          "coverage_gap": -0.05403225806451617,
+          "n_test_engines": 248,
+          "calibration_threshold": 9.737590026855468,
+          "group_thresholds": {
+            "global": 9.737590026855468
+          },
+          "group_counts": {
+            "global": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 8,
+          "shrink_tau": 10.0,
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "c0|s0|q0": 0.0
+          },
+          "group_counts": {
+            "c0|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 8,
+          "shrink_tau": 20.0,
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "c0|s0|q0": 0.0
+          },
+          "group_counts": {
+            "c0|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 10,
+          "shrink_tau": 10.0,
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "c0|s0|q0": 0.0
+          },
+          "group_counts": {
+            "c0|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 10,
+          "shrink_tau": 20.0,
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "c0|s0|q0": 0.0
+          },
+          "group_counts": {
+            "c0|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 15,
+          "shrink_tau": 10.0,
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "c0|s0|q0": 0.0
+          },
+          "group_counts": {
+            "c0|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "hierarchy",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.5,
+          "checkpoint_split_match": true,
+          "status": "matched",
+          "min_group_size": 15,
+          "shrink_tau": 20.0,
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "c0|s0|q0": 0.0
+          },
+          "group_counts": {
+            "c0|s0|q0": 25
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "block_max",
+          "ratio": 0.6,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 1.0,
+          "MPIW": 200.8156931073435,
+          "IntervalScore": 200.8156931073435,
+          "coverage_gap": 0.19999999999999996,
+          "n_test_engines": 248,
+          "calibration_threshold": 87.16535949707031,
+          "group_thresholds": {
+            "global": 87.16535949707031
+          },
+          "group_counts": {
+            "global": 30
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.6,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "global": 0.0
+          },
+          "group_counts": {
+            "global": 30
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "weighted_late",
+          "ratio": 0.6,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.7419354838709677,
+          "MPIW": 45.61101323673803,
+          "IntervalScore": 96.75492930527655,
+          "coverage_gap": -0.058064516129032295,
+          "n_test_engines": 248,
+          "calibration_threshold": 9.563019561767579,
+          "group_thresholds": {
+            "global": 9.563019561767579
+          },
+          "group_counts": {
+            "global": 30
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "block_max",
+          "ratio": 0.7,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 1.0,
+          "MPIW": 267.4157297284372,
+          "IntervalScore": 267.4157297284372,
+          "coverage_gap": 0.19999999999999996,
+          "n_test_engines": 248,
+          "calibration_threshold": 120.46537780761719,
+          "group_thresholds": {
+            "global": 120.46537780761719
+          },
+          "group_counts": {
+            "global": 35
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "late",
+          "ratio": 0.7,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.6169354838709677,
+          "MPIW": 26.484974113202863,
+          "IntervalScore": 107.02527131765119,
+          "coverage_gap": -0.1830645161290323,
+          "n_test_engines": 248,
+          "calibration_threshold": 0.0,
+          "group_thresholds": {
+            "global": 0.0
+          },
+          "group_counts": {
+            "global": 35
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        },
+        {
+          "stage": "protocol",
+          "dataset": "FD004",
+          "aggregation": "weighted_late",
+          "ratio": 0.7,
+          "checkpoint_split_match": false,
+          "status": "exploratory_split_overlap",
+          "MAE": 16.979601525491283,
+          "RMSE": 24.474998592302292,
+          "NASA_Score": 3982.4411291988354,
+          "PICP": 0.7701612903225806,
+          "MPIW": 49.477839103437226,
+          "IntervalScore": 95.90898606354193,
+          "coverage_gap": -0.029838709677419417,
+          "n_test_engines": 248,
+          "calibration_threshold": 11.496432495117187,
+          "group_thresholds": {
+            "global": 11.496432495117187
+          },
+          "group_counts": {
+            "global": 35
+          },
+          "n_active_groups": 0,
+          "active_group_thresholds": {}
+        }
+      ]
+    }
+  ]
+}

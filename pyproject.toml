@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rul-fusion"
+version = "0.1.0"
+description = "Multi-scale routed sensor-graph point RUL prediction"
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+where = ["."]

@@ -1,0 +1,14 @@
+{
+  "MAE": 18.931025199351772,
+  "RMSE": 27.02508722296991,
+  "NASA_Score": 5366.273876784318,
+  "model": "FC_STGNN_RUL",
+  "dataset": "FD004",
+  "n_params": 27293,
+  "best_epoch": 29,
+  "val_RMSE": 23.941027329849312,
+  "selection_criterion": "val_endpoint_rmse",
+  "seed": 0,
+  "device": "cuda",
+  "skipped_singleton_batches": true
+}

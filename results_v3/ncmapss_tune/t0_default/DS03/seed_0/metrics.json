@@ -1,0 +1,30 @@
+{
+  "MAE": 9.673454066117605,
+  "RMSE": 14.529022176106986,
+  "model": "A6",
+  "dataset": "DS03",
+  "n_params": 138092,
+  "best_epoch": 51,
+  "val_RMSE": 4.871238209852855,
+  "selection_criterion": "val_endpoint_rmse_fixed_cuts",
+  "test_protocol": "fixed_cuts mid-life endpoints",
+  "seed": 0,
+  "device": "cuda",
+  "config": {
+    "dataset": "DS03",
+    "data_root": "/home/new_work/ch3_mtk_dg_probabilistic_design-85d9365/dataset",
+    "model": "A6",
+    "output_dir": "/home/v2/code/results_v3/ncmapss_tune/t0_default",
+    "seed": 0,
+    "epochs": 300,
+    "batch_size": 32,
+    "lr": 0.001,
+    "history": 16,
+    "d_model": 64,
+    "num_heads": 4,
+    "num_routers": 4,
+    "dropout": 0.1,
+    "weight_decay": 0.0,
+    "condition_mode": "full"
+  }
+}

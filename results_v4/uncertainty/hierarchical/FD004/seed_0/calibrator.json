@@ -1,0 +1,12 @@
+{
+  "alpha": 0.2,
+  "min_group_size": 20,
+  "shrink_tau": 20.0,
+  "global_threshold": 110.68629455566406,
+  "group_thresholds": {},
+  "group_counts": {
+    "c0|s0|q0": 2,
+    "c0|s1|q0": 8,
+    "c0|s2|q0": 15
+  }
+}
