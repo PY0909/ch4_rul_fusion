@@ -1,101 +1,153 @@
 # Probabilistic baseline provenance
 
-## Six first-round external baselines — stage 0 literature verification (2026-11-04, paused pending full-text collection)
+## Six first-round external baselines — stage 0 literature verification (2026-11-04, complete)
 
 Scope: extend the baseline panel to B3–B6 per the chapter plan §8.5. B1 (HNN)
-and B2 (EDL-NIG) are already implemented and registered above. Stage 0
-verification status below distinguishes paper-reported values from project
-adaptations; anything not obtainable from the paper is registered as a
-reconstruction choice, never as a paper value.
+and B2 (EDL-NIG) are already implemented and registered above. All four new
+papers were verified against full texts (B4 open access; B3/B5/B6 PDFs
+supplied on 2026-11-04 into `references/pdfs/`). Paper-reported values below
+are separated from project adaptations; anything the paper does not state is
+registered as a reconstruction choice, never as a paper value.
 
-### B4 — dual-channel TCN + Transformer with MC dropout (full text secured)
+### B4 — dual-channel TCN + Transformer with MC dropout
 
 Paper: “A Parallel Prognostic Method Integrating Uncertainty Quantification for
 Probabilistic Remaining Useful Life Prediction of Aero-Engine,” *Processes*
 12(12):2925, 2024, DOI [10.3390/pr12122925](https://doi.org/10.3390/pr12122925)
-(open access; full text read from the MDPI XML version on 2026-11-04).
+(open access; full text read from the MDPI XML version).
 
 Paper-reported configuration: parallel TCN and Transformer channels over the
 raw window. TCN: 3 residual blocks with filters 8/6/4, kernel size 4, dilations
 1/2/4, spatial-dropout inside blocks. Transformer encoder: d_model 14,
 2 heads, 2 encoder layers, dropout 0.2, sinusoidal positional encoding.
 Training: Adam lr 1e-3, batch 128, 50 epochs, window length 30, stride 1,
-min–max normalization, piecewise RUL cap 125, 14 non-constant sensors (same
-drop list convention as this project). Inference: MC dropout with k forward
-passes → predictive mean/std → Gaussian 95% CI (mean ± 1.96σ). The paper
-evaluates FD001/FD003 only; k is not stated numerically in the text or
-Table 4.
+min–max normalization, piecewise RUL cap 125, 14 non-constant sensors. Inference:
+MC dropout with k forward passes → predictive mean/std → Gaussian 95% CI
+(mean ± 1.96σ). The paper evaluates FD001/FD003 only; k is not stated
+numerically.
 
-Planned project adaptations (to be finalized at implementation): window 30 →
-50 and FD001/FD003 → FD002/FD004 + DS03/DS08a per unified protocol; interval
-band 95% Gaussian → nominal 80% (q10/q90 empirical quantiles of the draws) to
-match the ranking protocol; k unspecified → 30 (existing `mc_dropout`
-default). Each is a deviation from the paper and will be reported as such.
+Planned project adaptations: window 30 → 50 and FD001/FD003 →
+FD002/FD004 + DS03/DS08a per unified protocol; interval band 95% Gaussian →
+nominal 80% (q10/q90 empirical quantiles of the draws) to match the ranking
+protocol; k unspecified → 30 (existing `mc_dropout` default). Each is a
+deviation from the paper and will be reported as such.
 
-### B3 — LSTM with probabilistic layer (closed access, abstract only)
+### B3 — LSTM with probabilistic layer (full text supplied)
 
 Paper: A. K. B. Mohd Nor, S. R. Pedapati, M. B. Muhammad, M. A. A. Majid,
 “Demonstrating Aleatoric Uncertainty in Remaining Useful Life Prediction Using
 LSTM with Probabilistic Layer,” *Lecture Notes in Mechanical Engineering*
 (ICPER 2020 proceedings), Springer, 2022, DOI
 [10.1007/978-981-19-1939-8_41](https://doi.org/10.1007/978-981-19-1939-8_41).
+Full text PDF `references/pdfs/978-981-19-1939-8_41.pdf` read on 2026-11-04.
 
-Known from abstract/metadata: LSTM backbone whose output layer is a
-probabilistic layer capturing aleatoric (data) uncertainty; demonstrated on
-NASA C-MAPSS turbofan data. Full text paywalled at Springer; no author code
-found. Pending collection: LSTM depth/units, the exact probabilistic layer
-(TFP-style Gaussian output vs variational dense), loss, FD subsets, window,
-optimizer/epochs, and how intervals are reported. Until the full text
-arrives, any implementation numbers are registered reconstruction choices.
+Paper-reported configuration: single-layer LSTM (635 hidden units) → Dense
+(331) → Dropout (0.03) → **Normal-distribution output layer** producing the
+mean and standard deviation of a health-index prediction; aleatoric-only
+uncertainty. Hyperparameters are the optimum of a Bayesian optimization over
+500 evaluations (search spaces given in the paper's Table 1): mini-batch 43,
+max epoch 14, learning rate 5.613e-4. Data: C-MAPSS FD001 only; inputs are the
+3 operating settings plus the 14 monotonic sensors (2,3,4,7,8,9,11,12,13,14,
+15,17,20,21); the training target is a health index obtained from a piecewise
+RUL label with cap 100 normalized to [0,1]; degradation start points are
+detected per sensor by CUSUM; validation is a random 20% split of training
+data. Uncertainty is reported by drawing 1000 samples from the predicted
+Normal per window and plotting μ±2σ bounds. Reported FD001 RMSE 24.1,
+score 1095 (not copied).
 
-### B5 — Bayesian cooperative probabilistic Transformer (paywalled, abstract secured)
+Planned project adaptations: direct RUL target with the chapter cap 125
+instead of the HI/cap-100 formulation; window 50; the chapter's registered
+engine split, fixed-cuts validation and one-shot official test instead of a
+random 20% split; FD002/FD004 + DS03/DS08a instead of FD001; predictive
+interval from the analytic Normal quantiles (q10/q90 for the 80% band) instead
+of sampled μ±2σ bounds; the 1000-sample draw is redundant given the analytic
+form and is not reproduced. The paper's BayesOpt architecture/training values
+(635/331/0.03/43/14 epochs/5.613e-4) are kept as reported.
+
+### B5 — Bayesian cooperative probabilistic Transformer (full text supplied)
 
 Paper: S. Xie, W. Cheng, Z. Nie, J. Xing, X. Chen, Q. Huang, R. Zhang,
 Y. Yang, “Bayesian cooperative probabilistic Transformer for remaining useful
 life prediction with uncertainty estimation in industrial equipment,”
 *Advanced Engineering Informatics* 67:103515, 2025, DOI
 [10.1016/j.aei.2025.103515](https://doi.org/10.1016/j.aei.2025.103515).
+Full text PDF `references/pdfs/1-s2.0-S1474034625004082-main.pdf` read on
+2026-11-04.
 
-Known from abstract (via the Xi'an Jiaotong University scholar page): a
-probabilistic Transformer integrating attentional uncertainty (NLL loss),
-cognitive/epistemic uncertainty (Bayesian approach), and aleatoric
-uncertainty (noise channel), plus an uncertainty-guided multi-source fusion
-strategy; validated on C-MAPSS and NCWP data. Full text paywalled; no code
-link in the abstract. Pending collection: architecture sizes, the Bayesian
-approximation form, noise-channel definition, fusion details, hyperparameters,
-C-MAPSS subsets. Fallback (pre-authorized): mechanism-level reconstruction —
-Transformer encoder + approximate-Bayesian (MC-dropout-style) epistemic term +
-Gaussian NLL aleatoric head, fusion module dropped as dataset-specific — with
-every reconstruction parameter registered as non-paper values.
+Paper-reported configuration: each sensor channel is modelled separately by a
+Transformer encoder (window 30, stride 1, sinusoidal PE, 5 attention heads,
+feed-forward structure 30-64-30, prediction head FC1/FC2 = 20/10, dropout
+0.3). Deterministic attention logits are replaced by the probabilistic
+attention model (PAM): α̃ij = μij + τσij with τ~N(0,1), μij/σij = MLP(Qi,Kj)
+with MLP structure 2-10-6-2. The loss combines a heteroscedastic NLL with a
+noise channel η², the attention NLL (γ = 0.2, grid-searched) and an L2
+penalty on η² (λ = 0.1). Cognitive uncertainty comes from MC-dropout with
+M = 30 samples on C-MAPSS; total uncertainty U = σ²PU + H(α) + mean η².
+UGMIF trains two models on all channels with channel losses weighted by
+(1 − softmax(Uc)) (LU-model) and (1 + softmax(Uc)) (HU-model) and fuses at
+inference by uncertainty-softmax weights (Eqs. 22–26). Training: Adam,
+lr 0.005→0.001, batch 256, 200 epochs; min–max normalization; piecewise cap
+125; 14 sensors; intervals reported at a 95% confidence level (β ∈ {0.75,
+0.9, 0.95} in the NCWP study). The paper repeats each experiment 10 times;
+reported FD002 RMSE 14.25 / PICP 0.956 and FD004 17.52 / 0.945 (not copied).
 
-### B6 — multi-scale self-attention + approximate Bayesian + KDE (paywalled, abstract secured)
-
-Paper: “A multi-scale self-attention method with uncertainty quantification
-for probabilistic remaining useful life prediction of rotating machinery,”
-*Engineering Research Express*, 2025, DOI
-[10.1088/2631-8695/adeeea](https://doi.org/10.1088/2631-8695/adeeea).
-
-Known from abstract: multi-scale attention module in the encoder + approximate
-Bayesian framework + kernel density estimation producing the predictive
-density (PDF), evaluated with probabilistic metrics. Full text paywalled
-(hybrid journal); no code found. Pending collection: multi-scale encoder
-structure, Bayesian approximation details, KDE bandwidth selection, datasets,
-hyperparameters. Fallback (pre-authorized): mechanism-level reconstruction —
-multi-scale self-attention encoder + MC-dropout approximate Bayesian + KDE
-predictive density over draws (Scott bandwidth) — registered as
+Not stated in the paper: the number of encoder layers, the exact embedding
+dimension, and the explicit interval formula (a Gaussian assumption around
+the fused mean with variance U is implied). These become registered
 reconstruction choices.
 
-### Reserve decision (recorded 2026-11-04)
+Planned project adaptations: window 50; FD002/FD004 + DS03/DS08a under the
+chapter's registered split, fixed-cuts validation and one-shot official test
+(the paper's own split protocol is unspecified); 80% band via Normal quantiles
+of the fused mean/√U instead of the 95% level; single seed 0 run instead of
+10 repetitions; M = 30 and the UGMIF/LU/HU machinery kept as reported.
+
+### B6 — multi-scale self-attention + approximate Bayesian + KDE (full text supplied)
+
+Paper: J. Du, J. Fu, “A multi-scale self-attention method with uncertainty
+quantification for probabilistic remaining useful life prediction of rotating
+machinery,” *Engineering Research Express* 7:035543, 2025, DOI
+[10.1088/2631-8695/adeeea](https://doi.org/10.1088/2631-8695/adeeea).
+Full text PDF `references/pdfs/Du_2025_Eng._Res._Express_7_035543.pdf` read
+on 2026-11-04.
+
+Paper-reported configuration: MSSA unit = N = 2 multi-scale convolution
+modules (parallel Conv1d kernels {3,5,7} → BatchNorm → ReLU → Dropout,
+concatenate, 1×1-conv residual projection when channels mismatch, ReLU)
+followed by sinusoidal PE and one self-attention layer (LayerNorm + Dropout +
+residual); predictor = global average pooling → Linear → ReLU → Linear;
+80,225 parameters in total. Preprocessing: the 14 standard sensors, Z-score
+normalization grouped by operating condition (train-set statistics) followed
+by exponential smoothing with α = 0.2, sliding window L = 30 stride 1,
+piecewise cap 125. Training: Adam, 50 epochs, best weights by minimum RMSE.
+Uncertainty: MC dropout with G = 100 forward passes, kernel density estimation
+with a Gaussian kernel over the draws, normalized PDF, 95% CIs; the point
+estimate is the draw mean. The paper's sensitivity studies choose scales
+{3,5,7}, N = 2 and α = 0.2; reported FD002 RMSE 14.19 / score 1173.83 and
+FD004 13.85 / 1222.37 (not copied).
+
+Not stated in the paper: the dropout rate, per-layer channel widths (the
+80,225-parameter total is the constraint), the learning rate, the batch size
+and the KDE bandwidth h. These become registered reconstruction choices
+(channel widths sized to match the parameter count; KDE bandwidth by Scott's
+rule).
+
+Planned project adaptations: window 50; FD002/FD004 + DS03/DS08a under the
+chapter's registered split, fixed-cuts validation and one-shot official test;
+best-epoch selection by validation RMSE instead of training RMSE; 80% band
+from the KDE/draw quantiles instead of 95% CIs; the paper's grouped Z-score +
+α = 0.2 exponential smoothing preprocessing is kept as part of the method
+(other baselines keep their own paper preprocessing, as B2 does with min-max).
+
+### Reserve decision (recorded 2026-11-04, not triggered)
 
 B7 (“Degradation-aware contrastive Mamba with dual uncertainty,” *Meas. Sci.
-Technol.* 2026, DOI 10.1088/1361-6501/ae6e95) is also paywalled at the
+Technol.* 2026, DOI 10.1088/1361-6501/ae6e95) remains paywalled at the
 abstract level. B8 (IEEE SDPC 2025, DOI 10.1109/SDPC68151.2025.11347806)
 combines **snapshot ensemble** with MC dropout as its core mechanism, which
 conflicts with the project's no-ensemble constraint and therefore cannot
-serve as a like-for-like substitute. Per the swap rule, B5/B6 stay in the six;
-if their full texts cannot be collected, they are implemented as
-mechanism-level reconstructions with registered deviations rather than
-replaced.
+serve as a like-for-like substitute. With B3/B5/B6 full texts supplied, the
+swap rule is no longer relevant; the original six-baseline list stands.
 
 ## HNN and Gaussian Deep Ensemble
 
