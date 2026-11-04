@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple, Union
 
 import h5py
 import numpy as np
@@ -113,6 +113,60 @@ class GroupedMinMaxScaler:
         return {
             "fallback": self.fallback.state_dict(),
             "groups": {str(k): [v[0].tolist(), v[1].tolist()] for k, v in self.groups.items()},
+            "condition_scaler": self.condition_scaler.state_dict() if self.condition_scaler else None,
+        }
+
+
+class GroupedStandardScaler:
+    """Z-score scaling per operating-condition group (B6 paper preprocessing).
+
+    Mirrors :class:`GroupedMinMaxScaler`: mean/std fitted on train rows per
+    rounded setting group, global per-column z-score as fallback for unseen
+    groups, and one ``state_dict`` for serialization.
+    """
+
+    def __init__(self):
+        self.groups: Dict[float, Tuple[np.ndarray, np.ndarray]] = {}
+        self.fallback = FeatureScaler()
+        self.condition_scaler: Optional[MinMaxScaler] = None
+        self.unseen: List[float] = []
+
+    def fit(self, values: np.ndarray, keys: np.ndarray) -> "GroupedStandardScaler":
+        values = np.asarray(values, dtype=np.float64)
+        self.fallback.fit(values)
+        self.groups = {}
+        for key in np.unique(np.asarray(keys)):
+            rows = values[np.asarray(keys) == key]
+            mean = np.nanmean(rows, axis=0).astype(np.float32)
+            scale = np.nanstd(rows, axis=0).astype(np.float32)
+            scale = np.where(scale < 1e-6, 1.0, scale).astype(np.float32)
+            self.groups[float(key)] = (mean, scale)
+        return self
+
+    def transform(self, values: np.ndarray, keys: np.ndarray) -> np.ndarray:
+        if not self.groups:
+            raise RuntimeError("fit scaler before transform")
+        values = np.asarray(values, dtype=np.float32)
+        keys = np.asarray(keys)
+        scaled = np.empty_like(values)
+        self.unseen = []
+        for key in np.unique(keys):
+            mask = keys == key
+            entry = self.groups.get(float(key))
+            if entry is None:
+                self.unseen.append(float(key))
+                mean, scale = self.fallback.mean, self.fallback.scale
+            else:
+                mean, scale = entry
+            scaled[mask] = ((values[mask] - mean) / scale).astype(np.float32)
+        return scaled
+
+    def state_dict(self) -> dict:
+        return {
+            "fallback": {"mean": self.fallback.mean.tolist(),
+                         "scale": self.fallback.scale.tolist()},
+            "groups": {str(k): [v[0].tolist(), v[1].tolist()]
+                       for k, v in self.groups.items()},
             "condition_scaler": self.condition_scaler.state_dict() if self.condition_scaler else None,
         }
 
@@ -228,8 +282,9 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
     dataset = dataset.upper()
     if dataset not in {"FD002", "FD004"}:
         raise ValueError("C-MAPSS dataset must be FD002 or FD004")
-    if scaler_mode not in {"global", "grouped", "minmax"}:
-        raise ValueError("scaler_mode must be 'global', 'grouped', or 'minmax'")
+    if scaler_mode not in {"global", "grouped", "minmax", "zscore_grouped"}:
+        raise ValueError("scaler_mode must be 'global', 'grouped', 'minmax', "
+                         "or 'zscore_grouped'")
     if condition_features not in {"settings", "settings_cycle"}:
         raise ValueError("condition_features must be 'settings' or 'settings_cycle'")
     if validation_protocol not in {"legacy_endpoint", "fixed_cuts"}:
@@ -282,10 +337,11 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
 
     sensor_dim = sensor.shape[1]
     scaled_records: Dict[int, Tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
-    group_scaler: Optional[GroupedMinMaxScaler] = None
+    group_scaler: Optional[Union[GroupedMinMaxScaler, GroupedStandardScaler]] = None
     cond_scaler: Optional[MinMaxScaler] = None
-    if scaler_mode == "grouped":
-        group_scaler = GroupedMinMaxScaler().fit(
+    if scaler_mode in {"grouped", "zscore_grouped"}:
+        group_scaler = (GroupedMinMaxScaler() if scaler_mode == "grouped"
+                        else GroupedStandardScaler()).fit(
             np.concatenate([records[u][0] for u in train_units], axis=0),
             np.concatenate([np.round(records[u][1][:, 0], 1) for u in train_units]))
         cond_scaler = MinMaxScaler().fit(
@@ -321,7 +377,7 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
         idx = np.where(test_engine == unit)[0]
         idx = idx[np.argsort(test_cycle[idx])]
         x, w = test_sensor[idx], test_condition[idx]
-        if scaler_mode == "grouped":
+        if scaler_mode in {"grouped", "zscore_grouped"}:
             test_records[int(unit)] = (group_scaler.transform(x, np.round(w[:, 0], 1)),
                                        cond_scaler.transform(w),
                                        np.asarray([test_rul[pos]], dtype=np.float32))

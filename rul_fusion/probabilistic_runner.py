@@ -12,14 +12,24 @@ from pathlib import Path
 import numpy as np
 import torch
 from torch import nn
+from torch.nn import functional as F
 from scipy.special import ndtr
 from scipy.stats import t as student_t
 from torch.utils.data import DataLoader
 
 from .metrics import regression_metrics, rmse
-from .probabilistic import (EvidentialNIGRUL, HeteroscedasticRUL, gaussian_nll,
-                            nig_evidential_loss)
+from .mc_dropout import predict_mc_dropout
+from .probabilistic import (BayesianCooperativeTransformerRUL,
+                            EvidentialNIGRUL, HeteroscedasticRUL,
+                            LSTMProbRUL, MSAUQRUL, PAPER_METHOD_DEFAULTS,
+                            TCNTransformerMCDropoutRUL, bcpt_channel_loss,
+                            gaussian_nll, nig_evidential_loss)
 from .runner import set_seed
+
+MC_DRAWS_KINDS = {"tcn_transformer_mc", "msauq"}
+BCPT_KIND = "bcpt"
+POINT_MSE_KINDS = {"tcn_transformer_mc", "msauq"}
+Z_80 = 1.2815515655446004  # Phi^-1(0.9) for the 80% nominal band
 
 
 def _predict(model, loader, device):
@@ -66,12 +76,25 @@ def _model(kind, sensor_dim, condition_dim, dropout, window_size,
         return EvidentialNIGRUL(sensor_dim, condition_dim, dropout=dropout,
                                 hidden_dim=edl_hidden_dim,
                                 sensor_indices=edl_sensor_indices)
+    if kind == "lstm_prob":
+        return LSTMProbRUL(sensor_dim, condition_dim, dropout=dropout)
+    if kind == "tcn_transformer_mc":
+        return TCNTransformerMCDropoutRUL(sensor_dim, condition_dim,
+                                          window_size=window_size, dropout=dropout)
+    if kind == "msauq":
+        return MSAUQRUL(sensor_dim, condition_dim, dropout=dropout)
+    if kind == BCPT_KIND:
+        return BayesianCooperativeTransformerRUL(sensor_dim, condition_dim,
+                                                 window_size=window_size,
+                                                 dropout=dropout)
     raise ValueError(f"unsupported probabilistic method: {kind}")
 
 
 def _loss(kind, prediction, y, evidence_weight):
-    if kind in {"hnn", "ensemble"}:
+    if kind in {"hnn", "ensemble", "lstm_prob"}:
         return gaussian_nll(prediction, y)
+    if kind in POINT_MSE_KINDS:
+        return F.mse_loss(prediction.reshape(-1), y.reshape(-1))
     return nig_evidential_loss(prediction, y, evidence_weight)
 
 
@@ -124,11 +147,162 @@ def _edl_crps(y, mean, df, scale, seed, samples=2048):
     return first - second
 
 
+def kde_quantiles(draws: np.ndarray, quantiles=(0.1, 0.9), grid_size: int = 512):
+    """B6 predictive quantiles from a Gaussian-kernel KDE with Scott bandwidth.
+
+    The paper constructs the predictive PDF by KDE over the MC draws and reads
+    CIs from it; the bandwidth value is unstated, so Scott's rule is the
+    registered choice. ``draws`` has shape [n_draws, n_samples].
+    """
+    draws = np.asarray(draws, dtype=np.float64)
+    n = draws.shape[0]
+    if n < 2:
+        raise ValueError("KDE needs at least two draws")
+    bandwidth = draws.std(axis=0, ddof=1) * n ** (-1.0 / 5.0)
+    bandwidth = np.maximum(bandwidth, 1e-6)
+    lo = draws.min(axis=0) - 3.0 * bandwidth
+    hi = draws.max(axis=0) + 3.0 * bandwidth
+    grid = np.linspace(lo, hi, grid_size)                        # [grid, n]
+    step = (hi - lo) / (grid_size - 1)
+    diff = grid[:, None, :] - draws[None, :, :]                  # [grid, n, n_s]
+    log_pdf = (-0.5 * (diff / bandwidth[None, None, :]) ** 2
+               - np.log(bandwidth[None, None, :]) - 0.5 * math.log(2.0 * math.pi))
+    density = np.exp(log_pdf).mean(axis=1)                       # [grid, n_s]
+    cdf = np.cumsum(density, axis=0) * step[None, :]
+    cdf = cdf / np.maximum(cdf[-1], 1e-12)
+    out = [np.empty(draws.shape[1]) for _ in quantiles]
+    for col in range(draws.shape[1]):
+        for index, q in enumerate(quantiles):
+            out[index][col] = np.interp(q, cdf[:, col], grid[:, col])
+    return np.stack(out, axis=0)
+
+
+def crps_from_draws(y: np.ndarray, draws: np.ndarray) -> np.ndarray:
+    """Monte-Carlo CRPS (energy form) from predictive draws [n_draws, n]."""
+    first = np.abs(draws - y[None, :]).mean(axis=0)
+    pairwise = np.abs(draws[:, :, None] - draws[:, None, :]).mean(axis=(0, 1))
+    return first - 0.5 * pairwise
+
+
+def gaussian_fit_outputs(target: np.ndarray, draws: np.ndarray,
+                         quantiles: np.ndarray):
+    """MC-draw outputs under the papers' Gaussian assumption: mean/std draws
+    NLL, analytic-normal CRPS, and externally supplied q10/q90 bounds."""
+    mean = draws.mean(axis=0)
+    scale = np.maximum(draws.std(axis=0, ddof=1), 1e-6)
+    z = (target - mean) / scale
+    nll = (0.5 * z ** 2 + np.log(scale) + 0.5 * math.log(2.0 * math.pi))
+    crps = _normal_crps(target, mean, scale)
+    return mean, scale, quantiles[0], quantiles[1], nll, crps
+
+
+@torch.no_grad()
+def _bcpt_draw_components(model, loader, device, m: int):
+    """Per-channel draws for one B5 model: full sampling (dropout + tau) means,
+    dropout-only epistemic variance, tau-only attention MI, and mean eta^2.
+
+    The separation of H(alpha) (tau sampling, dropout disabled) from sigma^2_PU
+    (dropout sampling, tau disabled) is a registered approximation of the
+    paper's Eqs. 12/18, which do not specify how the two sampling processes
+    are disentangled.
+    """
+    device = torch.device(device)
+    model.eval()
+    full_means, epistemic, attention_mi, aleatoric = [], [], [], []
+    targets, units, sample_ids = [], [], []
+    for x, _w, y, unit, sample_id in loader:
+        x = x.to(device)
+        channels = x.shape[2]
+        # Full sampling: dropout on, tau on.
+        draws = []
+        for _ in range(m):
+            model.apply(_enable_dropout_modules)
+            draws.append(model.forward_channels(x, sample_tau=True)["mean"])
+        draws = torch.stack(draws)                               # [m, B, S]
+        full_means.append(draws.mean(dim=0).cpu().numpy())
+        # Dropout-only epistemic variance (Eq. 18).
+        drop_draws = []
+        for _ in range(m):
+            model.apply(_enable_dropout_modules)
+            drop_draws.append(model.forward_channels(x, sample_tau=False)["mean"])
+        epistemic.append(torch.stack(drop_draws).var(dim=0).cpu().numpy())
+        # Tau-only attention mutual information (Eq. 12): moment-matched
+        # mixture entropy minus mean component entropy.
+        model.eval()
+        tau_means, tau_logvars = [], []
+        for _ in range(m):
+            out = model.forward_channels(x, sample_tau=True)
+            tau_means.append(out["mean"])
+            tau_logvars.append(out["log_var"])
+        tau_means = torch.stack(tau_means)                       # [m, B, S]
+        tau_logvars = torch.stack(tau_logvars)                   # [m, B, S]
+        eta2 = torch.exp(tau_logvars)                            # [m, B, S]
+        mixture_var = eta2.mean(dim=0) + tau_means.var(dim=0)
+        entropy = 0.5 * torch.log(2.0 * math.pi * math.e * mixture_var.clamp_min(1e-12))
+        mean_entropy = (0.5 * (eta2 * (2.0 * math.pi * math.e)
+                               ).log()).mean(dim=0)
+        attention_mi.append((entropy - mean_entropy).cpu().numpy())
+        aleatoric.append(eta2.mean(dim=0).cpu().numpy())
+        targets.extend(y.numpy().tolist())
+        units.extend(np.asarray(unit).reshape(-1).tolist())
+        sample_ids.extend(np.asarray(sample_id).reshape(-1).tolist())
+        model.eval()
+    model.eval()
+    return {
+        "mean": np.concatenate(full_means), "epistemic": np.concatenate(epistemic),
+        "attention_mi": np.concatenate(attention_mi),
+        "aleatoric": np.concatenate(aleatoric),
+        "target": np.asarray(targets, dtype=np.float64),
+        "units": np.asarray(units, dtype=np.int64),
+        "sample_ids": np.asarray(sample_ids, dtype=np.int64),
+    }
+
+
+def _enable_dropout_modules(module):
+    if isinstance(module, nn.Dropout):
+        module.train()
+
+
+@torch.no_grad()
+def _bcpt_channel_weights(model, loader, device, m: int, high: bool):
+    """Mean per-channel training weights (Eq. 22/23): 1 -/+ softmax(U)."""
+    components = _bcpt_draw_components(model, loader, device, m)
+    uncertainty = (components["epistemic"] + components["attention_mi"]
+                   + components["aleatoric"])                   # [N, S]
+    shifted = uncertainty - uncertainty.max(axis=1, keepdims=True)
+    weights = np.exp(shifted)
+    weights /= weights.sum(axis=1, keepdims=True)
+    if high:
+        return 1.0 + weights.mean(axis=0)
+    return 1.0 - weights.mean(axis=0)
+
+
+def _bcpt_fuse(lu, hu):
+    """UGMIF fusion (Eqs. 24-26) from per-model component dicts."""
+    u_lu = lu["epistemic"] + lu["attention_mi"] + lu["aleatoric"]
+    u_hu = hu["epistemic"] + hu["attention_mi"] + hu["aleatoric"]
+    shift = -np.maximum(u_lu, u_hu)
+    omega = np.exp(u_lu + shift) / (np.exp(u_lu + shift) + np.exp(u_hu + shift))
+    fused_mean = (1.0 - omega) * lu["mean"] + omega * hu["mean"]
+    fused_u = (1.0 - omega) * u_lu + omega * u_hu
+    shifted = fused_u - fused_u.max(axis=1, keepdims=True)
+    channel_weights = np.exp(shifted)
+    channel_weights /= channel_weights.sum(axis=1, keepdims=True)
+    final_mean = (channel_weights * fused_mean).sum(axis=1)
+    span = fused_u.max(axis=1) - fused_u.min(axis=1)
+    normalizer = np.where(span < 1e-12, 1.0, span)
+    total_u = np.where(span < 1e-12, fused_u.mean(axis=1),
+                       (fused_u * (fused_u.max(axis=1, keepdims=True) - fused_u)
+                        / normalizer[:, None]).sum(axis=1))
+    total_u = np.maximum(total_u, 1e-9)
+    return final_mean, total_u, fused_mean, fused_u
+
+
 def _distribution_outputs(kind, params, target, seed):
     eps = 1e-9
-    if kind in {"hnn", "ensemble"}:
+    if kind in {"hnn", "lstm_prob", "ensemble"}:
         means, scales = params[:, :, 0], params[:, :, 1]
-        if kind == "hnn":
+        if kind in {"hnn", "lstm_prob"}:
             mean, scale = means[:, 0], scales[:, 0]
             lower = mean + scale * student_t.ppf(0.1, df=np.inf)
             upper = mean + scale * student_t.ppf(0.9, df=np.inf)
@@ -168,24 +342,29 @@ def _save_history(path, history):
 
 
 def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_size=None,
-                      lr=1e-3, weight_decay=None, patience=None,
+                      lr=None, weight_decay=None, patience=None,
                       dropout=None, ensemble_members=5, evidence_weight=1e-2,
-                      edl_hidden_dim=128,
+                      edl_hidden_dim=128, mc_samples=None, bcpt_gamma=0.2,
+                      bcpt_lam=0.1,
                       device="auto", num_workers=0, config=None,
                       test_dataset=None, defer_test=False):
-    """Train HNN, EDL-NIG, or a Gaussian deep ensemble; evaluate test once."""
-    if kind not in {"hnn", "edl_nig", "ensemble"}:
-        raise ValueError("kind must be hnn, edl_nig, or ensemble")
+    """Train a probabilistic baseline; evaluate test once."""
+    supported = set(PAPER_METHOD_DEFAULTS)
+    if kind not in supported:
+        raise ValueError(f"kind must be one of {sorted(supported)}")
     if kind == "ensemble" and ensemble_members < 2:
         raise ValueError("ensemble_members must be at least 2")
     if bundle.val_endpoint is None:
         raise ValueError("bundle must use fixed-cuts validation")
-    paper_edl = kind == "edl_nig"
-    epochs = (50 if paper_edl else 41) if epochs is None else epochs
-    batch_size = (32 if paper_edl else 100) if batch_size is None else batch_size
-    weight_decay = (0.0 if paper_edl else 1e-3) if weight_decay is None else weight_decay
+    default_epochs, default_batch, default_lr, default_wd, default_dropout, \
+        _scaler, default_criterion, default_mc = PAPER_METHOD_DEFAULTS[kind]
+    epochs = default_epochs if epochs is None else epochs
+    batch_size = default_batch if batch_size is None else batch_size
+    lr = default_lr if lr is None else lr
+    weight_decay = default_wd if weight_decay is None else weight_decay
     patience = epochs if patience is None else patience
-    dropout = (0.3 if paper_edl else 0.0) if dropout is None else dropout
+    dropout = default_dropout if dropout is None else dropout
+    mc_samples = default_mc if mc_samples is None else int(mc_samples)
     set_seed(seed)
     device_obj = torch.device(("cuda" if torch.cuda.is_available() else "cpu")
                               if device == "auto" else device)
@@ -268,13 +447,91 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                         "selection_criterion": state["selection_criterion"]},
                        output_dir / f"member_{member}.pt")
 
-    for member in range(member_count if kind != "ensemble" else 0):
+    def _weights_from_components(components, high):
+        uncertainty = (components["epistemic"] + components["attention_mi"]
+                       + components["aleatoric"])
+        shifted = uncertainty - uncertainty.max(axis=1, keepdims=True)
+        weights = np.exp(shifted)
+        weights /= weights.sum(axis=1, keepdims=True)
+        return 1.0 + weights.mean(axis=0) if high else 1.0 - weights.mean(axis=0)
+
+    if kind == BCPT_KIND:
+        lu = _model(kind, bundle.sensor_dim, bundle.condition_dim, dropout,
+                    bundle.train[0][0].shape[0]).to(device_obj)
+        hu = _model(kind, bundle.sensor_dim, bundle.condition_dim, dropout,
+                    bundle.train[0][0].shape[0]).to(device_obj)
+        optimizer_lu = torch.optim.Adam(lu.parameters(), lr=lr,
+                                        weight_decay=weight_decay)
+        optimizer_hu = torch.optim.Adam(hu.parameters(), lr=lr,
+                                        weight_decay=weight_decay)
+        # Paper states lr "0.005 -> 0.001"; halving-point decay is the
+        # registered reconstruction of the unstated schedule.
+        milestone = max(1, epochs // 2)
+        scheduler_lu = torch.optim.lr_scheduler.MultiStepLR(
+            optimizer_lu, milestones=[milestone], gamma=0.2)
+        scheduler_hu = torch.optim.lr_scheduler.MultiStepLR(
+            optimizer_hu, milestones=[milestone], gamma=0.2)
+        best, best_epoch, stale = float("inf"), 0, 0
+        checkpoint = output_dir / "best.pt"
+        for epoch in range(1, epochs + 1):
+            lu_components = _bcpt_draw_components(lu, val_loader, device_obj,
+                                                  mc_samples)
+            hu_components = _bcpt_draw_components(hu, val_loader, device_obj,
+                                                  mc_samples)
+            weight_lu = torch.as_tensor(_weights_from_components(lu_components, False),
+                                        dtype=torch.float32, device=device_obj)
+            weight_hu = torch.as_tensor(_weights_from_components(hu_components, True),
+                                        dtype=torch.float32, device=device_obj)
+            epoch_losses = []
+            for model, optimizer, channel_weights in ((lu, optimizer_lu, weight_lu),
+                                                      (hu, optimizer_hu, weight_hu)):
+                model.train()
+                loss_sum, count = 0.0, 0
+                for x, _w, y, _, _ in train_loader:
+                    x, y = x.to(device_obj), y.to(device_obj)
+                    optimizer.zero_grad(set_to_none=True)
+                    outputs = model.forward_channels(x, sample_tau=True)
+                    loss = bcpt_channel_loss(outputs, y, channel_weights,
+                                             gamma=bcpt_gamma, lam=bcpt_lam)
+                    loss.backward()
+                    optimizer.step()
+                    loss_sum += float(loss.detach()) * len(y)
+                    count += len(y)
+                epoch_losses.append(loss_sum / max(count, 1))
+            train_loss = float(np.mean(epoch_losses))
+            fused_mean, _total_u, _fused_c, _fused_u = _bcpt_fuse(
+                lu_components, hu_components)
+            val_score = rmse(lu_components["target"], fused_mean)
+            history.append({"member": -1, "epoch": epoch, "train_loss": train_loss,
+                            "val_rmse": val_score, "val_selection_score": val_score,
+                            "learning_rate": lr})
+            print(f"bcpt, epoch:{epoch}, train_loss:{train_loss:.5f}, "
+                  f"val_fused_rmse:{val_score:.4f}, test_loss:deferred", flush=True)
+            if val_score < best:
+                best, best_epoch, stale = val_score, epoch, 0
+                torch.save({"lu_state": lu.state_dict(), "hu_state": hu.state_dict(),
+                            "best_epoch": epoch, "selection": best,
+                            "selection_criterion": "val_fused_rmse"}, checkpoint)
+            else:
+                stale += 1
+                if stale >= patience:
+                    break
+            scheduler_lu.step()
+            scheduler_hu.step()
+        state = torch.load(checkpoint, map_location=device_obj, weights_only=False)
+        lu.load_state_dict(state["lu_state"])
+        hu.load_state_dict(state["hu_state"])
+        models.extend((lu, hu))
+        best_epochs.append(int(state["best_epoch"]))
+        selection_criterion = "val_fused_rmse"
+
+    for member in range(member_count if kind not in {"ensemble", BCPT_KIND} else 0):
         member_seed = seed + member * 1009
         set_seed(member_seed)
         model = _model(kind, bundle.sensor_dim, bundle.condition_dim, dropout,
                        bundle.train[0][0].shape[0], edl_hidden_dim,
                        edl_sensor_indices)
-        if kind != "edl_nig":
+        if kind in {"hnn", "ensemble"}:
             model.apply(_bayesrul_weights_init)
         model.to(device_obj)
         optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
@@ -301,7 +558,7 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                 val_score = float(gaussian_nll(torch.as_tensor(val_params),
                                                torch.as_tensor(val_y)))
                 selection_criterion = "val_mixture_nll"
-            elif kind == "edl_nig":
+            elif kind in {"edl_nig"} | POINT_MSE_KINDS:
                 val_score = val_rmse
                 selection_criterion = "val_rmse"
             else:
@@ -334,13 +591,63 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                 "seed": int(seed), "best_epochs": best_epochs,
                 "selection_criterion": selection_criterion,
                 "train_seconds": train_seconds, "test_evaluated": False}
-    predictions = [_predict(model, test_loader, device_obj) for model in models]
-    target, units, sample_ids = predictions[0][0], predictions[0][2], predictions[0][3]
-    if any(not np.array_equal(target, pred[0]) or not np.array_equal(units, pred[2])
-           or not np.array_equal(sample_ids, pred[3]) for pred in predictions[1:]):
-        raise RuntimeError("test loader order changed between ensemble members")
-    params = np.stack([pred[1] for pred in predictions], axis=1)
-    mean, scale, lower, upper, nll, crps = _distribution_outputs(kind, params, target, seed)
+    inference_start = time.perf_counter()
+    extra_columns: list = []
+    extra_rows: list = []
+    if kind == BCPT_KIND:
+        lu_components = _bcpt_draw_components(models[0], test_loader, device_obj,
+                                               mc_samples)
+        hu_components = _bcpt_draw_components(models[1], test_loader, device_obj,
+                                               mc_samples)
+        for key in ("target", "units", "sample_ids"):
+            if not np.array_equal(lu_components[key], hu_components[key]):
+                raise RuntimeError("test loader order changed between LU/HU models")
+        target = lu_components["target"]
+        units = lu_components["units"]
+        sample_ids = lu_components["sample_ids"]
+        mean, total_u, fused_mean, fused_u = _bcpt_fuse(lu_components, hu_components)
+        scale = np.sqrt(total_u)
+        lower = mean - Z_80 * scale
+        upper = mean + Z_80 * scale
+        z = (target - mean) / scale
+        nll = 0.5 * z ** 2 + np.log(scale) + 0.5 * math.log(2.0 * math.pi)
+        crps = _normal_crps(target, mean, scale)
+        extra_columns = ["total_uncertainty"]
+        extra_rows = [total_u]
+        np.savez(output_dir / "bcpt_test_arrays.npz",
+                 fused_channel_mean=fused_mean, fused_channel_uncertainty=fused_u,
+                 lu_mean=lu_components["mean"], hu_mean=hu_components["mean"],
+                 lu_epistemic=lu_components["epistemic"],
+                 hu_epistemic=hu_components["epistemic"],
+                 lu_attention_mi=lu_components["attention_mi"],
+                 hu_attention_mi=hu_components["attention_mi"],
+                 lu_aleatoric=lu_components["aleatoric"],
+                 hu_aleatoric=hu_components["aleatoric"])
+    elif kind in MC_DRAWS_KINDS:
+        mc = predict_mc_dropout(models[0], test_loader, device_obj, samples=mc_samples)
+        target, units, sample_ids = mc["target"], mc["units"], mc["sample_ids"]
+        draws = mc["draws"]
+        bounds = (kde_quantiles(draws) if kind == "msauq"
+                  else np.quantile(draws, [0.1, 0.9], axis=0))
+        mean, scale, lower, upper, nll, crps = gaussian_fit_outputs(target, draws,
+                                                                    bounds)
+        np.save(output_dir / "mc_draws.npy", draws.astype(np.float32))
+    else:
+        predictions = [_predict(model, test_loader, device_obj) for model in models]
+        target, units, sample_ids = predictions[0][0], predictions[0][2], predictions[0][3]
+        if any(not np.array_equal(target, pred[0]) or not np.array_equal(units, pred[2])
+               or not np.array_equal(sample_ids, pred[3]) for pred in predictions[1:]):
+            raise RuntimeError("test loader order changed between ensemble members")
+        params = np.stack([pred[1] for pred in predictions], axis=1)
+        mean, scale, lower, upper, nll, crps = _distribution_outputs(kind, params, target, seed)
+        if kind == "edl_nig":
+            gamma_nig, nu_nig, alpha_nig, beta_nig = params[:, 0, :].T
+            extra_columns = ["nig_gamma", "nig_nu", "nig_alpha", "nig_beta",
+                             "epistemic_variance", "aleatoric_variance"]
+            extra_rows = [gamma_nig, nu_nig, alpha_nig, beta_nig,
+                          beta_nig / (nu_nig * (alpha_nig - 1.0)),
+                          beta_nig / (alpha_nig - 1.0)]
+    inference_seconds = time.perf_counter() - inference_start
     if not all(np.isfinite(a).all() for a in (mean, scale, lower, upper, nll, crps)):
         raise RuntimeError("probabilistic model emitted non-finite test predictions")
     if np.any(lower >= upper):
@@ -349,7 +656,10 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
     if bundle.metadata.get("dataset") in {"DS03", "DS08a", "DS08A"}:
         point.pop("NASA_Score", None)
     selection_criterion = {"hnn": "val_nll", "edl_nig": "val_rmse",
-                           "ensemble": "val_mixture_nll"}[kind]
+                           "ensemble": "val_mixture_nll",
+                           "lstm_prob": "val_nll",
+                           "tcn_transformer_mc": "val_rmse", "msauq": "val_rmse",
+                           "bcpt": "val_fused_rmse"}[kind]
     interval = ((target >= lower) & (target <= upper)).mean()
     width = upper - lower
     alpha = 0.2
@@ -364,7 +674,9 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                "best_epochs": best_epochs, "ensemble_members": member_count,
                "selection_criterion": selection_criterion,
                "train_seconds": train_seconds,
-               "inference_seconds": float(sum(pred[4] for pred in predictions)),
+               "inference_seconds": float(inference_seconds),
+               "mc_samples": (mc_samples if kind in MC_DRAWS_KINDS or kind == BCPT_KIND
+                              else 0),
                "parameter_count": int(sum(sum(p.numel() for p in m.parameters()) for m in models))}
     (output_dir / "metrics.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
     with (output_dir / "predictions.csv").open("w", newline="", encoding="utf-8") as handle:
@@ -373,14 +685,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                    "lower", "upper", "covered", "interval_width", "nll", "crps"]
         rows = [units, sample_ids, target, mean, scale, lower, upper,
                 (target >= lower) & (target <= upper), width, nll, crps]
-        if kind == "edl_nig":
-            gamma_nig, nu_nig, alpha_nig, beta_nig = params[:, 0, :].T
-            epistemic_var = beta_nig / (nu_nig * (alpha_nig - 1.0))
-            aleatoric_var = beta_nig / (alpha_nig - 1.0)
-            columns.extend(["nig_gamma", "nig_nu", "nig_alpha", "nig_beta",
-                            "epistemic_variance", "aleatoric_variance"])
-            rows.extend([gamma_nig, nu_nig, alpha_nig, beta_nig,
-                         epistemic_var, aleatoric_var])
+        columns.extend(extra_columns)
+        rows.extend(extra_rows)
         writer.writerow(columns)
         writer.writerows(zip(*rows))
     _save_history(output_dir / "history.csv", history)
@@ -390,6 +696,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                    "selection_criterion": selection_criterion,
                    "ensemble_members": member_count, "evidence_weight": evidence_weight,
                    "edl_hidden_dim": edl_hidden_dim,
+                   "mc_samples": mc_samples, "bcpt_gamma": bcpt_gamma,
+                   "bcpt_lam": bcpt_lam,
                    "edl_sensor_indices": (list(edl_sensor_indices)
                                           if edl_sensor_indices is not None else None),
                    "edl_sensor_ids_original": (list(EDL_PAPER_SENSOR_IDS)

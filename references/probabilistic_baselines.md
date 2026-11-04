@@ -139,6 +139,44 @@ from the KDE/draw quantiles instead of 95% CIs; the paper's grouped Z-score +
 α = 0.2 exponential smoothing preprocessing is kept as part of the method
 (other baselines keep their own paper preprocessing, as B2 does with min-max).
 
+### Locked implementation notes (stage 1, 2026-11-04)
+
+Implementation landed in `rul_fusion/probabilistic.py` / `probabilistic_runner.py`
+(tests: `tests/test_external_baselines.py`, 9 cases; full suite 68 passed).
+Reconstruction choices finalized during implementation, all registered as
+non-paper values:
+
+- B3 (`lstm_prob`): input min–max scaling (paper states no input
+  normalization; chosen for LSTM stability), LSTM last-timestep output →
+  Dense(331)+ReLU+Dropout(0.03) → linear mean / softplus scale; interval from
+  analytic Normal q10/q90; selection by val NLL.
+- B4 (`tcn_transformer_mc`): causal TCN (chomped dilated convolutions) with
+  residual blocks; sensor channels only (operating settings unused, matching
+  the paper's 14-sensor input); channel fusion = last TCN step + mean-pooled
+  Transformer output → linear head; FFN width 4·d_model; MC = 30 draws;
+  q10/q90 = empirical draw quantiles; NLL/CRPS from the Gaussian fit to the
+  draws (paper's Gaussian assumption); selection by val RMSE; head count
+  falls back to 1 when the sensor count is odd (paper pairs d_model 14 with
+  2 heads).
+- B5 (`bcpt`): 1 encoder layer, d_model 30 (from FFN 30-64-30), mean-pooled
+  encoder output, head 30→20→10→2; PAM MLP input features (s, |s|); lr
+  schedule = MultiStep ×0.2 at half the epochs (paper says only
+  "0.005→0.001"); LU/HU trained interleaved as two independent runs, each
+  recomputing channel weights per epoch from its own validation uncertainty;
+  uncertainty decomposition separates σ²PU (dropout-only draws) from H(α)
+  (τ-only draws, moment-matched mixture entropy — registered approximation);
+  Eqs. 25/26 (channel softmax on U*, normalized total U) implemented
+  literally even though Eq. 25 weights higher-uncertainty channels more
+  heavily; selection by validation fused RMSE; test interval = fused mean ±
+  z₀.₉·√U with Gaussian NLL/CRPS at the same variance.
+- B6 (`msauq`): branch width 24 per kernel (concat 72), head width 384
+  (sized to ≈80k parameters; measured ≈77k at window 50), dropout 0.1, batch
+  128, lr 1e-3 (all unstated in the paper); grouped Z-score via the new
+  `zscore_grouped` scaler mode + in-model causal exponential smoothing
+  α = 0.2; MC = 100 draws; q10/q90 from Gaussian-kernel KDE (Scott bandwidth,
+  512-point grid); NLL/CRPS from the Gaussian fit to the draws; best epoch
+  by validation RMSE (paper tracks training RMSE).
+
 ### Reserve decision (recorded 2026-11-04, not triggered)
 
 B7 (“Degradation-aware contrastive Mamba with dual uncertainty,” *Meas. Sci.
