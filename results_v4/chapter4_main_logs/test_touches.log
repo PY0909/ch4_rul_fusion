@@ -2,3 +2,4 @@
 [2026-11-02T19:23:00] ensemble_cqr: official test evaluated for 4 threshold variants x FD002/FD004 (seeds 0)
 [2026-11-02T19:52:05] ensemble_cqr: official test evaluated for 4 threshold variants x FD002/FD004 (seeds 0,1,2)
 [2026-11-04T13:43:02] conditional_coverage_diag: official test read for per-group coverage DIAGNOSTIC on frozen window-weighted intervals (no parameter or threshold changes)
+[2026-11-04T15:23:03] eval_cap0_arm_test: P1 raw-cap arm one-shot test evaluation (q50 + block-max + window-weighted variants, frozen checkpoints, no selection)

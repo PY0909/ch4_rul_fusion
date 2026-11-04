@@ -1,0 +1,46 @@
+{
+  "official_test_evaluated": true,
+  "generated": "2026-11-04T15:23:03",
+  "rows": [
+    {
+      "dataset": "FD002",
+      "endpoint": "official test",
+      "rul_cap": 0,
+      "checkpoint": "/Users/ppy/\u7814/ch4_rul_fusion/results_v4/fd_cap0_arm/quantile_cqr/global/FD002/seed_0/best.pt",
+      "official_test_evaluated": true,
+      "q50_MAE": 17.23308726075073,
+      "q50_RMSE": 25.494350897284036,
+      "q50_NASA_Score": 19496.926316100464,
+      "global_block_max_threshold": 21.07563018798828,
+      "global_block_max_PICP": 0.9652509652509652,
+      "global_block_max_MPIW": 97.24588436797319,
+      "global_block_max_IntervalScore": 99.60422094551753,
+      "global_block_max_coverage_gap": 0.16525096525096516,
+      "window_weighted_threshold": 0.20723724365234375,
+      "window_weighted_PICP": 0.7683397683397684,
+      "window_weighted_MPIW": 55.509098479301315,
+      "window_weighted_IntervalScore": 78.57403332765959,
+      "window_weighted_coverage_gap": -0.031660231660231686
+    },
+    {
+      "dataset": "FD004",
+      "endpoint": "official test",
+      "rul_cap": 0,
+      "checkpoint": "/Users/ppy/\u7814/ch4_rul_fusion/results_v4/fd_cap0_arm/quantile_cqr/global/FD004/seed_0/best.pt",
+      "official_test_evaluated": true,
+      "q50_MAE": 24.56986056604693,
+      "q50_RMSE": 39.56417872214575,
+      "q50_NASA_Score": 65813759.57913931,
+      "global_block_max_threshold": 37.21263122558594,
+      "global_block_max_PICP": 0.9475806451612904,
+      "global_block_max_MPIW": 134.9334912492383,
+      "global_block_max_IntervalScore": 145.92146353952347,
+      "global_block_max_coverage_gap": 0.14758064516129032,
+      "window_weighted_threshold": 8.903457641601562,
+      "window_weighted_PICP": 0.842741935483871,
+      "window_weighted_MPIW": 78.31514408126954,
+      "window_weighted_IntervalScore": 116.81521696044553,
+      "window_weighted_coverage_gap": 0.04274193548387095
+    }
+  ]
+}

@@ -1,0 +1,1983 @@
+{
+  "model": "fusion",
+  "seed": 0,
+  "device": "cuda",
+  "epochs": 41,
+  "batch_size": 100,
+  "lr": 0.001,
+  "weight_decay": 0.0,
+  "patience": 41,
+  "train_drop_last": false,
+  "data": {
+    "dataset": "FD004",
+    "train_units": [
+      2,
+      3,
+      4,
+      5,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      15,
+      16,
+      17,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      38,
+      39,
+      41,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      67,
+      68,
+      69,
+      70,
+      72,
+      74,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      105,
+      106,
+      107,
+      108,
+      109,
+      111,
+      113,
+      114,
+      115,
+      116,
+      117,
+      119,
+      121,
+      122,
+      123,
+      124,
+      126,
+      127,
+      128,
+      129,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      152,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      161,
+      162,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      172,
+      173,
+      174,
+      176,
+      177,
+      178,
+      179,
+      180,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      200,
+      202,
+      203,
+      204,
+      206,
+      208,
+      210,
+      211,
+      212,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      225,
+      227,
+      228,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      237,
+      238,
+      239,
+      241,
+      242,
+      244,
+      245,
+      246,
+      248,
+      249
+    ],
+    "val_units": [
+      1,
+      7,
+      18,
+      40,
+      42,
+      71,
+      73,
+      85,
+      93,
+      104,
+      110,
+      112,
+      120,
+      142,
+      160,
+      171,
+      175,
+      181,
+      201,
+      205,
+      207,
+      213,
+      223,
+      243,
+      247
+    ],
+    "calibration_units": [
+      6,
+      14,
+      26,
+      37,
+      55,
+      66,
+      75,
+      76,
+      84,
+      92,
+      118,
+      125,
+      130,
+      143,
+      151,
+      153,
+      163,
+      191,
+      199,
+      209,
+      224,
+      226,
+      229,
+      236,
+      240
+    ],
+    "test_units": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236,
+      237,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248
+    ],
+    "sensor_indices": [
+      2,
+      3,
+      4,
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      15,
+      17,
+      20,
+      21
+    ],
+    "history": 50,
+    "rul_cap": 0,
+    "split_seed": 0,
+    "scaler_mode": "grouped",
+    "unseen_test_groups": [],
+    "condition_features": "settings",
+    "validation_protocol": "fixed_cuts",
+    "calibration_ratio": 0.5,
+    "val_endpoint": [
+      {
+        "unit": 1,
+        "frac": 0.25,
+        "cut": 80,
+        "length": 321,
+        "label_raw": 240.0
+      },
+      {
+        "unit": 1,
+        "frac": 0.5,
+        "cut": 160,
+        "length": 321,
+        "label_raw": 160.0
+      },
+      {
+        "unit": 1,
+        "frac": 0.75,
+        "cut": 240,
+        "length": 321,
+        "label_raw": 80.0
+      },
+      {
+        "unit": 1,
+        "frac": 0.9,
+        "cut": 288,
+        "length": 321,
+        "label_raw": 32.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.25,
+        "cut": 55,
+        "length": 221,
+        "label_raw": 165.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.5,
+        "cut": 110,
+        "length": 221,
+        "label_raw": 110.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.75,
+        "cut": 165,
+        "length": 221,
+        "label_raw": 55.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.9,
+        "cut": 198,
+        "length": 221,
+        "label_raw": 22.0
+      },
+      {
+        "unit": 18,
+        "frac": 0.25,
+        "cut": 86,
+        "length": 343,
+        "label_raw": 256.0
+      },
+      {
+        "unit": 18,
+        "frac": 0.5,
+        "cut": 171,
+        "length": 343,
+        "label_raw": 171.0
+      },
+      {
+        "unit": 18,
+        "frac": 0.75,
+        "cut": 256,
+        "length": 343,
+        "label_raw": 86.0
+      },
+      {
+        "unit": 18,
+        "frac": 0.9,
+        "cut": 308,
+        "length": 343,
+        "label_raw": 34.0
+      },
+      {
+        "unit": 40,
+        "frac": 0.25,
+        "cut": 51,
+        "length": 206,
+        "label_raw": 154.0
+      },
+      {
+        "unit": 40,
+        "frac": 0.5,
+        "cut": 102,
+        "length": 206,
+        "label_raw": 103.0
+      },
+      {
+        "unit": 40,
+        "frac": 0.75,
+        "cut": 154,
+        "length": 206,
+        "label_raw": 51.0
+      },
+      {
+        "unit": 40,
+        "frac": 0.9,
+        "cut": 184,
+        "length": 206,
+        "label_raw": 21.0
+      },
+      {
+        "unit": 42,
+        "frac": 0.25,
+        "cut": 70,
+        "length": 280,
+        "label_raw": 209.0
+      },
+      {
+        "unit": 42,
+        "frac": 0.5,
+        "cut": 140,
+        "length": 280,
+        "label_raw": 139.0
+      },
+      {
+        "unit": 42,
+        "frac": 0.75,
+        "cut": 209,
+        "length": 280,
+        "label_raw": 70.0
+      },
+      {
+        "unit": 42,
+        "frac": 0.9,
+        "cut": 251,
+        "length": 280,
+        "label_raw": 28.0
+      },
+      {
+        "unit": 71,
+        "frac": 0.25,
+        "cut": 78,
+        "length": 312,
+        "label_raw": 233.0
+      },
+      {
+        "unit": 71,
+        "frac": 0.5,
+        "cut": 156,
+        "length": 312,
+        "label_raw": 155.0
+      },
+      {
+        "unit": 71,
+        "frac": 0.75,
+        "cut": 233,
+        "length": 312,
+        "label_raw": 78.0
+      },
+      {
+        "unit": 71,
+        "frac": 0.9,
+        "cut": 280,
+        "length": 312,
+        "label_raw": 31.0
+      },
+      {
+        "unit": 73,
+        "frac": 0.25,
+        "cut": 45,
+        "length": 181,
+        "label_raw": 135.0
+      },
+      {
+        "unit": 73,
+        "frac": 0.5,
+        "cut": 90,
+        "length": 181,
+        "label_raw": 90.0
+      },
+      {
+        "unit": 73,
+        "frac": 0.75,
+        "cut": 135,
+        "length": 181,
+        "label_raw": 45.0
+      },
+      {
+        "unit": 73,
+        "frac": 0.9,
+        "cut": 162,
+        "length": 181,
+        "label_raw": 18.0
+      },
+      {
+        "unit": 85,
+        "frac": 0.25,
+        "cut": 69,
+        "length": 277,
+        "label_raw": 207.0
+      },
+      {
+        "unit": 85,
+        "frac": 0.5,
+        "cut": 138,
+        "length": 277,
+        "label_raw": 138.0
+      },
+      {
+        "unit": 85,
+        "frac": 0.75,
+        "cut": 207,
+        "length": 277,
+        "label_raw": 69.0
+      },
+      {
+        "unit": 85,
+        "frac": 0.9,
+        "cut": 248,
+        "length": 277,
+        "label_raw": 28.0
+      },
+      {
+        "unit": 93,
+        "frac": 0.25,
+        "cut": 49,
+        "length": 196,
+        "label_raw": 146.0
+      },
+      {
+        "unit": 93,
+        "frac": 0.5,
+        "cut": 98,
+        "length": 196,
+        "label_raw": 97.0
+      },
+      {
+        "unit": 93,
+        "frac": 0.75,
+        "cut": 146,
+        "length": 196,
+        "label_raw": 49.0
+      },
+      {
+        "unit": 93,
+        "frac": 0.9,
+        "cut": 176,
+        "length": 196,
+        "label_raw": 19.0
+      },
+      {
+        "unit": 104,
+        "frac": 0.25,
+        "cut": 50,
+        "length": 203,
+        "label_raw": 152.0
+      },
+      {
+        "unit": 104,
+        "frac": 0.5,
+        "cut": 101,
+        "length": 203,
+        "label_raw": 101.0
+      },
+      {
+        "unit": 104,
+        "frac": 0.75,
+        "cut": 152,
+        "length": 203,
+        "label_raw": 50.0
+      },
+      {
+        "unit": 104,
+        "frac": 0.9,
+        "cut": 182,
+        "length": 203,
+        "label_raw": 20.0
+      },
+      {
+        "unit": 110,
+        "frac": 0.25,
+        "cut": 46,
+        "length": 186,
+        "label_raw": 139.0
+      },
+      {
+        "unit": 110,
+        "frac": 0.5,
+        "cut": 92,
+        "length": 186,
+        "label_raw": 93.0
+      },
+      {
+        "unit": 110,
+        "frac": 0.75,
+        "cut": 139,
+        "length": 186,
+        "label_raw": 46.0
+      },
+      {
+        "unit": 110,
+        "frac": 0.9,
+        "cut": 166,
+        "length": 186,
+        "label_raw": 19.0
+      },
+      {
+        "unit": 112,
+        "frac": 0.25,
+        "cut": 85,
+        "length": 340,
+        "label_raw": 254.0
+      },
+      {
+        "unit": 112,
+        "frac": 0.5,
+        "cut": 170,
+        "length": 340,
+        "label_raw": 169.0
+      },
+      {
+        "unit": 112,
+        "frac": 0.75,
+        "cut": 254,
+        "length": 340,
+        "label_raw": 85.0
+      },
+      {
+        "unit": 112,
+        "frac": 0.9,
+        "cut": 305,
+        "length": 340,
+        "label_raw": 34.0
+      },
+      {
+        "unit": 120,
+        "frac": 0.25,
+        "cut": 44,
+        "length": 177,
+        "label_raw": 132.0
+      },
+      {
+        "unit": 120,
+        "frac": 0.5,
+        "cut": 88,
+        "length": 177,
+        "label_raw": 88.0
+      },
+      {
+        "unit": 120,
+        "frac": 0.75,
+        "cut": 132,
+        "length": 177,
+        "label_raw": 44.0
+      },
+      {
+        "unit": 120,
+        "frac": 0.9,
+        "cut": 158,
+        "length": 177,
+        "label_raw": 18.0
+      },
+      {
+        "unit": 142,
+        "frac": 0.25,
+        "cut": 52,
+        "length": 209,
+        "label_raw": 156.0
+      },
+      {
+        "unit": 142,
+        "frac": 0.5,
+        "cut": 104,
+        "length": 209,
+        "label_raw": 104.0
+      },
+      {
+        "unit": 142,
+        "frac": 0.75,
+        "cut": 156,
+        "length": 209,
+        "label_raw": 52.0
+      },
+      {
+        "unit": 142,
+        "frac": 0.9,
+        "cut": 187,
+        "length": 209,
+        "label_raw": 21.0
+      },
+      {
+        "unit": 160,
+        "frac": 0.25,
+        "cut": 46,
+        "length": 187,
+        "label_raw": 140.0
+      },
+      {
+        "unit": 160,
+        "frac": 0.5,
+        "cut": 93,
+        "length": 187,
+        "label_raw": 93.0
+      },
+      {
+        "unit": 160,
+        "frac": 0.75,
+        "cut": 140,
+        "length": 187,
+        "label_raw": 46.0
+      },
+      {
+        "unit": 160,
+        "frac": 0.9,
+        "cut": 167,
+        "length": 187,
+        "label_raw": 19.0
+      },
+      {
+        "unit": 171,
+        "frac": 0.25,
+        "cut": 100,
+        "length": 399,
+        "label_raw": 298.0
+      },
+      {
+        "unit": 171,
+        "frac": 0.5,
+        "cut": 199,
+        "length": 399,
+        "label_raw": 199.0
+      },
+      {
+        "unit": 171,
+        "frac": 0.75,
+        "cut": 298,
+        "length": 399,
+        "label_raw": 100.0
+      },
+      {
+        "unit": 171,
+        "frac": 0.9,
+        "cut": 358,
+        "length": 399,
+        "label_raw": 40.0
+      },
+      {
+        "unit": 175,
+        "frac": 0.25,
+        "cut": 39,
+        "length": 156,
+        "label_raw": 116.0
+      },
+      {
+        "unit": 175,
+        "frac": 0.5,
+        "cut": 78,
+        "length": 156,
+        "label_raw": 77.0
+      },
+      {
+        "unit": 175,
+        "frac": 0.75,
+        "cut": 116,
+        "length": 156,
+        "label_raw": 39.0
+      },
+      {
+        "unit": 175,
+        "frac": 0.9,
+        "cut": 140,
+        "length": 156,
+        "label_raw": 15.0
+      },
+      {
+        "unit": 181,
+        "frac": 0.25,
+        "cut": 33,
+        "length": 134,
+        "label_raw": 100.0
+      },
+      {
+        "unit": 181,
+        "frac": 0.5,
+        "cut": 66,
+        "length": 134,
+        "label_raw": 67.0
+      },
+      {
+        "unit": 181,
+        "frac": 0.75,
+        "cut": 100,
+        "length": 134,
+        "label_raw": 33.0
+      },
+      {
+        "unit": 181,
+        "frac": 0.9,
+        "cut": 120,
+        "length": 134,
+        "label_raw": 13.0
+      },
+      {
+        "unit": 201,
+        "frac": 0.25,
+        "cut": 94,
+        "length": 378,
+        "label_raw": 283.0
+      },
+      {
+        "unit": 201,
+        "frac": 0.5,
+        "cut": 188,
+        "length": 378,
+        "label_raw": 189.0
+      },
+      {
+        "unit": 201,
+        "frac": 0.75,
+        "cut": 283,
+        "length": 378,
+        "label_raw": 94.0
+      },
+      {
+        "unit": 201,
+        "frac": 0.9,
+        "cut": 339,
+        "length": 378,
+        "label_raw": 38.0
+      },
+      {
+        "unit": 205,
+        "frac": 0.25,
+        "cut": 60,
+        "length": 242,
+        "label_raw": 181.0
+      },
+      {
+        "unit": 205,
+        "frac": 0.5,
+        "cut": 120,
+        "length": 242,
+        "label_raw": 121.0
+      },
+      {
+        "unit": 205,
+        "frac": 0.75,
+        "cut": 181,
+        "length": 242,
+        "label_raw": 60.0
+      },
+      {
+        "unit": 205,
+        "frac": 0.9,
+        "cut": 217,
+        "length": 242,
+        "label_raw": 24.0
+      },
+      {
+        "unit": 207,
+        "frac": 0.25,
+        "cut": 94,
+        "length": 379,
+        "label_raw": 284.0
+      },
+      {
+        "unit": 207,
+        "frac": 0.5,
+        "cut": 189,
+        "length": 379,
+        "label_raw": 189.0
+      },
+      {
+        "unit": 207,
+        "frac": 0.75,
+        "cut": 284,
+        "length": 379,
+        "label_raw": 94.0
+      },
+      {
+        "unit": 207,
+        "frac": 0.9,
+        "cut": 340,
+        "length": 379,
+        "label_raw": 38.0
+      },
+      {
+        "unit": 213,
+        "frac": 0.25,
+        "cut": 49,
+        "length": 197,
+        "label_raw": 147.0
+      },
+      {
+        "unit": 213,
+        "frac": 0.5,
+        "cut": 98,
+        "length": 197,
+        "label_raw": 98.0
+      },
+      {
+        "unit": 213,
+        "frac": 0.75,
+        "cut": 147,
+        "length": 197,
+        "label_raw": 49.0
+      },
+      {
+        "unit": 213,
+        "frac": 0.9,
+        "cut": 176,
+        "length": 197,
+        "label_raw": 20.0
+      },
+      {
+        "unit": 223,
+        "frac": 0.25,
+        "cut": 62,
+        "length": 247,
+        "label_raw": 184.0
+      },
+      {
+        "unit": 223,
+        "frac": 0.5,
+        "cut": 123,
+        "length": 247,
+        "label_raw": 123.0
+      },
+      {
+        "unit": 223,
+        "frac": 0.75,
+        "cut": 184,
+        "length": 247,
+        "label_raw": 62.0
+      },
+      {
+        "unit": 223,
+        "frac": 0.9,
+        "cut": 221,
+        "length": 247,
+        "label_raw": 25.0
+      },
+      {
+        "unit": 243,
+        "frac": 0.25,
+        "cut": 82,
+        "length": 327,
+        "label_raw": 244.0
+      },
+      {
+        "unit": 243,
+        "frac": 0.5,
+        "cut": 163,
+        "length": 327,
+        "label_raw": 163.0
+      },
+      {
+        "unit": 243,
+        "frac": 0.75,
+        "cut": 244,
+        "length": 327,
+        "label_raw": 82.0
+      },
+      {
+        "unit": 243,
+        "frac": 0.9,
+        "cut": 293,
+        "length": 327,
+        "label_raw": 33.0
+      },
+      {
+        "unit": 247,
+        "frac": 0.25,
+        "cut": 52,
+        "length": 211,
+        "label_raw": 158.0
+      },
+      {
+        "unit": 247,
+        "frac": 0.5,
+        "cut": 105,
+        "length": 211,
+        "label_raw": 105.0
+      },
+      {
+        "unit": 247,
+        "frac": 0.75,
+        "cut": 158,
+        "length": 211,
+        "label_raw": 52.0
+      },
+      {
+        "unit": 247,
+        "frac": 0.9,
+        "cut": 189,
+        "length": 211,
+        "label_raw": 21.0
+      }
+    ],
+    "calibration_endpoint": [
+      {
+        "unit": 6,
+        "frac": 0.25,
+        "cut": 82,
+        "length": 331,
+        "label_raw": 248.0
+      },
+      {
+        "unit": 6,
+        "frac": 0.5,
+        "cut": 165,
+        "length": 331,
+        "label_raw": 165.0
+      },
+      {
+        "unit": 6,
+        "frac": 0.75,
+        "cut": 248,
+        "length": 331,
+        "label_raw": 82.0
+      },
+      {
+        "unit": 6,
+        "frac": 0.9,
+        "cut": 297,
+        "length": 331,
+        "label_raw": 33.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.25,
+        "cut": 63,
+        "length": 253,
+        "label_raw": 189.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.5,
+        "cut": 126,
+        "length": 253,
+        "label_raw": 126.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.75,
+        "cut": 189,
+        "length": 253,
+        "label_raw": 63.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.9,
+        "cut": 227,
+        "length": 253,
+        "label_raw": 25.0
+      },
+      {
+        "unit": 26,
+        "frac": 0.25,
+        "cut": 74,
+        "length": 297,
+        "label_raw": 222.0
+      },
+      {
+        "unit": 26,
+        "frac": 0.5,
+        "cut": 148,
+        "length": 297,
+        "label_raw": 148.0
+      },
+      {
+        "unit": 26,
+        "frac": 0.75,
+        "cut": 222,
+        "length": 297,
+        "label_raw": 74.0
+      },
+      {
+        "unit": 26,
+        "frac": 0.9,
+        "cut": 266,
+        "length": 297,
+        "label_raw": 30.0
+      },
+      {
+        "unit": 37,
+        "frac": 0.25,
+        "cut": 97,
+        "length": 388,
+        "label_raw": 290.0
+      },
+      {
+        "unit": 37,
+        "frac": 0.5,
+        "cut": 194,
+        "length": 388,
+        "label_raw": 193.0
+      },
+      {
+        "unit": 37,
+        "frac": 0.75,
+        "cut": 290,
+        "length": 388,
+        "label_raw": 97.0
+      },
+      {
+        "unit": 37,
+        "frac": 0.9,
+        "cut": 348,
+        "length": 388,
+        "label_raw": 39.0
+      },
+      {
+        "unit": 55,
+        "frac": 0.25,
+        "cut": 86,
+        "length": 344,
+        "label_raw": 257.0
+      },
+      {
+        "unit": 55,
+        "frac": 0.5,
+        "cut": 172,
+        "length": 344,
+        "label_raw": 171.0
+      },
+      {
+        "unit": 55,
+        "frac": 0.75,
+        "cut": 257,
+        "length": 344,
+        "label_raw": 86.0
+      },
+      {
+        "unit": 55,
+        "frac": 0.9,
+        "cut": 309,
+        "length": 344,
+        "label_raw": 34.0
+      },
+      {
+        "unit": 66,
+        "frac": 0.25,
+        "cut": 44,
+        "length": 175,
+        "label_raw": 130.0
+      },
+      {
+        "unit": 66,
+        "frac": 0.5,
+        "cut": 87,
+        "length": 175,
+        "label_raw": 87.0
+      },
+      {
+        "unit": 66,
+        "frac": 0.75,
+        "cut": 130,
+        "length": 175,
+        "label_raw": 44.0
+      },
+      {
+        "unit": 66,
+        "frac": 0.9,
+        "cut": 157,
+        "length": 175,
+        "label_raw": 17.0
+      },
+      {
+        "unit": 75,
+        "frac": 0.25,
+        "cut": 57,
+        "length": 230,
+        "label_raw": 172.0
+      },
+      {
+        "unit": 75,
+        "frac": 0.5,
+        "cut": 114,
+        "length": 230,
+        "label_raw": 115.0
+      },
+      {
+        "unit": 75,
+        "frac": 0.75,
+        "cut": 172,
+        "length": 230,
+        "label_raw": 57.0
+      },
+      {
+        "unit": 75,
+        "frac": 0.9,
+        "cut": 206,
+        "length": 230,
+        "label_raw": 23.0
+      },
+      {
+        "unit": 76,
+        "frac": 0.25,
+        "cut": 38,
+        "length": 152,
+        "label_raw": 113.0
+      },
+      {
+        "unit": 76,
+        "frac": 0.5,
+        "cut": 76,
+        "length": 152,
+        "label_raw": 75.0
+      },
+      {
+        "unit": 76,
+        "frac": 0.75,
+        "cut": 113,
+        "length": 152,
+        "label_raw": 38.0
+      },
+      {
+        "unit": 76,
+        "frac": 0.9,
+        "cut": 136,
+        "length": 152,
+        "label_raw": 15.0
+      },
+      {
+        "unit": 84,
+        "frac": 0.25,
+        "cut": 40,
+        "length": 159,
+        "label_raw": 118.0
+      },
+      {
+        "unit": 84,
+        "frac": 0.5,
+        "cut": 79,
+        "length": 159,
+        "label_raw": 79.0
+      },
+      {
+        "unit": 84,
+        "frac": 0.75,
+        "cut": 118,
+        "length": 159,
+        "label_raw": 40.0
+      },
+      {
+        "unit": 84,
+        "frac": 0.9,
+        "cut": 142,
+        "length": 159,
+        "label_raw": 16.0
+      },
+      {
+        "unit": 92,
+        "frac": 0.25,
+        "cut": 48,
+        "length": 191,
+        "label_raw": 142.0
+      },
+      {
+        "unit": 92,
+        "frac": 0.5,
+        "cut": 95,
+        "length": 191,
+        "label_raw": 95.0
+      },
+      {
+        "unit": 92,
+        "frac": 0.75,
+        "cut": 142,
+        "length": 191,
+        "label_raw": 48.0
+      },
+      {
+        "unit": 92,
+        "frac": 0.9,
+        "cut": 171,
+        "length": 191,
+        "label_raw": 19.0
+      },
+      {
+        "unit": 118,
+        "frac": 0.25,
+        "cut": 136,
+        "length": 543,
+        "label_raw": 406.0
+      },
+      {
+        "unit": 118,
+        "frac": 0.5,
+        "cut": 271,
+        "length": 543,
+        "label_raw": 271.0
+      },
+      {
+        "unit": 118,
+        "frac": 0.75,
+        "cut": 406,
+        "length": 543,
+        "label_raw": 136.0
+      },
+      {
+        "unit": 118,
+        "frac": 0.9,
+        "cut": 488,
+        "length": 543,
+        "label_raw": 54.0
+      },
+      {
+        "unit": 125,
+        "frac": 0.25,
+        "cut": 60,
+        "length": 239,
+        "label_raw": 178.0
+      },
+      {
+        "unit": 125,
+        "frac": 0.5,
+        "cut": 119,
+        "length": 239,
+        "label_raw": 119.0
+      },
+      {
+        "unit": 125,
+        "frac": 0.75,
+        "cut": 178,
+        "length": 239,
+        "label_raw": 60.0
+      },
+      {
+        "unit": 125,
+        "frac": 0.9,
+        "cut": 214,
+        "length": 239,
+        "label_raw": 24.0
+      },
+      {
+        "unit": 130,
+        "frac": 0.25,
+        "cut": 41,
+        "length": 166,
+        "label_raw": 124.0
+      },
+      {
+        "unit": 130,
+        "frac": 0.5,
+        "cut": 82,
+        "length": 166,
+        "label_raw": 83.0
+      },
+      {
+        "unit": 130,
+        "frac": 0.75,
+        "cut": 124,
+        "length": 166,
+        "label_raw": 41.0
+      },
+      {
+        "unit": 130,
+        "frac": 0.9,
+        "cut": 148,
+        "length": 166,
+        "label_raw": 17.0
+      },
+      {
+        "unit": 143,
+        "frac": 0.25,
+        "cut": 46,
+        "length": 184,
+        "label_raw": 137.0
+      },
+      {
+        "unit": 143,
+        "frac": 0.5,
+        "cut": 92,
+        "length": 184,
+        "label_raw": 91.0
+      },
+      {
+        "unit": 143,
+        "frac": 0.75,
+        "cut": 137,
+        "length": 184,
+        "label_raw": 46.0
+      },
+      {
+        "unit": 143,
+        "frac": 0.9,
+        "cut": 165,
+        "length": 184,
+        "label_raw": 18.0
+      },
+      {
+        "unit": 151,
+        "frac": 0.25,
+        "cut": 88,
+        "length": 351,
+        "label_raw": 262.0
+      },
+      {
+        "unit": 151,
+        "frac": 0.5,
+        "cut": 175,
+        "length": 351,
+        "label_raw": 175.0
+      },
+      {
+        "unit": 151,
+        "frac": 0.75,
+        "cut": 262,
+        "length": 351,
+        "label_raw": 88.0
+      },
+      {
+        "unit": 151,
+        "frac": 0.9,
+        "cut": 315,
+        "length": 351,
+        "label_raw": 35.0
+      },
+      {
+        "unit": 153,
+        "frac": 0.25,
+        "cut": 42,
+        "length": 168,
+        "label_raw": 125.0
+      },
+      {
+        "unit": 153,
+        "frac": 0.5,
+        "cut": 84,
+        "length": 168,
+        "label_raw": 83.0
+      },
+      {
+        "unit": 153,
+        "frac": 0.75,
+        "cut": 125,
+        "length": 168,
+        "label_raw": 42.0
+      },
+      {
+        "unit": 153,
+        "frac": 0.9,
+        "cut": 150,
+        "length": 168,
+        "label_raw": 17.0
+      },
+      {
+        "unit": 163,
+        "frac": 0.25,
+        "cut": 71,
+        "length": 285,
+        "label_raw": 213.0
+      },
+      {
+        "unit": 163,
+        "frac": 0.5,
+        "cut": 142,
+        "length": 285,
+        "label_raw": 142.0
+      },
+      {
+        "unit": 163,
+        "frac": 0.75,
+        "cut": 213,
+        "length": 285,
+        "label_raw": 71.0
+      },
+      {
+        "unit": 163,
+        "frac": 0.9,
+        "cut": 256,
+        "length": 285,
+        "label_raw": 28.0
+      },
+      {
+        "unit": 191,
+        "frac": 0.25,
+        "cut": 74,
+        "length": 297,
+        "label_raw": 222.0
+      },
+      {
+        "unit": 191,
+        "frac": 0.5,
+        "cut": 148,
+        "length": 297,
+        "label_raw": 148.0
+      },
+      {
+        "unit": 191,
+        "frac": 0.75,
+        "cut": 222,
+        "length": 297,
+        "label_raw": 74.0
+      },
+      {
+        "unit": 191,
+        "frac": 0.9,
+        "cut": 266,
+        "length": 297,
+        "label_raw": 30.0
+      },
+      {
+        "unit": 199,
+        "frac": 0.25,
+        "cut": 44,
+        "length": 176,
+        "label_raw": 131.0
+      },
+      {
+        "unit": 199,
+        "frac": 0.5,
+        "cut": 88,
+        "length": 176,
+        "label_raw": 87.0
+      },
+      {
+        "unit": 199,
+        "frac": 0.75,
+        "cut": 131,
+        "length": 176,
+        "label_raw": 44.0
+      },
+      {
+        "unit": 199,
+        "frac": 0.9,
+        "cut": 158,
+        "length": 176,
+        "label_raw": 17.0
+      },
+      {
+        "unit": 209,
+        "frac": 0.25,
+        "cut": 40,
+        "length": 161,
+        "label_raw": 120.0
+      },
+      {
+        "unit": 209,
+        "frac": 0.5,
+        "cut": 80,
+        "length": 161,
+        "label_raw": 80.0
+      },
+      {
+        "unit": 209,
+        "frac": 0.75,
+        "cut": 120,
+        "length": 161,
+        "label_raw": 40.0
+      },
+      {
+        "unit": 209,
+        "frac": 0.9,
+        "cut": 144,
+        "length": 161,
+        "label_raw": 16.0
+      },
+      {
+        "unit": 224,
+        "frac": 0.25,
+        "cut": 67,
+        "length": 268,
+        "label_raw": 200.0
+      },
+      {
+        "unit": 224,
+        "frac": 0.5,
+        "cut": 134,
+        "length": 268,
+        "label_raw": 133.0
+      },
+      {
+        "unit": 224,
+        "frac": 0.75,
+        "cut": 200,
+        "length": 268,
+        "label_raw": 67.0
+      },
+      {
+        "unit": 224,
+        "frac": 0.9,
+        "cut": 240,
+        "length": 268,
+        "label_raw": 27.0
+      },
+      {
+        "unit": 226,
+        "frac": 0.25,
+        "cut": 48,
+        "length": 194,
+        "label_raw": 145.0
+      },
+      {
+        "unit": 226,
+        "frac": 0.5,
+        "cut": 96,
+        "length": 194,
+        "label_raw": 97.0
+      },
+      {
+        "unit": 226,
+        "frac": 0.75,
+        "cut": 145,
+        "length": 194,
+        "label_raw": 48.0
+      },
+      {
+        "unit": 226,
+        "frac": 0.9,
+        "cut": 174,
+        "length": 194,
+        "label_raw": 19.0
+      },
+      {
+        "unit": 229,
+        "frac": 0.25,
+        "cut": 70,
+        "length": 280,
+        "label_raw": 209.0
+      },
+      {
+        "unit": 229,
+        "frac": 0.5,
+        "cut": 140,
+        "length": 280,
+        "label_raw": 139.0
+      },
+      {
+        "unit": 229,
+        "frac": 0.75,
+        "cut": 209,
+        "length": 280,
+        "label_raw": 70.0
+      },
+      {
+        "unit": 229,
+        "frac": 0.9,
+        "cut": 251,
+        "length": 280,
+        "label_raw": 28.0
+      },
+      {
+        "unit": 236,
+        "frac": 0.25,
+        "cut": 56,
+        "length": 225,
+        "label_raw": 168.0
+      },
+      {
+        "unit": 236,
+        "frac": 0.5,
+        "cut": 112,
+        "length": 225,
+        "label_raw": 112.0
+      },
+      {
+        "unit": 236,
+        "frac": 0.75,
+        "cut": 168,
+        "length": 225,
+        "label_raw": 56.0
+      },
+      {
+        "unit": 236,
+        "frac": 0.9,
+        "cut": 202,
+        "length": 225,
+        "label_raw": 22.0
+      },
+      {
+        "unit": 240,
+        "frac": 0.25,
+        "cut": 37,
+        "length": 149,
+        "label_raw": 111.0
+      },
+      {
+        "unit": 240,
+        "frac": 0.5,
+        "cut": 74,
+        "length": 149,
+        "label_raw": 74.0
+      },
+      {
+        "unit": 240,
+        "frac": 0.75,
+        "cut": 111,
+        "length": 149,
+        "label_raw": 37.0
+      },
+      {
+        "unit": 240,
+        "frac": 0.9,
+        "cut": 133,
+        "length": 149,
+        "label_raw": 15.0
+      }
+    ],
+    "val_endpoint_protocol": "fixed cuts at life fractions {0.25, 0.5, 0.75, 0.9} per validation engine, endpoint windows, raw remaining RUL labels (never capped)"
+  },
+  "scaler": "grouped",
+  "dataset": "FD004",
+  "data_root": "/root/autodl-tmp/kst_light_v2/dataset",
+  "fc_stgnn_root": "/home/v2/FCSTGNN/FC_STGNN",
+  "history": 50,
+  "rul_cap": 0,
+  "condition_features": "settings",
+  "validation_protocol": "fixed_cuts",
+  "split_seed": 0,
+  "calibration_ratio": 0.5,
+  "optimizer": "adam",
+  "no_scheduler": true,
+  "no_grad_clip": true,
+  "d_model": 64,
+  "num_scales": 3,
+  "num_heads": 4,
+  "num_routers": 4,
+  "graph_layers": 1,
+  "dropout": 0.1,
+  "alpha_shared": 0.0,
+  "alpha_specific": 0.0,
+  "encoder": "patch_cnn",
+  "input_norm": "none",
+  "variant": "A6",
+  "downsample_mode": "legacy",
+  "graph_mode": "static",
+  "readout": "legacy",
+  "condition_mode": "full",
+  "trend_window_size": 5,
+  "include_virtual_sensors": false,
+  "disable_router": false,
+  "disable_graph": false,
+  "disable_shared_specific": false,
+  "num_workers": 0,
+  "output_dir": "results_v4/fd_cap0_arm/A6-point"
+}
