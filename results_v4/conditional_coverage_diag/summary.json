@@ -1,0 +1,186 @@
+{
+  "diagnostic_only": true,
+  "generated": "2026-11-04T13:43:02",
+  "rows": [
+    {
+      "group_axis": "stage_cluster",
+      "group": "c0|s2|q0",
+      "n": 6,
+      "PICP": 0.6666666666666666,
+      "mean_width": 36.57249959309896,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c1|s2|q0",
+      "n": 1,
+      "PICP": 0.0,
+      "mean_width": 36.444610595703125,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c3|s0|q0",
+      "n": 110,
+      "PICP": 0.990909090909091,
+      "mean_width": 35.125149274414234,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c3|s1|q0",
+      "n": 83,
+      "PICP": 0.7349397590361446,
+      "mean_width": 57.68780738187124,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c3|s2|q0",
+      "n": 59,
+      "PICP": 0.3728813559322034,
+      "mean_width": 43.96710631806972,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "0",
+      "n": 60,
+      "PICP": 1.0,
+      "mean_width": 29.195614938934643,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "1",
+      "n": 42,
+      "PICP": 1.0,
+      "mean_width": 41.24959977467855,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "2",
+      "n": 100,
+      "PICP": 0.76,
+      "mean_width": 54.01446723937988,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "3",
+      "n": 57,
+      "PICP": 0.3157894736842105,
+      "mean_width": 45.896956192819694,
+      "dataset": "FD002",
+      "threshold": 10.69287109375
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c0|s0|q0",
+      "n": 110,
+      "PICP": 0.9818181818181818,
+      "mean_width": 50.21717645471746,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c0|s1|q0",
+      "n": 78,
+      "PICP": 0.7948717948717948,
+      "mean_width": 72.59276458544609,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c0|s2|q0",
+      "n": 50,
+      "PICP": 0.42,
+      "mean_width": 48.63812103271484,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c1|s2|q0",
+      "n": 3,
+      "PICP": 0.6666666666666666,
+      "mean_width": 43.541526794433594,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c2|s2|q0",
+      "n": 4,
+      "PICP": 0.0,
+      "mean_width": 42.89475631713867,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c3|s0|q0",
+      "n": 1,
+      "PICP": 1.0,
+      "mean_width": 69.03182601928711,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "stage_cluster",
+      "group": "c3|s2|q0",
+      "n": 2,
+      "PICP": 0.5,
+      "mean_width": 44.432132720947266,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "0",
+      "n": 52,
+      "PICP": 1.0,
+      "mean_width": 42.165137162575355,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "1",
+      "n": 38,
+      "PICP": 0.9473684210526315,
+      "mean_width": 54.469585744958174,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "2",
+      "n": 91,
+      "PICP": 0.9010989010989011,
+      "mean_width": 67.2989373259492,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    },
+    {
+      "group_axis": "rul_horizon",
+      "group": "3",
+      "n": 67,
+      "PICP": 0.373134328358209,
+      "mean_width": 55.09695685087745,
+      "dataset": "FD004",
+      "threshold": 15.14084243774414
+    }
+  ]
+}

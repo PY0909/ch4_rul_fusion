@@ -1,3 +1,4 @@
 [2026-11-02T19:19:19] weighted_cqr: official test evaluated for 4 threshold variants x FD002/FD004 (features-only ratio fit, no labels)
 [2026-11-02T19:23:00] ensemble_cqr: official test evaluated for 4 threshold variants x FD002/FD004 (seeds 0)
 [2026-11-02T19:52:05] ensemble_cqr: official test evaluated for 4 threshold variants x FD002/FD004 (seeds 0,1,2)
+[2026-11-04T13:43:02] conditional_coverage_diag: official test read for per-group coverage DIAGNOSTIC on frozen window-weighted intervals (no parameter or threshold changes)
