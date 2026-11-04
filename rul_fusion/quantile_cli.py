@@ -18,6 +18,9 @@ def build_parser():
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--split_seed", type=int, default=0)
     parser.add_argument("--calibration_ratio", type=float, default=0.5)
+    parser.add_argument("--registered_split", action="store_true",
+                        help="use the registered N-CMAPSS validation/calibration split")
+    parser.add_argument("--min_calibration_units", type=int, default=1)
     parser.add_argument("--defer_test", action="store_true",
                         help="train/select/calibrate without evaluating official test engines")
     parser.add_argument("--history", type=int, default=None)
@@ -72,6 +75,8 @@ def main(argv=None):
         bundle = build_ncmapss_datasets(
             args.data_root, args.dataset, history=history, split_seed=args.split_seed,
             calibration_ratio=args.calibration_ratio, include_virtual=args.include_virtual_sensors,
+            registered_split=args.registered_split,
+            min_calibration_units=args.min_calibration_units,
             validation_protocol="fixed_cuts")
 
     backbone = MultiScalePhaseGraphRUL(

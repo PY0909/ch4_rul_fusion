@@ -1,0 +1,106 @@
+{
+  "cap": 125.0,
+  "note": "raw = official test labels; capped = labels truncated at the training cap. Both are reported so the protocol mismatch is visible for every method, not just the proposed one.",
+  "datasets": {
+    "FD002": [
+      {
+        "method": "A6-Point",
+        "n_test_engines": 259,
+        "n_above_cap": 57,
+        "frac_above_cap": 0.22007722007722008,
+        "raw_MAE": 15.68280820910995,
+        "raw_RMSE": 22.830841698744514,
+        "raw_NASA": 3321.5006888458774,
+        "capped_MAE": 9.190202889295158,
+        "capped_RMSE": 13.77673255065472,
+        "capped_NASA": 1238.5736655911962
+      },
+      {
+        "method": "A6-Quantile (q50)",
+        "n_test_engines": 259,
+        "n_above_cap": 57,
+        "frac_above_cap": 0.22007722007722008,
+        "raw_MAE": 15.531815944951473,
+        "raw_RMSE": 22.655610809211936,
+        "raw_NASA": 3086.14762664334,
+        "capped_MAE": 9.301214520075145,
+        "capped_RMSE": 14.075298704110613,
+        "capped_NASA": 1247.3877437412045
+      },
+      {
+        "method": "HNN",
+        "n_test_engines": 259,
+        "n_above_cap": 57,
+        "frac_above_cap": 0.22007722007722008,
+        "raw_MAE": 22.79082124324324,
+        "raw_RMSE": 31.30160508024619,
+        "raw_NASA": 15875.637508316233,
+        "capped_MAE": 15.353475992277993,
+        "capped_RMSE": 19.484780917495147,
+        "capped_NASA": 2638.660621846583
+      },
+      {
+        "method": "EDL-NIG",
+        "n_test_engines": 259,
+        "n_above_cap": 57,
+        "frac_above_cap": 0.22007722007722008,
+        "raw_MAE": 22.845269675675674,
+        "raw_RMSE": 30.52419235845025,
+        "raw_NASA": 14112.466652889925,
+        "capped_MAE": 15.35106118146718,
+        "capped_RMSE": 20.873560274134167,
+        "capped_NASA": 6249.8743829329405
+      }
+    ],
+    "FD004": [
+      {
+        "method": "A6-Point",
+        "n_test_engines": 248,
+        "n_above_cap": 67,
+        "frac_above_cap": 0.2701612903225806,
+        "raw_MAE": 16.976833496362932,
+        "raw_RMSE": 24.46778157683897,
+        "raw_NASA": 3939.778196803404,
+        "capped_MAE": 9.346015221649601,
+        "capped_RMSE": 13.60598618110574,
+        "capped_NASA": 1034.80031369969
+      },
+      {
+        "method": "A6-Quantile (q50)",
+        "n_test_engines": 248,
+        "n_above_cap": 67,
+        "frac_above_cap": 0.2701612903225806,
+        "raw_MAE": 16.979384018528847,
+        "raw_RMSE": 24.474747346958065,
+        "raw_NASA": 3982.2960005708765,
+        "capped_MAE": 9.298739091042549,
+        "capped_RMSE": 14.097425194919058,
+        "capped_NASA": 1352.1196119241795
+      },
+      {
+        "method": "HNN",
+        "n_test_engines": 248,
+        "n_above_cap": 67,
+        "frac_above_cap": 0.2701612903225806,
+        "raw_MAE": 22.168572844303945,
+        "raw_RMSE": 28.676449449870105,
+        "raw_NASA": 6203.611201418287,
+        "capped_MAE": 14.806806392691042,
+        "capped_RMSE": 19.4755791038415,
+        "capped_NASA": 2150.272092935175
+      },
+      {
+        "method": "EDL-NIG",
+        "n_test_engines": 248,
+        "n_above_cap": 67,
+        "frac_above_cap": 0.2701612903225806,
+        "raw_MAE": 27.22008658467742,
+        "raw_RMSE": 34.095401592054586,
+        "raw_NASA": 26779.31734298661,
+        "capped_MAE": 18.526538197580646,
+        "capped_RMSE": 25.54932368442545,
+        "capped_NASA": 21433.94431533374
+      }
+    ]
+  }
+}

@@ -61,6 +61,30 @@ def pinball_loss(prediction: torch.Tensor, target: torch.Tensor,
     return torch.maximum(tau * error, (tau - 1.0) * error).mean()
 
 
+def normalize_quantile_features(quantiles, normalization: float | Sequence[float] = 1.0):
+    """Normalize observable quantile features for density-ratio fitting."""
+    values = np.asarray(quantiles, dtype=np.float64)
+    scale = np.asarray(normalization, dtype=np.float64)
+    if np.any(scale <= 0):
+        raise ValueError("normalization must be positive")
+    return values / scale
+
+
+def weighted_conformal_threshold(scores, weights, alpha: float) -> float:
+    """Conservative weighted conformal quantile using the max-weight atom."""
+    scores = np.asarray(scores, dtype=np.float64).reshape(-1)
+    weights = np.asarray(weights, dtype=np.float64).reshape(-1)
+    if len(scores) == 0 or len(scores) != len(weights):
+        raise ValueError("scores and weights must be non-empty and aligned")
+    if not (np.isfinite(scores).all() and np.isfinite(weights).all() and
+            np.all(scores >= 0) and np.all(weights > 0) and 0 < alpha < 1):
+        raise ValueError("invalid scores, weights, or alpha")
+    order = np.argsort(scores)
+    target = (1.0 - alpha) * (weights.sum() + weights.max())
+    idx = int(np.searchsorted(np.cumsum(weights[order]), target, side="left"))
+    return float(scores[order[min(idx, len(order) - 1)]])
+
+
 def finite_sample_quantile(scores, coverage: float) -> float:
     values = np.asarray(scores, dtype=np.float64).reshape(-1)
     if values.size == 0 or not np.isfinite(values).all():

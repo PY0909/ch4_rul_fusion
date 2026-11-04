@@ -101,12 +101,18 @@ def main():
     parser.add_argument("--dropout", type=float, default=0.1)
     parser.add_argument("--weight_decay", type=float, default=0.0)
     parser.add_argument("--condition_mode", choices=["full", "mean", "none"], default="full")
+    parser.add_argument("--registered_split", action="store_true",
+                        help="use the registered 3-validation/2-calibration unit split")
     args = parser.parse_args()
 
     set_seed(args.seed)
     device = torch.device("cuda")
-    bundle = build_ncmapss_datasets(args.data_root, args.dataset, history=args.history,
-                                    split_seed=0, validation_protocol="fixed_cuts")
+    bundle = build_ncmapss_datasets(
+        args.data_root, args.dataset, history=args.history, split_seed=0,
+        val_ratio=(0.55 if args.registered_split else 0.2),
+        calibration_ratio=(0.34 if args.registered_split else None),
+        validation_protocol="fixed_cuts", registered_split=args.registered_split,
+        min_calibration_units=(2 if args.registered_split else 1))
     train_loader = DataLoader(bundle.train, batch_size=args.batch_size, shuffle=True,
                               drop_last=(args.model == "fc_stgnn"))
     val_loader = DataLoader(bundle.val, batch_size=args.batch_size)

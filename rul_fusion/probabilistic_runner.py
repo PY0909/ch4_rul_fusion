@@ -171,7 +171,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                       lr=1e-3, weight_decay=None, patience=None,
                       dropout=None, ensemble_members=5, evidence_weight=1e-2,
                       edl_hidden_dim=128,
-                      device="auto", num_workers=0, config=None):
+                      device="auto", num_workers=0, config=None,
+                      test_dataset=None, defer_test=False):
     """Train HNN, EDL-NIG, or a Gaussian deep ensemble; evaluate test once."""
     if kind not in {"hnn", "edl_nig", "ensemble"}:
         raise ValueError("kind must be hnn, edl_nig, or ensemble")
@@ -196,8 +197,10 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                               num_workers=num_workers)
     val_loader = DataLoader(bundle.val_endpoint, batch_size=batch_size, shuffle=False,
                             num_workers=num_workers)
-    test_loader = DataLoader(bundle.test, batch_size=batch_size, shuffle=False,
-                             num_workers=num_workers)
+    test_dataset = (test_dataset if test_dataset is not None else
+                    (getattr(bundle, "test_endpoint", None) or bundle.test))
+    test_loader = (None if defer_test else DataLoader(
+        test_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers))
     member_count = ensemble_members if kind == "ensemble" else 1
     edl_sensor_indices = (_edl_sensor_positions(bundle.metadata, bundle.sensor_dim)
                           if kind == "edl_nig" else None)
@@ -325,6 +328,12 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
         best_epochs.append(int(state["best_epoch"]))
 
     train_seconds = time.perf_counter() - start_train
+    if defer_test:
+        _save_history(output_dir / "history.csv", history)
+        return {"dataset": bundle.metadata.get("dataset"), "method": kind,
+                "seed": int(seed), "best_epochs": best_epochs,
+                "selection_criterion": selection_criterion,
+                "train_seconds": train_seconds, "test_evaluated": False}
     predictions = [_predict(model, test_loader, device_obj) for model in models]
     target, units, sample_ids = predictions[0][0], predictions[0][2], predictions[0][3]
     if any(not np.array_equal(target, pred[0]) or not np.array_equal(units, pred[2])
@@ -337,6 +346,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
     if np.any(lower >= upper):
         raise RuntimeError("probabilistic interval bounds are invalid")
     point = regression_metrics(target, mean)
+    if bundle.metadata.get("dataset") in {"DS03", "DS08a", "DS08A"}:
+        point.pop("NASA_Score", None)
     selection_criterion = {"hnn": "val_nll", "edl_nig": "val_rmse",
                            "ensemble": "val_mixture_nll"}[kind]
     interval = ((target >= lower) & (target <= upper)).mean()
@@ -415,7 +426,9 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                 "test_evaluated_at_utc": datetime.now(timezone.utc).isoformat(),
                 "test_evaluated_once": True, "test_sample_count": int(len(target))}
     (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    print(f"MAE: {point['MAE']:.2f} RMSE: {point['RMSE']:.2f} NASA_Score: "
-          f"{point['NASA_Score']:.2f} NLL: {results['NLL']:.4f} CRPS: {results['CRPS']:.4f} "
+    score_text = (f" NASA_Score: {point['NASA_Score']:.2f}"
+                  if "NASA_Score" in point else "")
+    print(f"MAE: {point['MAE']:.2f} RMSE: {point['RMSE']:.2f}{score_text} "
+          f"NLL: {results['NLL']:.4f} CRPS: {results['CRPS']:.4f} "
           f"PICP: {results['PICP']:.4f} MPIW: {results['MPIW']:.4f}", flush=True)
     return results

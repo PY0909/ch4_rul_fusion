@@ -186,11 +186,37 @@ PYTHONPATH=/home/v2/.worktrees/ch4-hcq-cqr/code \
 
 Each run writes quantiles, calibrated intervals, calibration scores, a
 serialised calibrator, grouping state and a manifest-ready config under
-`results_v4/uncertainty/<mode>/<dataset>/seed_<n>/`. N-CMAPSS has only one
-calibration unit under the registered split and is therefore an external
-small-sample check rather than a strong coverage guarantee.
+`results_v4/uncertainty/<mode>/<dataset>/seed_<n>/`. The registered N-CMAPSS
+comparison split reserves two calibration units and remains a small-sample
+external-dataset comparison, not a strong coverage guarantee.
 
-### FD002/FD004 probability baselines
+`scripts/run_ncmapss_probabilistic.py` adds matched DS03/DS08a HNN, EDL-NIG and
+Gaussian ensemble baselines on the registered split (3 validation/2 calibration
+units), history 16 and 300-epoch budget. Standalone runs default to deferred
+official-test evaluation; `--defer_test` is train/validation only (no evaluation-only resume mode is provided), while `--eval_test` evaluates the
+frozen checkpoint after selection and logs the test touch. The comparison driver
+uses `--eval_test`. N-CMAPSS metrics omit NASA score; DS EDL uses all physical
+sensors. `scripts/run_ncmapss_comparison.py --data_root ...` prints the full
+A6-point/FC-STGNN/CQR/probabilistic command matrix; add `--run` to execute it.
+The comparison summary is written to `results_v4/ncmapss_comparison/summary.csv`.
+
+
+
+`scripts/run_ncmapss_cqr.py` is the registered DS03/DS08a external-check
+runner. It preserves A6 with `d_model=32`, two attention heads and two
+routers, uses the explicit three-validation/two-calibration unit split when
+available, and enforces a minimum of two calibration units. Global CQR is
+reported from reusable conformal helpers; window-weighted CQR uses observable
+window covariates and parameterized normalization (never a hard-coded FD
+125). Test evaluation is opt-in; `--defer_test` produces calibration-only
+artifacts and does not touch the test log. NASA score is never reported for DS.
+
+```bash
+PYTHONPATH=. python scripts/run_ncmapss_cqr.py --dataset DS08a \
+  --data_root /path/to/dataset --defer_test
+```
+
+
 
 HNN and Gaussian Deep Ensemble follow the compact Inception architecture,
 positive two-parameter Gaussian output, initialization, and Gaussian-NLL

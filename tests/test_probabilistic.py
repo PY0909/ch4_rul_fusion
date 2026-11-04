@@ -115,6 +115,29 @@ def test_probabilistic_runner_writes_metrics_and_recomputable_predictions(tmp_pa
         raise AssertionError("runner must not overwrite a previous run")
 
 
+def test_ncmapss_defaults_to_endpoint_and_defer_skips_test(tmp_path, monkeypatch):
+    bundle = _bundle()
+    bundle.metadata["dataset"] = "DS03"
+    bundle.test_endpoint = WindowDataset(_samples(2, 70))
+    from rul_fusion import probabilistic_runner as runner
+    seen = []
+    original = runner._predict
+
+    def record(model, loader, device):
+        seen.append(len(loader.dataset))
+        return original(model, loader, device)
+
+    monkeypatch.setattr(runner, "_predict", record)
+    result = fit_probabilistic(bundle, "hnn", tmp_path / "ds", epochs=1,
+                               batch_size=4, patience=1, dropout=0.0, device="cpu")
+    assert seen[-1] == 2
+    assert "NASA_Score" not in result
+    assert fit_probabilistic(_bundle(), "hnn", tmp_path / "deferred", epochs=1,
+                             batch_size=4, patience=1, dropout=0.0, device="cpu",
+                             defer_test=True)["test_evaluated"] is False
+    assert not (tmp_path / "deferred" / "predictions.csv").exists()
+
+
 def test_ensemble_trains_independent_members(tmp_path):
     result = fit_probabilistic(_bundle(), "ensemble", tmp_path / "ensemble",
                                epochs=1, batch_size=4, patience=1,

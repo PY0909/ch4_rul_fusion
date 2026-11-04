@@ -232,7 +232,61 @@ def test_ncmapss_fixed_cuts_builds_val_and_test_endpoints(tmp_path):
         assert float(s[2]) > 0
 
 
-def test_ncmapss_rejects_nonconstant_cycle_label(tmp_path):
+def _write_ncmapss_nine_units(path: Path):
+    """Nine dev units plus one run-to-failure test unit, mirroring DS08a."""
+    n = 12
+    A, W, Xs, Y = [], [], [], []
+    for unit in range(1, 10):
+        for cycle in range(1, n + 1):
+            A.append([unit, cycle, 1, 1])
+            W.append([100.0, 0.1, 0.5, 20.0])
+            Xs.append([unit + cycle + j for j in range(14)])
+            Y.append([n - cycle])
+    for cycle in [1, 2, 3]:
+        A.append([10, cycle, 1, 1])
+        W.append([100.0, 0.1, 0.5, 20.0])
+        Xs.append([10 + cycle + j for j in range(14)])
+        Y.append([4 - cycle])
+    with h5py.File(path, "w") as f:
+        f.create_dataset("A_dev", data=np.asarray(A[:-3], dtype=np.float64))
+        f.create_dataset("W_dev", data=np.asarray(W[:-3], dtype=np.float64))
+        f.create_dataset("X_s_dev", data=np.asarray(Xs[:-3], dtype=np.float64))
+        f.create_dataset("Y_dev", data=np.asarray(Y[:-3], dtype=np.int64))
+        for prefix in ("A", "W", "X_s", "Y"):
+            f.create_dataset(f"{prefix}_test", data=np.asarray(
+                {"A": A, "W": W, "X_s": Xs, "Y": Y}[prefix][-3:], dtype=np.float64))
+
+
+def test_ncmapss_registered_split_disjoint_three_val_two_calibration(tmp_path):
+    path = tmp_path / "N-CMAPSS_DS08a-009.h5"
+    _write_ncmapss_nine_units(path)
+    bundle = build_ncmapss_datasets(
+        tmp_path, "DS08a", history=2, dev_path=path, test_path=path,
+        split_seed=0, val_ratio=0.55, calibration_ratio=0.34,
+        validation_protocol="fixed_cuts", registered_split=True,
+        min_calibration_units=2)
+    train = set(bundle.metadata["train_units"])
+    val = set(bundle.metadata["val_units"])
+    calibration = set(bundle.metadata["calibration_units"])
+    assert len(val) == 3 and len(calibration) == 2 and len(train) == 4
+    assert train | val | calibration == set(range(1, 10))
+    assert not (train & val or train & calibration or val & calibration)
+    assert bundle.metadata["registered_split"] is True
+    assert bundle.metadata["min_calibration_units"] == 2
+    assert len(bundle.val_endpoint) == 4 * 3
+    assert len(bundle.calibration_endpoint) == 4 * 2
+
+
+def test_ncmapss_registered_split_min_calibration_guard(tmp_path):
+    path = tmp_path / "N-CMAPSS_DS08a-009.h5"
+    _write_ncmapss_nine_units(path)
+    with pytest.raises(ValueError, match="at least 2"):
+        build_ncmapss_datasets(
+            tmp_path, "DS08a", history=2, dev_path=path, test_path=path,
+            split_seed=0, val_ratio=0.2, calibration_ratio=0.1,
+            validation_protocol="fixed_cuts", registered_split=True,
+            min_calibration_units=2)
+
     path = tmp_path / "N-CMAPSS_DS03-012.h5"
     _write_ncmapss(path, inconsistent=True)
     with pytest.raises(ValueError, match="not constant"):

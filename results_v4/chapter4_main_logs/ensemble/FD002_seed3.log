@@ -1,0 +1,44 @@
+/root/anaconda3/envs/torch23/lib/python3.9/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at /opt/conda/conda-bld/pytorch_1729647350383/work/aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+epoch:1, train_loss:7.50185, val_loss:1061.36073, val_q50_rmse:32.5785, test_loss:deferred
+epoch:2, train_loss:3.06561, val_loss:1167.34213, val_q50_rmse:34.1664, test_loss:deferred
+epoch:3, train_loss:2.80455, val_loss:1061.26840, val_q50_rmse:32.5771, test_loss:deferred
+epoch:4, train_loss:2.71045, val_loss:1052.55913, val_q50_rmse:32.4432, test_loss:deferred
+epoch:5, train_loss:2.65432, val_loss:1101.94712, val_q50_rmse:33.1956, test_loss:deferred
+epoch:6, train_loss:2.60009, val_loss:1071.29703, val_q50_rmse:32.7307, test_loss:deferred
+epoch:7, train_loss:2.54070, val_loss:1029.24313, val_q50_rmse:32.0818, test_loss:deferred
+epoch:8, train_loss:2.50393, val_loss:1035.18189, val_q50_rmse:32.1742, test_loss:deferred
+epoch:9, train_loss:2.46569, val_loss:1013.88192, val_q50_rmse:31.8415, test_loss:deferred
+epoch:10, train_loss:2.40224, val_loss:1185.41198, val_q50_rmse:34.4298, test_loss:deferred
+epoch:11, train_loss:2.38833, val_loss:1055.15730, val_q50_rmse:32.4832, test_loss:deferred
+epoch:12, train_loss:2.33197, val_loss:1053.63756, val_q50_rmse:32.4598, test_loss:deferred
+epoch:13, train_loss:2.29804, val_loss:1028.50185, val_q50_rmse:32.0703, test_loss:deferred
+epoch:14, train_loss:2.23622, val_loss:1023.95223, val_q50_rmse:31.9993, test_loss:deferred
+epoch:15, train_loss:2.23026, val_loss:1073.29758, val_q50_rmse:32.7612, test_loss:deferred
+epoch:16, train_loss:2.18367, val_loss:1002.98348, val_q50_rmse:31.6699, test_loss:deferred
+epoch:17, train_loss:2.14942, val_loss:1032.68307, val_q50_rmse:32.1354, test_loss:deferred
+epoch:18, train_loss:2.10263, val_loss:1056.31729, val_q50_rmse:32.5010, test_loss:deferred
+epoch:19, train_loss:2.05977, val_loss:1036.79968, val_q50_rmse:32.1994, test_loss:deferred
+epoch:20, train_loss:2.02079, val_loss:1091.67780, val_q50_rmse:33.0405, test_loss:deferred
+epoch:21, train_loss:1.99322, val_loss:1051.13326, val_q50_rmse:32.4212, test_loss:deferred
+epoch:22, train_loss:1.96798, val_loss:967.09625, val_q50_rmse:31.0982, test_loss:deferred
+epoch:23, train_loss:1.90420, val_loss:1002.87291, val_q50_rmse:31.6682, test_loss:deferred
+epoch:24, train_loss:1.88436, val_loss:1029.88168, val_q50_rmse:32.0918, test_loss:deferred
+epoch:25, train_loss:1.85469, val_loss:973.15349, val_q50_rmse:31.1954, test_loss:deferred
+epoch:26, train_loss:1.82762, val_loss:1011.22762, val_q50_rmse:31.7998, test_loss:deferred
+epoch:27, train_loss:1.79462, val_loss:1014.78635, val_q50_rmse:31.8557, test_loss:deferred
+epoch:28, train_loss:1.75173, val_loss:984.06162, val_q50_rmse:31.3698, test_loss:deferred
+epoch:29, train_loss:1.72276, val_loss:1065.72214, val_q50_rmse:32.6454, test_loss:deferred
+epoch:30, train_loss:1.68808, val_loss:1005.17738, val_q50_rmse:31.7045, test_loss:deferred
+epoch:31, train_loss:1.66141, val_loss:1036.32973, val_q50_rmse:32.1921, test_loss:deferred
+epoch:32, train_loss:1.62703, val_loss:982.53592, val_q50_rmse:31.3454, test_loss:deferred
+epoch:33, train_loss:1.60697, val_loss:999.78634, val_q50_rmse:31.6194, test_loss:deferred
+epoch:34, train_loss:1.58596, val_loss:1014.08633, val_q50_rmse:31.8447, test_loss:deferred
+epoch:35, train_loss:1.56699, val_loss:1046.39163, val_q50_rmse:32.3480, test_loss:deferred
+epoch:36, train_loss:1.54863, val_loss:999.74382, val_q50_rmse:31.6187, test_loss:deferred
+epoch:37, train_loss:1.52023, val_loss:1042.05558, val_q50_rmse:32.2809, test_loss:deferred
+epoch:38, train_loss:1.50240, val_loss:1060.50455, val_q50_rmse:32.5654, test_loss:deferred
+epoch:39, train_loss:1.47307, val_loss:1040.95866, val_q50_rmse:32.2639, test_loss:deferred
+epoch:40, train_loss:1.44632, val_loss:1047.51816, val_q50_rmse:32.3654, test_loss:deferred
+epoch:41, train_loss:1.43082, val_loss:1019.26447, val_q50_rmse:31.9259, test_loss:deferred
+Q50_MAE: 16.14 Q50_RMSE: 23.42 PICP: 0.9073 MPIW: 82.7103 IntervalScore: 96.1578

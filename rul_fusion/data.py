@@ -448,7 +448,9 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
                            include_virtual: bool = False,
                            validation_protocol: str = "legacy_endpoint",
                            dev_path: Optional[Path] = None,
-                           test_path: Optional[Path] = None) -> DataBundle:
+                           test_path: Optional[Path] = None,
+                           registered_split: bool = False,
+                           min_calibration_units: int = 1) -> DataBundle:
     dataset = dataset.upper()
     if dataset not in {"DS03", "DS08A"}:
         raise ValueError("N-CMAPSS dataset must be DS03 or DS08a")
@@ -456,6 +458,16 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
         raise ValueError("validation_protocol must be 'legacy_endpoint' or 'fixed_cuts'")
     if calibration_ratio is not None and not 0.0 < calibration_ratio < 1.0:
         raise ValueError("calibration_ratio must be between 0 and 1")
+    if min_calibration_units < 0:
+        raise ValueError("min_calibration_units must be non-negative")
+    if registered_split:
+        if calibration_ratio is None:
+            calibration_ratio = 0.34
+        # Registered N-CMAPSS protocol: ratios are applied to the dev-unit
+        # pool, yielding 3 validation and 2 calibration units for the
+        # nine-unit release split (val_ratio=.55, calibration_ratio=.34).
+        val_ratio = 0.55 if val_ratio == 0.2 else val_ratio
+        min_calibration_units = max(2, min_calibration_units)
     canonical = "DS08a" if dataset == "DS08A" else "DS03"
     data_dir = Path(data_root) / "data_set"
     if dev_path is None:
@@ -473,6 +485,10 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
     shuffled = np.asarray(dev_units, dtype=np.int64)
     rng.shuffle(shuffled)
     n_holdout = max(1, int(round(len(dev_units) * val_ratio))) if len(dev_units) > 1 else 0
+    if registered_split and len(dev_units) >= 5:
+        # Registered external check reserves exactly five units when possible:
+        # three validation and two calibration units.
+        n_holdout = min(len(dev_units) - 1, 5)
     holdout_units = shuffled[:n_holdout].tolist()
     train_units = sorted(shuffled[n_holdout:].tolist())
     if calibration_ratio is None:
@@ -484,6 +500,10 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
         n_calibration = (max(1, int(round(len(holdout_units) * calibration_ratio)))
                          if len(holdout_units) > 1 else 0)
         n_calibration = min(len(holdout_units) - 1, n_calibration)
+        if n_calibration < min_calibration_units:
+            raise ValueError(
+                f"calibration split has {n_calibration} units; "
+                f"requires at least {min_calibration_units}")
         val_units = sorted(holdout_units[:-n_calibration])
         calibration_units = sorted(holdout_units[-n_calibration:])
     if not train_units:
@@ -519,6 +539,8 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
         "aggregation": "unit-cycle mean; T is degradation metadata and is excluded",
         "split_seed": split_seed, "scaler_mode": "global",
         "calibration_ratio": calibration_ratio,
+        "registered_split": registered_split,
+        "min_calibration_units": min_calibration_units,
         "validation_protocol": validation_protocol,
         "val_endpoint": endpoint_cuts,
         "calibration_endpoint": calibration_endpoint_cuts,

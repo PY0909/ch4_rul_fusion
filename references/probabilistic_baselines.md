@@ -65,7 +65,18 @@ validation and official-test labels. The model architecture and reported
 hyperparameters are followed where specified; split/validation, RUL cap and
 unspecified MLP widths remain protocol/reconstruction adaptations.
 
-## Local evaluation protocol
+## N-CMAPSS matched comparison
+
+`scripts/run_ncmapss_probabilistic.py` reuses the probabilistic architectures and
+losses above with DS03/DS08a registered split, fixed-cut validation, history 16,
+batch 32, Adam at 1e-3 and 300 epochs/patience. HNN and ensemble use dropout 0
+and weight decay 1e-3; EDL uses dropout 0.3, no weight decay and evidence weight
+1e-2. For N-CMAPSS EDL all available physical sensors are used rather than
+applying the C-MAPSS paper sensor-ID filter. Evaluation defaults deferred until
+explicit `--eval_test`; official-test metrics exclude NASA score, a C-MAPSS
+convention.
+
+
 
 HNN and Deep Ensemble use the chapter's grouped train-only scaler. EDL-NIG
 uses train-only per-feature min-max scaling as described by its paper. All

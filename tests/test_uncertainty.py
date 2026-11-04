@@ -10,7 +10,9 @@ from rul_fusion.metrics import prediction_interval_metrics
 from rul_fusion.model import MultiScalePhaseGraphRUL
 from rul_fusion.uncertainty import (CQRCalibrator, ConditionStageQualityGrouper,
                                     NonCrossingQuantileHead, interval_metrics,
-                                    pinball_loss, ScaleAdaptiveCQRCalibrator)
+                                    normalize_quantile_features, pinball_loss,
+                                    ScaleAdaptiveCQRCalibrator,
+                                    weighted_conformal_threshold)
 
 
 def test_non_crossing_head_and_pinball_gradient():
@@ -145,7 +147,12 @@ def test_interval_metrics_and_alias():
     assert prediction_interval_metrics(y, lower, upper, alpha=0.2) == expected
 
 
-def test_condition_stage_quality_groups_are_train_fitted():
+def test_weighted_threshold_and_parameterized_normalization():
+    scores = np.array([1.0, 2.0, 3.0])
+    weights = np.array([1.0, 1.0, 4.0])
+    assert weighted_conformal_threshold(scores, weights, 0.2) == 3.0
+    assert np.allclose(normalize_quantile_features([[10.0, 20.0]], 10.0), [[1.0, 2.0]])
+
     grouper = ConditionStageQualityGrouper(n_clusters=2, random_state=0)
     conditions = np.array([[0.0, 0.0], [0.1, 0.0], [1.0, 1.0], [1.1, 1.0]])
     labels = np.array([10.0, 12.0, 80.0, 90.0])

@@ -44,3 +44,16 @@
   论文披露前视状态。
 - 不把 ratio=0.6/0.7 的旧 41-epoch 结果与新的 patience=12 结果混表；
   Weighted-Late/分层收缩按启发式措辞，不宣称标准 split-conformal 保证。
+
+## 5. 2026-11-03 对接人线路采纳（本次合并）
+
+以包 `~/研/ch4-hcq-cqr-8382f94/code`（分支 `codex/ch4-hcq-cqr`，commits
+`b533980`/`6b240d6`，62 tests）覆盖更新本仓库：新增 window-weighted CQR、
+N-CMAPSS 比较管线、cost-optimal 解码等；交接文档入 `docs/`。本地验证
+59 passed / 3 skipped（skip 为 FC-STGNN CUDA 测试）+ compileall 通过。
+
+**证据线状态**：11-03 线为正式口径（Window-Weighted CQR 为当前正式第 1，
+其选择过程见 `results_v4/chapter4_main_logs/test_touches.log` 披露）；
+本仓库 11-02 产物（late 重训/冻结候选 test/Deep Ensemble）降级为历史证据
+——Ensemble 按新约束全面禁跑，其数字为"历史报告值"。
+**后续约束**：仅 seed 0；不跑任何 Ensemble；test 只在冻结后评一次。
