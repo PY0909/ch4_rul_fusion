@@ -504,7 +504,7 @@ PAPER_METHOD_DEFAULTS = {
     "hnn": (41, 100, 1e-3, 1e-3, 0.0, "grouped", "val_nll", 0),
     "ensemble": (41, 100, 1e-3, 1e-3, 0.0, "grouped", "val_mixture_nll", 0),
     "edl_nig": (50, 32, 1e-3, 0.0, 0.3, "minmax", "val_rmse", 0),
-    "lstm_prob": (14, 43, 5.613e-4, 0.0, 0.03, "minmax", "val_nll", 0),
+    "lstm_prob": (14, 43, 5.613e-4, 0.0, 0.03, "minmax", "val_rmse", 0),
     "tcn_transformer_mc": (50, 128, 1e-3, 0.0, 0.2, "minmax", "val_rmse", 30),
     "msauq": (50, 128, 1e-3, 0.0, 0.1, "zscore_grouped", "val_rmse", 100),
     "bcpt": (200, 256, 5e-3, 0.0, 0.3, "minmax", "val_fused_rmse", 30),

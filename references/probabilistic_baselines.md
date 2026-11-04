@@ -149,7 +149,9 @@ non-paper values:
 - B3 (`lstm_prob`): input min–max scaling (paper states no input
   normalization; chosen for LSTM stability), LSTM last-timestep output →
   Dense(331)+ReLU+Dropout(0.03) → linear mean / softplus scale; interval from
-  analytic Normal q10/q90; selection by val NLL.
+  analytic Normal q10/q90; selection by val RMSE (the paper's BayesOpt
+  minimizes validation error; corrected 2026-11-04 after the first FD002 run
+  had selected its epoch-1 checkpoint under a val-NLL criterion).
 - B4 (`tcn_transformer_mc`): causal TCN (chomped dilated convolutions) with
   residual blocks; sensor channels only (operating settings unused, matching
   the paper's 14-sensor input); channel fusion = last TCN step + mean-pooled

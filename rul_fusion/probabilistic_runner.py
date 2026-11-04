@@ -558,7 +558,9 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                 val_score = float(gaussian_nll(torch.as_tensor(val_params),
                                                torch.as_tensor(val_y)))
                 selection_criterion = "val_mixture_nll"
-            elif kind in {"edl_nig"} | POINT_MSE_KINDS:
+            elif kind in {"edl_nig", "lstm_prob"} | POINT_MSE_KINDS:
+                # B3's paper minimizes validation error (RMSE) in its BayesOpt;
+                # point MC kinds track RMSE per their papers.
                 val_score = val_rmse
                 selection_criterion = "val_rmse"
             else:
@@ -657,7 +659,7 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
         point.pop("NASA_Score", None)
     selection_criterion = {"hnn": "val_nll", "edl_nig": "val_rmse",
                            "ensemble": "val_mixture_nll",
-                           "lstm_prob": "val_nll",
+                           "lstm_prob": "val_rmse",
                            "tcn_transformer_mc": "val_rmse", "msauq": "val_rmse",
                            "bcpt": "val_fused_rmse"}[kind]
     interval = ((target >= lower) & (target <= upper)).mean()
