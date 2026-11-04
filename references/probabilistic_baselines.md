@@ -1,5 +1,102 @@
 # Probabilistic baseline provenance
 
+## Six first-round external baselines — stage 0 literature verification (2026-11-04, paused pending full-text collection)
+
+Scope: extend the baseline panel to B3–B6 per the chapter plan §8.5. B1 (HNN)
+and B2 (EDL-NIG) are already implemented and registered above. Stage 0
+verification status below distinguishes paper-reported values from project
+adaptations; anything not obtainable from the paper is registered as a
+reconstruction choice, never as a paper value.
+
+### B4 — dual-channel TCN + Transformer with MC dropout (full text secured)
+
+Paper: “A Parallel Prognostic Method Integrating Uncertainty Quantification for
+Probabilistic Remaining Useful Life Prediction of Aero-Engine,” *Processes*
+12(12):2925, 2024, DOI [10.3390/pr12122925](https://doi.org/10.3390/pr12122925)
+(open access; full text read from the MDPI XML version on 2026-11-04).
+
+Paper-reported configuration: parallel TCN and Transformer channels over the
+raw window. TCN: 3 residual blocks with filters 8/6/4, kernel size 4, dilations
+1/2/4, spatial-dropout inside blocks. Transformer encoder: d_model 14,
+2 heads, 2 encoder layers, dropout 0.2, sinusoidal positional encoding.
+Training: Adam lr 1e-3, batch 128, 50 epochs, window length 30, stride 1,
+min–max normalization, piecewise RUL cap 125, 14 non-constant sensors (same
+drop list convention as this project). Inference: MC dropout with k forward
+passes → predictive mean/std → Gaussian 95% CI (mean ± 1.96σ). The paper
+evaluates FD001/FD003 only; k is not stated numerically in the text or
+Table 4.
+
+Planned project adaptations (to be finalized at implementation): window 30 →
+50 and FD001/FD003 → FD002/FD004 + DS03/DS08a per unified protocol; interval
+band 95% Gaussian → nominal 80% (q10/q90 empirical quantiles of the draws) to
+match the ranking protocol; k unspecified → 30 (existing `mc_dropout`
+default). Each is a deviation from the paper and will be reported as such.
+
+### B3 — LSTM with probabilistic layer (closed access, abstract only)
+
+Paper: A. K. B. Mohd Nor, S. R. Pedapati, M. B. Muhammad, M. A. A. Majid,
+“Demonstrating Aleatoric Uncertainty in Remaining Useful Life Prediction Using
+LSTM with Probabilistic Layer,” *Lecture Notes in Mechanical Engineering*
+(ICPER 2020 proceedings), Springer, 2022, DOI
+[10.1007/978-981-19-1939-8_41](https://doi.org/10.1007/978-981-19-1939-8_41).
+
+Known from abstract/metadata: LSTM backbone whose output layer is a
+probabilistic layer capturing aleatoric (data) uncertainty; demonstrated on
+NASA C-MAPSS turbofan data. Full text paywalled at Springer; no author code
+found. Pending collection: LSTM depth/units, the exact probabilistic layer
+(TFP-style Gaussian output vs variational dense), loss, FD subsets, window,
+optimizer/epochs, and how intervals are reported. Until the full text
+arrives, any implementation numbers are registered reconstruction choices.
+
+### B5 — Bayesian cooperative probabilistic Transformer (paywalled, abstract secured)
+
+Paper: S. Xie, W. Cheng, Z. Nie, J. Xing, X. Chen, Q. Huang, R. Zhang,
+Y. Yang, “Bayesian cooperative probabilistic Transformer for remaining useful
+life prediction with uncertainty estimation in industrial equipment,”
+*Advanced Engineering Informatics* 67:103515, 2025, DOI
+[10.1016/j.aei.2025.103515](https://doi.org/10.1016/j.aei.2025.103515).
+
+Known from abstract (via the Xi'an Jiaotong University scholar page): a
+probabilistic Transformer integrating attentional uncertainty (NLL loss),
+cognitive/epistemic uncertainty (Bayesian approach), and aleatoric
+uncertainty (noise channel), plus an uncertainty-guided multi-source fusion
+strategy; validated on C-MAPSS and NCWP data. Full text paywalled; no code
+link in the abstract. Pending collection: architecture sizes, the Bayesian
+approximation form, noise-channel definition, fusion details, hyperparameters,
+C-MAPSS subsets. Fallback (pre-authorized): mechanism-level reconstruction —
+Transformer encoder + approximate-Bayesian (MC-dropout-style) epistemic term +
+Gaussian NLL aleatoric head, fusion module dropped as dataset-specific — with
+every reconstruction parameter registered as non-paper values.
+
+### B6 — multi-scale self-attention + approximate Bayesian + KDE (paywalled, abstract secured)
+
+Paper: “A multi-scale self-attention method with uncertainty quantification
+for probabilistic remaining useful life prediction of rotating machinery,”
+*Engineering Research Express*, 2025, DOI
+[10.1088/2631-8695/adeeea](https://doi.org/10.1088/2631-8695/adeeea).
+
+Known from abstract: multi-scale attention module in the encoder + approximate
+Bayesian framework + kernel density estimation producing the predictive
+density (PDF), evaluated with probabilistic metrics. Full text paywalled
+(hybrid journal); no code found. Pending collection: multi-scale encoder
+structure, Bayesian approximation details, KDE bandwidth selection, datasets,
+hyperparameters. Fallback (pre-authorized): mechanism-level reconstruction —
+multi-scale self-attention encoder + MC-dropout approximate Bayesian + KDE
+predictive density over draws (Scott bandwidth) — registered as
+reconstruction choices.
+
+### Reserve decision (recorded 2026-11-04)
+
+B7 (“Degradation-aware contrastive Mamba with dual uncertainty,” *Meas. Sci.
+Technol.* 2026, DOI 10.1088/1361-6501/ae6e95) is also paywalled at the
+abstract level. B8 (IEEE SDPC 2025, DOI 10.1109/SDPC68151.2025.11347806)
+combines **snapshot ensemble** with MC dropout as its core mechanism, which
+conflicts with the project's no-ensemble constraint and therefore cannot
+serve as a like-for-like substitute. Per the swap rule, B5/B6 stay in the six;
+if their full texts cannot be collected, they are implemented as
+mechanism-level reconstructions with registered deviations rather than
+replaced.
+
 ## HNN and Gaussian Deep Ensemble
 
 The reference implementation is [BayesRUL](https://github.com/arthurviens/bayesrul),
