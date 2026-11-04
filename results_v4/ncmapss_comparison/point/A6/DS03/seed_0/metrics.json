@@ -1,0 +1,31 @@
+{
+  "MAE": 9.365645150343576,
+  "RMSE": 13.024268253220487,
+  "model": "A6",
+  "dataset": "DS03",
+  "n_params": 36236,
+  "best_epoch": 87,
+  "val_RMSE": 6.791845257998378,
+  "selection_criterion": "val_endpoint_rmse_fixed_cuts",
+  "test_protocol": "fixed_cuts mid-life endpoints",
+  "seed": 0,
+  "device": "cuda",
+  "config": {
+    "dataset": "DS03",
+    "data_root": "/root/autodl-tmp/kst_light_v2/dataset",
+    "model": "A6",
+    "output_dir": "/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_comparison/point/A6",
+    "seed": 0,
+    "epochs": 300,
+    "batch_size": 32,
+    "lr": 0.001,
+    "history": 16,
+    "d_model": 32,
+    "num_heads": 2,
+    "num_routers": 2,
+    "dropout": 0.1,
+    "weight_decay": 0.001,
+    "condition_mode": "full",
+    "registered_split": true
+  }
+}

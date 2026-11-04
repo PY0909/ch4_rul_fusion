@@ -1,0 +1,2 @@
+f67cc4bd0cf927f09eb8e0198bd62c777e1c6213177cfc46d81cc43bba52c333  /root/autodl-tmp/kst_light_v2/dataset/data_set/N-CMAPSS_DS03-012.h5
+10ddf52e5441a05e3d0d8d797a34e0e5a9ac73dce8ae35d7b22d1ef224d24836  /root/autodl-tmp/kst_light_v2/dataset/data_set/N-CMAPSS_DS08a-009.h5

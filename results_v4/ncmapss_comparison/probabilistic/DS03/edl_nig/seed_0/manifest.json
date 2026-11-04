@@ -1,0 +1,47 @@
+{
+  "dataset": "DS03",
+  "method": "edl_nig",
+  "seed": 0,
+  "split_seed": 0,
+  "selection_criterion": "val_rmse",
+  "scaler_mode": "global",
+  "train_units": [
+    1,
+    2,
+    8,
+    9
+  ],
+  "val_units": [
+    3,
+    5,
+    6
+  ],
+  "calibration_units": [
+    4,
+    7
+  ],
+  "test_units": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "scaler_fit_scope": "train_units_only",
+  "scaler_fit_units": [
+    1,
+    2,
+    8,
+    9
+  ],
+  "code_commit": "unknown",
+  "code_dirty": null,
+  "source_sha256": {
+    "probabilistic_runner.py": "c0d5c98e861c9982927f8c84196a816b5265bd1be65142da8ad65852b7a8b4b5",
+    "probabilistic.py": "77c13f4b04a43d0fd1dc2234baaaa99ecf064950348e0c0d67da7dc4321eb32e"
+  },
+  "test_evaluated_at_utc": "2026-11-04T04:24:03.511749+00:00",
+  "test_evaluated_once": true,
+  "test_sample_count": 24
+}

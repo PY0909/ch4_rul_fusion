@@ -1,0 +1,217 @@
+{
+  "model": "A6",
+  "n_params": 36236,
+  "fcstgnn_dims": null,
+  "args": {
+    "dataset": "DS08a",
+    "data_root": "/root/autodl-tmp/kst_light_v2/dataset",
+    "model": "A6",
+    "output_dir": "/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_comparison/point/A6",
+    "seed": 0,
+    "epochs": 300,
+    "batch_size": 32,
+    "lr": 0.001,
+    "history": 16,
+    "d_model": 32,
+    "num_heads": 2,
+    "num_routers": 2,
+    "dropout": 0.1,
+    "weight_decay": 0.001,
+    "condition_mode": "full",
+    "registered_split": true
+  },
+  "protocol": "unit-cycle mean, X_s only, global z-score scaler on train units, unit-grouped split (split_seed=0), fixed_cuts endpoint validation, no RUL cap, single frozen test evaluation",
+  "data": {
+    "dataset": "DS08a",
+    "dev_units": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "train_units": [
+      1,
+      2,
+      8,
+      9
+    ],
+    "val_units": [
+      3,
+      5,
+      6
+    ],
+    "calibration_units": [
+      4,
+      7
+    ],
+    "test_units": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "history": 16,
+    "include_virtual": false,
+    "uses_T": false,
+    "aggregation": "unit-cycle mean; T is degradation metadata and is excluded",
+    "split_seed": 0,
+    "scaler_mode": "global",
+    "calibration_ratio": 0.34,
+    "registered_split": true,
+    "min_calibration_units": 2,
+    "validation_protocol": "fixed_cuts",
+    "calibration_endpoint": [
+      {
+        "unit": 4,
+        "frac": 0.25,
+        "cut": 18,
+        "length": 71,
+        "label_raw": 52.0
+      },
+      {
+        "unit": 4,
+        "frac": 0.5,
+        "cut": 35,
+        "length": 71,
+        "label_raw": 35.0
+      },
+      {
+        "unit": 4,
+        "frac": 0.75,
+        "cut": 52,
+        "length": 71,
+        "label_raw": 18.0
+      },
+      {
+        "unit": 4,
+        "frac": 0.9,
+        "cut": 63,
+        "length": 71,
+        "label_raw": 7.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.25,
+        "cut": 17,
+        "length": 68,
+        "label_raw": 50.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.5,
+        "cut": 34,
+        "length": 68,
+        "label_raw": 33.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.75,
+        "cut": 50,
+        "length": 68,
+        "label_raw": 17.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.9,
+        "cut": 60,
+        "length": 68,
+        "label_raw": 7.0
+      }
+    ],
+    "val_endpoint_protocol": "fixed cuts at life fractions {0.25, 0.5, 0.75, 0.9} per validation unit, endpoint windows, raw remaining flight RUL labels",
+    "test_endpoint_protocol": "test trajectories in the public release run to failure (final Y=0), so the frozen evaluation uses the same fixed cuts {0.25, 0.5, 0.75, 0.9} per test unit; labels are the file's Y at each cut"
+  },
+  "endpoint_cuts": [
+    {
+      "unit": 3,
+      "frac": 0.25,
+      "cut": 18,
+      "length": 75,
+      "label_raw": 56.0
+    },
+    {
+      "unit": 3,
+      "frac": 0.5,
+      "cut": 37,
+      "length": 75,
+      "label_raw": 37.0
+    },
+    {
+      "unit": 3,
+      "frac": 0.75,
+      "cut": 56,
+      "length": 75,
+      "label_raw": 18.0
+    },
+    {
+      "unit": 3,
+      "frac": 0.9,
+      "cut": 67,
+      "length": 75,
+      "label_raw": 7.0
+    },
+    {
+      "unit": 5,
+      "frac": 0.25,
+      "cut": 14,
+      "length": 56,
+      "label_raw": 41.0
+    },
+    {
+      "unit": 5,
+      "frac": 0.5,
+      "cut": 28,
+      "length": 56,
+      "label_raw": 27.0
+    },
+    {
+      "unit": 5,
+      "frac": 0.75,
+      "cut": 41,
+      "length": 56,
+      "label_raw": 14.0
+    },
+    {
+      "unit": 5,
+      "frac": 0.9,
+      "cut": 50,
+      "length": 56,
+      "label_raw": 5.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.25,
+      "cut": 14,
+      "length": 58,
+      "label_raw": 43.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.5,
+      "cut": 28,
+      "length": 58,
+      "label_raw": 29.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.75,
+      "cut": 43,
+      "length": 58,
+      "label_raw": 14.0
+    },
+    {
+      "unit": 6,
+      "frac": 0.9,
+      "cut": 51,
+      "length": 58,
+      "label_raw": 6.0
+    }
+  ]
+}

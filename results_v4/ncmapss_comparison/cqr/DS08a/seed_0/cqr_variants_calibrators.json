@@ -1,0 +1,24 @@
+{
+  "alpha": 0.2,
+  "global_threshold": 16.376373291015625,
+  "weighted_thresholds": {
+    "window_weighted": 16.376373291015625,
+    "block_max_weighted": 16.376373291015625
+  },
+  "density_ratio_normalization": 1.0,
+  "density_ratio_features": [
+    "q50/norm",
+    "width/norm",
+    "condition_mean"
+  ],
+  "calibration_units": [
+    4,
+    7
+  ],
+  "val_units": [
+    3,
+    5,
+    6
+  ],
+  "fitted_against": "validation endpoint covariates (no labels used for weights)"
+}

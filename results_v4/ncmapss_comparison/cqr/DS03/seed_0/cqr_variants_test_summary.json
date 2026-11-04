@@ -1,0 +1,48 @@
+{
+  "dataset": "DS03",
+  "seed": 0,
+  "endpoint": "test",
+  "official_test_evaluated": true,
+  "test_protocol": "test trajectories in the public release run to failure (final Y=0), so the frozen evaluation uses the same fixed cuts {0.25, 0.5, 0.75, 0.9} per test unit; labels are the file's Y at each cut",
+  "n_test_units": 6,
+  "q50_point": {
+    "MAE": 15.732948164145151,
+    "RMSE": 19.81132071415169
+  },
+  "rows": [
+    {
+      "dataset": "DS03",
+      "variant": "global_block_max_cqr",
+      "endpoint": "test",
+      "threshold": 16.627334594726562,
+      "n_cal_units": 2,
+      "PICP": 0.9166666666666666,
+      "MPIW": 69.08363208795588,
+      "IntervalScore": 82.45421832427382,
+      "coverage_gap": 0.11666666666666659
+    },
+    {
+      "dataset": "DS03",
+      "variant": "window_weighted",
+      "endpoint": "test",
+      "threshold": 16.627334594726562,
+      "n_cal_units": 2,
+      "PICP": 0.9166666666666666,
+      "MPIW": 69.08363208795588,
+      "IntervalScore": 82.45421832427382,
+      "coverage_gap": 0.11666666666666659
+    },
+    {
+      "dataset": "DS03",
+      "variant": "block_max_weighted",
+      "endpoint": "test",
+      "threshold": 16.627334594726562,
+      "n_cal_units": 2,
+      "PICP": 0.9166666666666666,
+      "MPIW": 69.08363208795588,
+      "IntervalScore": 82.45421832427382,
+      "coverage_gap": 0.11666666666666659
+    }
+  ],
+  "generated": "2026-11-04T12:22:27"
+}
