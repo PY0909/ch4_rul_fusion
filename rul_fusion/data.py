@@ -506,7 +506,9 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
                            dev_path: Optional[Path] = None,
                            test_path: Optional[Path] = None,
                            registered_split: bool = False,
-                           min_calibration_units: int = 1) -> DataBundle:
+                           min_calibration_units: int = 1,
+                           calibration_fracs: Optional[Sequence[float]] = None
+                           ) -> DataBundle:
     dataset = dataset.upper()
     if dataset not in {"DS03", "DS08A"}:
         raise ValueError("N-CMAPSS dataset must be DS03 or DS08a")
@@ -585,7 +587,8 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
         endpoint_rng, fracs=endpoint_fracs)
     calibration_endpoint_samples, calibration_endpoint_cuts = _endpoint_samples(
         scaled_dev, {u: scaled_dev[u][2] for u in dev_units}, calibration_units, history,
-        endpoint_rng, fracs=endpoint_fracs)
+        endpoint_rng, fracs=(calibration_fracs if calibration_fracs is not None
+                             else endpoint_fracs))
 
     metadata = {
         "dataset": canonical, "dev_units": dev_units, "train_units": train_units,
@@ -598,6 +601,8 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
         "registered_split": registered_split,
         "min_calibration_units": min_calibration_units,
         "validation_protocol": validation_protocol,
+        "calibration_fracs": (list(calibration_fracs)
+                              if calibration_fracs is not None else None),
         "val_endpoint": endpoint_cuts,
         "calibration_endpoint": calibration_endpoint_cuts,
         "val_endpoint_protocol": ("fixed cuts at life fractions {0.25, 0.5, 0.75, 0.9} per "

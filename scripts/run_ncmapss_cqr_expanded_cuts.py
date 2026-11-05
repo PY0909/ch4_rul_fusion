@@ -1,12 +1,13 @@
 """N-CMAPSS Arm B: expanded calibration cut grids on the frozen P0 checkpoint.
 
 Pre-registration: docs/ncmapss-calibration-expansion-prereg-2026-11-05.md.
-The registered split, frozen A6-Quantile checkpoint, test endpoint, alpha and
-density-ratio configuration are unchanged; the only variable is the
-calibration cut grid (4 cuts -> G9/G17). Windows are selected from
-bundle.calibration by (unit, window-end cycle index) using the same cut
-formula as the fixed-cuts protocol. Official test endpoints are evaluated
-once per grid under the registered amendment and logged to test_touches.log.
+The registered split (engine sets), frozen A6-Quantile checkpoint, test
+endpoint, alpha and density-ratio configuration are unchanged; the only
+variable is the calibration cut grid (4 cuts -> G9/G17), realized through
+build_ncmapss_datasets(calibration_fracs=...). Official test endpoints are
+evaluated once per grid under the registered amendment and logged to
+test_touches.log. Both grids and Arm A are reported side by side; nothing is
+selected.
 """
 from __future__ import annotations
 
@@ -39,24 +40,6 @@ DIMS = {"d_model": 32, "num_heads": 2, "num_routers": 2, "dropout": 0.1}
 ALPHA = 0.2
 
 
-def _select_cuts(all_y, all_q, all_units, all_ids, all_cond, unit_lengths, grid):
-    """Rows of the full calibration window set at the grid's cut indices."""
-    wanted = {}
-    for unit, length in unit_lengths.items():
-        for frac in grid:
-            cut = min(max(int(round(frac * (length - 1))), 0), length - 1)
-            wanted[(int(unit), cut)] = True
-    keep = np.array([(int(u), int(i)) in wanted
-                     for u, i in zip(all_units, all_ids)], dtype=bool)
-    if keep.sum() != len(wanted):
-        missing = [key for key in wanted
-                   if not any((int(u) == key[0] and int(i) == key[1])
-                              for u, i in zip(all_units[keep], all_ids[keep]))]
-        raise RuntimeError(f"cut windows missing from calibration set: {missing[:5]}")
-    return (all_y[keep], all_q[keep], all_units[keep], all_ids[keep],
-            all_cond[keep])
-
-
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", required=True, choices=("DS03", "DS08a"))
@@ -70,30 +53,6 @@ def main(argv=None):
     args = parser.parse_args(argv)
     device = torch.device(args.device)
 
-    bundle = build_ncmapss_datasets(
-        args.data_root, args.dataset, history=16, split_seed=0,
-        val_ratio=REGISTERED_VAL_RATIO,
-        calibration_ratio=REGISTERED_CALIBRATION_RATIO,
-        validation_protocol="fixed_cuts", registered_split=True,
-        min_calibration_units=MIN_CALIBRATION_UNITS)
-    checkpoint = Path(args.checkpoint_root) / args.dataset / f"seed_{args.seed}" / "best.pt"
-    frozen = _load_quantile_model(bundle, checkpoint, device, DIMS)
-
-    all_y, all_q, all_units, all_ids, all_cond = _predict(
-        frozen, _loader(bundle.calibration), device)
-    test_dataset = (bundle.test_endpoint if bundle.test_endpoint is not None
-                    else bundle.test)
-    test_y, test_q, test_units, test_ids, test_cond = _predict(
-        frozen, _loader(test_dataset), device)
-    test_feats = _features(test_q, test_cond, normalization=1.0)
-
-    unit_lengths = {}
-    for entry in bundle.metadata["calibration_endpoint"]:
-        unit_lengths[int(entry["unit"])] = int(entry["length"])
-    cal_units_list = sorted(unit_lengths)
-    if sorted(set(int(u) for u in all_units)) != cal_units_list:
-        raise RuntimeError("calibration unit set mismatch with registry")
-
     rows = []
     reference = (ROOT / "results_v4/ncmapss_comparison/cqr" / args.dataset
                  / f"seed_{args.seed}" / "cqr_variants_test_summary.json")
@@ -101,15 +60,38 @@ def main(argv=None):
         arm_a = json.loads(reference.read_text(encoding="utf-8"))
         for row in arm_a["rows"]:
             rows.append({"dataset": args.dataset, "arm": "A_4cuts", "grid": "4cuts",
-                         "n_cal_windows": int(len(cal_units_list) * 4),
+                         "n_cal_windows": -1,
                          **{k: row[k] for k in ("variant", "threshold", "PICP",
                                                 "MPIW", "IntervalScore")}})
 
-    out_dir = Path(args.output_dir) / args.dataset / f"seed_{args.seed}"
-    out_dir.mkdir(parents=True, exist_ok=True)
+    cal_units_registry = None
+    test_units_registry = None
     for grid_name, grid in GRIDS.items():
-        cal_y, cal_q, cal_units, cal_ids, cal_cond = _select_cuts(
-            all_y, all_q, all_units, all_ids, all_cond, unit_lengths, grid)
+        bundle = build_ncmapss_datasets(
+            args.data_root, args.dataset, history=16, split_seed=0,
+            val_ratio=REGISTERED_VAL_RATIO,
+            calibration_ratio=REGISTERED_CALIBRATION_RATIO,
+            validation_protocol="fixed_cuts", registered_split=True,
+            min_calibration_units=MIN_CALIBRATION_UNITS,
+            calibration_fracs=grid)
+        registry = sorted(bundle.metadata["calibration_units"])
+        if cal_units_registry is None:
+            cal_units_registry = registry
+        elif registry != cal_units_registry:
+            raise RuntimeError("calibration unit set changed between grids")
+        checkpoint = (Path(args.checkpoint_root) / args.dataset
+                      / f"seed_{args.seed}" / "best.pt")
+        frozen = _load_quantile_model(bundle, checkpoint, device, DIMS)
+
+        cal_y, cal_q, cal_units, cal_ids, cal_cond = _predict(
+            frozen, _loader(bundle.calibration_endpoint), device)
+        test_dataset = (bundle.test_endpoint if bundle.test_endpoint is not None
+                        else bundle.test)
+        test_y, test_q, test_units, test_ids, test_cond = _predict(
+            frozen, _loader(test_dataset), device)
+        test_feats = _features(test_q, test_cond, normalization=1.0)
+        test_units_registry = sorted(set(int(u) for u in test_units))
+
         calibrator, weighted, _ = _threshold_variants(
             cal_y, cal_q, cal_units, cal_ids, cal_cond, test_feats, ALPHA,
             normalization=1.0)
@@ -122,9 +104,11 @@ def main(argv=None):
                          "variant": name, "threshold": float(threshold),
                          **metrics})
         print(f"[{args.dataset}] {grid_name}: n_cal={len(cal_y)} "
-              f"thresholds global={calibrator.global_threshold:.3f} "
+              f"global={calibrator.global_threshold:.3f} "
               f"weighted={weighted['window_weighted']:.3f}", flush=True)
 
+    out_dir = Path(args.output_dir) / args.dataset / f"seed_{args.seed}"
+    out_dir.mkdir(parents=True, exist_ok=True)
     fields = sorted({key for row in rows for key in row})
     with (out_dir / "arm_comparison.csv").open("w", newline="",
                                                encoding="utf-8") as handle:
@@ -133,10 +117,10 @@ def main(argv=None):
         writer.writerows(rows)
     summary = {"dataset": args.dataset, "seed": args.seed,
                "preregistration": "docs/ncmapss-calibration-expansion-prereg-2026-11-05.md",
-               "grids": {name: grid for name, grid in GRIDS.items()},
+               "grids": GRIDS,
                "frozen_checkpoint": str(checkpoint),
-               "test_units": sorted(set(int(u) for u in test_units)),
-               "calibration_units": cal_units_list,
+               "test_units": test_units_registry,
+               "calibration_units": cal_units_registry,
                "generated": datetime.now().isoformat(timespec="seconds"),
                "rows": rows}
     (out_dir / "arm_summary.json").write_text(
@@ -150,11 +134,11 @@ def main(argv=None):
             f"checkpoint; both grids and Arm A reported side by side, no "
             f"selection\n")
     for row in rows:
-        print("{:<10s} {:<8s} {:<22s} n_cal={:>3} thr={:8.3f} PICP={:.3f} "
+        print("{:<10s} {:<6s} {:<22s} thr={:8.3f} PICP={:.3f} "
               "MPIW={:8.3f} IS={:8.3f}".format(
                   row["arm"], row["grid"], row["variant"],
-                  row["n_cal_windows"], row["threshold"], row["PICP"],
-                  row["MPIW"], row["IntervalScore"]), flush=True)
+                  row["threshold"], row["PICP"], row["MPIW"],
+                  row["IntervalScore"]), flush=True)
 
 
 if __name__ == "__main__":
