@@ -1,0 +1,47 @@
+{
+  "dataset": "DS08a",
+  "method": "msauq",
+  "seed": 0,
+  "split_seed": 0,
+  "selection_criterion": "val_rmse",
+  "scaler_mode": "global",
+  "train_units": [
+    1,
+    2,
+    8,
+    9
+  ],
+  "val_units": [
+    3,
+    5,
+    6
+  ],
+  "calibration_units": [
+    4,
+    7
+  ],
+  "test_units": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "scaler_fit_scope": "train_units_only",
+  "scaler_fit_units": [
+    1,
+    2,
+    8,
+    9
+  ],
+  "code_commit": "unknown",
+  "code_dirty": null,
+  "source_sha256": {
+    "probabilistic_runner.py": "3755360939722c13d18304aade8d1ca892a65ba622a84c013063caf44c638891",
+    "probabilistic.py": "c68f8cbb1b03583a58d7f2aa9ef3292b9fcdba83918f9eef2837cba6155c8a44"
+  },
+  "test_evaluated_at_utc": "2026-11-05T01:37:29.336273+00:00",
+  "test_evaluated_once": true,
+  "test_sample_count": 24
+}

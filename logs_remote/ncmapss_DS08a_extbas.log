@@ -1,0 +1,1209 @@
+=== DS08a lstm_prob start 2026-11-05 09:34:13 ===
+member:0, epoch:1, train_loss:737.30033, val_nll:26.19305, val_rmse:26.1930, test_loss:deferred
+member:0, epoch:2, train_loss:6.71844, val_nll:21.13614, val_rmse:21.1361, test_loss:deferred
+member:0, epoch:3, train_loss:5.08398, val_nll:18.58510, val_rmse:18.5851, test_loss:deferred
+member:0, epoch:4, train_loss:4.87213, val_nll:17.25081, val_rmse:17.2508, test_loss:deferred
+member:0, epoch:5, train_loss:4.79952, val_nll:16.52909, val_rmse:16.5291, test_loss:deferred
+member:0, epoch:6, train_loss:4.75951, val_nll:16.09491, val_rmse:16.0949, test_loss:deferred
+member:0, epoch:7, train_loss:4.71195, val_nll:16.15530, val_rmse:16.1553, test_loss:deferred
+member:0, epoch:8, train_loss:4.64803, val_nll:17.53914, val_rmse:17.5391, test_loss:deferred
+member:0, epoch:9, train_loss:4.59178, val_nll:20.37183, val_rmse:20.3718, test_loss:deferred
+member:0, epoch:10, train_loss:4.57974, val_nll:21.34756, val_rmse:21.3476, test_loss:deferred
+member:0, epoch:11, train_loss:4.57827, val_nll:20.23935, val_rmse:20.2393, test_loss:deferred
+member:0, epoch:12, train_loss:4.57850, val_nll:19.47993, val_rmse:19.4799, test_loss:deferred
+member:0, epoch:13, train_loss:4.57837, val_nll:19.60810, val_rmse:19.6081, test_loss:deferred
+member:0, epoch:14, train_loss:4.57576, val_nll:19.70763, val_rmse:19.7076, test_loss:deferred
+member:0, epoch:15, train_loss:4.57622, val_nll:19.92105, val_rmse:19.9211, test_loss:deferred
+member:0, epoch:16, train_loss:4.57270, val_nll:20.00042, val_rmse:20.0004, test_loss:deferred
+member:0, epoch:17, train_loss:4.57836, val_nll:19.61934, val_rmse:19.6193, test_loss:deferred
+member:0, epoch:18, train_loss:4.57450, val_nll:19.80951, val_rmse:19.8095, test_loss:deferred
+member:0, epoch:19, train_loss:4.57486, val_nll:19.75558, val_rmse:19.7556, test_loss:deferred
+member:0, epoch:20, train_loss:4.57157, val_nll:19.79909, val_rmse:19.7991, test_loss:deferred
+member:0, epoch:21, train_loss:4.57341, val_nll:19.71648, val_rmse:19.7165, test_loss:deferred
+member:0, epoch:22, train_loss:4.56746, val_nll:19.68087, val_rmse:19.6809, test_loss:deferred
+member:0, epoch:23, train_loss:4.57197, val_nll:19.78465, val_rmse:19.7846, test_loss:deferred
+member:0, epoch:24, train_loss:4.56999, val_nll:19.83223, val_rmse:19.8322, test_loss:deferred
+member:0, epoch:25, train_loss:4.57065, val_nll:19.68661, val_rmse:19.6866, test_loss:deferred
+member:0, epoch:26, train_loss:4.55908, val_nll:19.77161, val_rmse:19.7716, test_loss:deferred
+member:0, epoch:27, train_loss:4.56370, val_nll:19.53252, val_rmse:19.5325, test_loss:deferred
+member:0, epoch:28, train_loss:4.56970, val_nll:19.50455, val_rmse:19.5046, test_loss:deferred
+member:0, epoch:29, train_loss:4.55605, val_nll:19.36874, val_rmse:19.3687, test_loss:deferred
+member:0, epoch:30, train_loss:4.56095, val_nll:19.81724, val_rmse:19.8172, test_loss:deferred
+member:0, epoch:31, train_loss:4.55560, val_nll:19.67259, val_rmse:19.6726, test_loss:deferred
+member:0, epoch:32, train_loss:4.55652, val_nll:18.94968, val_rmse:18.9497, test_loss:deferred
+member:0, epoch:33, train_loss:4.54724, val_nll:19.14464, val_rmse:19.1446, test_loss:deferred
+member:0, epoch:34, train_loss:4.54285, val_nll:19.41449, val_rmse:19.4145, test_loss:deferred
+member:0, epoch:35, train_loss:4.53985, val_nll:19.17507, val_rmse:19.1751, test_loss:deferred
+member:0, epoch:36, train_loss:4.52970, val_nll:18.64894, val_rmse:18.6489, test_loss:deferred
+member:0, epoch:37, train_loss:4.52403, val_nll:18.96737, val_rmse:18.9674, test_loss:deferred
+member:0, epoch:38, train_loss:4.51631, val_nll:18.39659, val_rmse:18.3966, test_loss:deferred
+member:0, epoch:39, train_loss:4.49968, val_nll:18.43290, val_rmse:18.4329, test_loss:deferred
+member:0, epoch:40, train_loss:4.49120, val_nll:18.37478, val_rmse:18.3748, test_loss:deferred
+member:0, epoch:41, train_loss:4.46404, val_nll:18.73017, val_rmse:18.7302, test_loss:deferred
+member:0, epoch:42, train_loss:4.45439, val_nll:18.49690, val_rmse:18.4969, test_loss:deferred
+member:0, epoch:43, train_loss:4.46437, val_nll:19.21359, val_rmse:19.2136, test_loss:deferred
+member:0, epoch:44, train_loss:4.45143, val_nll:19.07766, val_rmse:19.0777, test_loss:deferred
+member:0, epoch:45, train_loss:4.43932, val_nll:18.92934, val_rmse:18.9293, test_loss:deferred
+member:0, epoch:46, train_loss:4.44051, val_nll:19.16271, val_rmse:19.1627, test_loss:deferred
+member:0, epoch:47, train_loss:4.43637, val_nll:19.02713, val_rmse:19.0271, test_loss:deferred
+member:0, epoch:48, train_loss:4.42978, val_nll:19.45781, val_rmse:19.4578, test_loss:deferred
+member:0, epoch:49, train_loss:4.42958, val_nll:19.08086, val_rmse:19.0809, test_loss:deferred
+member:0, epoch:50, train_loss:4.42216, val_nll:19.36470, val_rmse:19.3647, test_loss:deferred
+member:0, epoch:51, train_loss:4.42408, val_nll:19.20450, val_rmse:19.2045, test_loss:deferred
+member:0, epoch:52, train_loss:4.42498, val_nll:19.06070, val_rmse:19.0607, test_loss:deferred
+member:0, epoch:53, train_loss:4.43755, val_nll:19.64211, val_rmse:19.6421, test_loss:deferred
+member:0, epoch:54, train_loss:4.43741, val_nll:18.74316, val_rmse:18.7432, test_loss:deferred
+member:0, epoch:55, train_loss:4.43362, val_nll:18.74127, val_rmse:18.7413, test_loss:deferred
+member:0, epoch:56, train_loss:4.41997, val_nll:19.30654, val_rmse:19.3065, test_loss:deferred
+member:0, epoch:57, train_loss:4.40855, val_nll:19.25994, val_rmse:19.2599, test_loss:deferred
+member:0, epoch:58, train_loss:4.42773, val_nll:19.54598, val_rmse:19.5460, test_loss:deferred
+member:0, epoch:59, train_loss:4.41945, val_nll:19.02340, val_rmse:19.0234, test_loss:deferred
+member:0, epoch:60, train_loss:4.42703, val_nll:18.90268, val_rmse:18.9027, test_loss:deferred
+member:0, epoch:61, train_loss:4.41484, val_nll:19.38819, val_rmse:19.3882, test_loss:deferred
+member:0, epoch:62, train_loss:4.42465, val_nll:19.46546, val_rmse:19.4655, test_loss:deferred
+member:0, epoch:63, train_loss:4.41970, val_nll:19.39013, val_rmse:19.3901, test_loss:deferred
+member:0, epoch:64, train_loss:4.40984, val_nll:19.03594, val_rmse:19.0359, test_loss:deferred
+member:0, epoch:65, train_loss:4.41031, val_nll:19.12461, val_rmse:19.1246, test_loss:deferred
+member:0, epoch:66, train_loss:4.42531, val_nll:19.55155, val_rmse:19.5516, test_loss:deferred
+member:0, epoch:67, train_loss:4.43442, val_nll:19.36080, val_rmse:19.3608, test_loss:deferred
+member:0, epoch:68, train_loss:4.41304, val_nll:18.92028, val_rmse:18.9203, test_loss:deferred
+member:0, epoch:69, train_loss:4.41705, val_nll:19.01742, val_rmse:19.0174, test_loss:deferred
+member:0, epoch:70, train_loss:4.41549, val_nll:19.27207, val_rmse:19.2721, test_loss:deferred
+member:0, epoch:71, train_loss:4.40774, val_nll:19.59585, val_rmse:19.5959, test_loss:deferred
+member:0, epoch:72, train_loss:4.40915, val_nll:19.23481, val_rmse:19.2348, test_loss:deferred
+member:0, epoch:73, train_loss:4.40873, val_nll:18.81051, val_rmse:18.8105, test_loss:deferred
+member:0, epoch:74, train_loss:4.41216, val_nll:19.44123, val_rmse:19.4412, test_loss:deferred
+member:0, epoch:75, train_loss:4.40781, val_nll:19.51972, val_rmse:19.5197, test_loss:deferred
+member:0, epoch:76, train_loss:4.41741, val_nll:19.09623, val_rmse:19.0962, test_loss:deferred
+member:0, epoch:77, train_loss:4.40944, val_nll:19.06067, val_rmse:19.0607, test_loss:deferred
+member:0, epoch:78, train_loss:4.41466, val_nll:19.64299, val_rmse:19.6430, test_loss:deferred
+member:0, epoch:79, train_loss:4.41397, val_nll:19.08698, val_rmse:19.0870, test_loss:deferred
+member:0, epoch:80, train_loss:4.40162, val_nll:19.12490, val_rmse:19.1249, test_loss:deferred
+member:0, epoch:81, train_loss:4.39956, val_nll:19.07123, val_rmse:19.0712, test_loss:deferred
+member:0, epoch:82, train_loss:4.40702, val_nll:19.40613, val_rmse:19.4061, test_loss:deferred
+member:0, epoch:83, train_loss:4.42962, val_nll:19.49923, val_rmse:19.4992, test_loss:deferred
+member:0, epoch:84, train_loss:4.40657, val_nll:18.84204, val_rmse:18.8420, test_loss:deferred
+member:0, epoch:85, train_loss:4.41248, val_nll:19.50131, val_rmse:19.5013, test_loss:deferred
+member:0, epoch:86, train_loss:4.40915, val_nll:18.86077, val_rmse:18.8608, test_loss:deferred
+member:0, epoch:87, train_loss:4.40303, val_nll:19.09677, val_rmse:19.0968, test_loss:deferred
+member:0, epoch:88, train_loss:4.40680, val_nll:19.00848, val_rmse:19.0085, test_loss:deferred
+member:0, epoch:89, train_loss:4.41072, val_nll:19.42416, val_rmse:19.4242, test_loss:deferred
+member:0, epoch:90, train_loss:4.39872, val_nll:19.19770, val_rmse:19.1977, test_loss:deferred
+member:0, epoch:91, train_loss:4.40198, val_nll:19.30401, val_rmse:19.3040, test_loss:deferred
+member:0, epoch:92, train_loss:4.39893, val_nll:19.53388, val_rmse:19.5339, test_loss:deferred
+member:0, epoch:93, train_loss:4.41075, val_nll:19.49490, val_rmse:19.4949, test_loss:deferred
+member:0, epoch:94, train_loss:4.40122, val_nll:18.93474, val_rmse:18.9347, test_loss:deferred
+member:0, epoch:95, train_loss:4.40243, val_nll:19.58439, val_rmse:19.5844, test_loss:deferred
+member:0, epoch:96, train_loss:4.40704, val_nll:19.44121, val_rmse:19.4412, test_loss:deferred
+member:0, epoch:97, train_loss:4.40365, val_nll:19.35813, val_rmse:19.3581, test_loss:deferred
+member:0, epoch:98, train_loss:4.42505, val_nll:19.18087, val_rmse:19.1809, test_loss:deferred
+member:0, epoch:99, train_loss:4.42207, val_nll:18.89681, val_rmse:18.8968, test_loss:deferred
+member:0, epoch:100, train_loss:4.41662, val_nll:19.25862, val_rmse:19.2586, test_loss:deferred
+member:0, epoch:101, train_loss:4.40400, val_nll:19.14784, val_rmse:19.1478, test_loss:deferred
+member:0, epoch:102, train_loss:4.40535, val_nll:19.17540, val_rmse:19.1754, test_loss:deferred
+member:0, epoch:103, train_loss:4.41067, val_nll:19.43080, val_rmse:19.4308, test_loss:deferred
+member:0, epoch:104, train_loss:4.39842, val_nll:19.15419, val_rmse:19.1542, test_loss:deferred
+member:0, epoch:105, train_loss:4.40288, val_nll:19.43377, val_rmse:19.4338, test_loss:deferred
+member:0, epoch:106, train_loss:4.39329, val_nll:18.94574, val_rmse:18.9457, test_loss:deferred
+member:0, epoch:107, train_loss:4.40849, val_nll:18.82438, val_rmse:18.8244, test_loss:deferred
+member:0, epoch:108, train_loss:4.39799, val_nll:19.10824, val_rmse:19.1082, test_loss:deferred
+member:0, epoch:109, train_loss:4.39386, val_nll:19.69686, val_rmse:19.6969, test_loss:deferred
+member:0, epoch:110, train_loss:4.40296, val_nll:19.17488, val_rmse:19.1749, test_loss:deferred
+member:0, epoch:111, train_loss:4.39770, val_nll:19.47099, val_rmse:19.4710, test_loss:deferred
+member:0, epoch:112, train_loss:4.39965, val_nll:19.46889, val_rmse:19.4689, test_loss:deferred
+member:0, epoch:113, train_loss:4.39578, val_nll:19.09283, val_rmse:19.0928, test_loss:deferred
+member:0, epoch:114, train_loss:4.40578, val_nll:19.54930, val_rmse:19.5493, test_loss:deferred
+member:0, epoch:115, train_loss:4.40605, val_nll:19.03091, val_rmse:19.0309, test_loss:deferred
+member:0, epoch:116, train_loss:4.38519, val_nll:19.71750, val_rmse:19.7175, test_loss:deferred
+member:0, epoch:117, train_loss:4.39511, val_nll:19.50107, val_rmse:19.5011, test_loss:deferred
+member:0, epoch:118, train_loss:4.39756, val_nll:18.78041, val_rmse:18.7804, test_loss:deferred
+member:0, epoch:119, train_loss:4.39421, val_nll:19.57065, val_rmse:19.5707, test_loss:deferred
+member:0, epoch:120, train_loss:4.37892, val_nll:19.09577, val_rmse:19.0958, test_loss:deferred
+member:0, epoch:121, train_loss:4.40409, val_nll:19.32799, val_rmse:19.3280, test_loss:deferred
+member:0, epoch:122, train_loss:4.41572, val_nll:18.88877, val_rmse:18.8888, test_loss:deferred
+member:0, epoch:123, train_loss:4.41443, val_nll:19.28715, val_rmse:19.2871, test_loss:deferred
+member:0, epoch:124, train_loss:4.39840, val_nll:19.19199, val_rmse:19.1920, test_loss:deferred
+member:0, epoch:125, train_loss:4.41552, val_nll:20.00155, val_rmse:20.0016, test_loss:deferred
+member:0, epoch:126, train_loss:4.39784, val_nll:18.90567, val_rmse:18.9057, test_loss:deferred
+member:0, epoch:127, train_loss:4.40363, val_nll:18.79777, val_rmse:18.7978, test_loss:deferred
+member:0, epoch:128, train_loss:4.39492, val_nll:19.35537, val_rmse:19.3554, test_loss:deferred
+member:0, epoch:129, train_loss:4.38060, val_nll:19.54895, val_rmse:19.5489, test_loss:deferred
+member:0, epoch:130, train_loss:4.39711, val_nll:19.28427, val_rmse:19.2843, test_loss:deferred
+member:0, epoch:131, train_loss:4.39499, val_nll:19.08024, val_rmse:19.0802, test_loss:deferred
+member:0, epoch:132, train_loss:4.39282, val_nll:19.58256, val_rmse:19.5826, test_loss:deferred
+member:0, epoch:133, train_loss:4.39114, val_nll:19.24348, val_rmse:19.2435, test_loss:deferred
+member:0, epoch:134, train_loss:4.39130, val_nll:19.48003, val_rmse:19.4800, test_loss:deferred
+member:0, epoch:135, train_loss:4.39365, val_nll:18.55845, val_rmse:18.5584, test_loss:deferred
+member:0, epoch:136, train_loss:4.40109, val_nll:19.30383, val_rmse:19.3038, test_loss:deferred
+member:0, epoch:137, train_loss:4.40155, val_nll:19.25958, val_rmse:19.2596, test_loss:deferred
+member:0, epoch:138, train_loss:4.39831, val_nll:19.20180, val_rmse:19.2018, test_loss:deferred
+member:0, epoch:139, train_loss:4.39151, val_nll:19.15165, val_rmse:19.1517, test_loss:deferred
+member:0, epoch:140, train_loss:4.38129, val_nll:19.05527, val_rmse:19.0553, test_loss:deferred
+member:0, epoch:141, train_loss:4.39242, val_nll:19.41943, val_rmse:19.4194, test_loss:deferred
+member:0, epoch:142, train_loss:4.40465, val_nll:19.08458, val_rmse:19.0846, test_loss:deferred
+member:0, epoch:143, train_loss:4.40128, val_nll:18.95290, val_rmse:18.9529, test_loss:deferred
+member:0, epoch:144, train_loss:4.39874, val_nll:18.88024, val_rmse:18.8802, test_loss:deferred
+member:0, epoch:145, train_loss:4.38831, val_nll:19.15722, val_rmse:19.1572, test_loss:deferred
+member:0, epoch:146, train_loss:4.38057, val_nll:19.03047, val_rmse:19.0305, test_loss:deferred
+member:0, epoch:147, train_loss:4.36804, val_nll:19.32936, val_rmse:19.3294, test_loss:deferred
+member:0, epoch:148, train_loss:4.37251, val_nll:18.94969, val_rmse:18.9497, test_loss:deferred
+member:0, epoch:149, train_loss:4.36185, val_nll:19.87268, val_rmse:19.8727, test_loss:deferred
+member:0, epoch:150, train_loss:4.38051, val_nll:19.27907, val_rmse:19.2791, test_loss:deferred
+member:0, epoch:151, train_loss:4.36951, val_nll:19.70894, val_rmse:19.7089, test_loss:deferred
+member:0, epoch:152, train_loss:4.35614, val_nll:19.74055, val_rmse:19.7406, test_loss:deferred
+member:0, epoch:153, train_loss:4.35887, val_nll:19.67495, val_rmse:19.6750, test_loss:deferred
+member:0, epoch:154, train_loss:4.36353, val_nll:18.55155, val_rmse:18.5515, test_loss:deferred
+member:0, epoch:155, train_loss:4.37732, val_nll:19.02098, val_rmse:19.0210, test_loss:deferred
+member:0, epoch:156, train_loss:4.37966, val_nll:18.75237, val_rmse:18.7524, test_loss:deferred
+member:0, epoch:157, train_loss:4.36388, val_nll:19.62976, val_rmse:19.6298, test_loss:deferred
+member:0, epoch:158, train_loss:4.37003, val_nll:18.52584, val_rmse:18.5258, test_loss:deferred
+member:0, epoch:159, train_loss:4.38127, val_nll:17.92006, val_rmse:17.9201, test_loss:deferred
+member:0, epoch:160, train_loss:4.35496, val_nll:18.49873, val_rmse:18.4987, test_loss:deferred
+member:0, epoch:161, train_loss:4.33573, val_nll:19.24306, val_rmse:19.2431, test_loss:deferred
+member:0, epoch:162, train_loss:4.33354, val_nll:19.77315, val_rmse:19.7732, test_loss:deferred
+member:0, epoch:163, train_loss:4.32350, val_nll:18.74476, val_rmse:18.7448, test_loss:deferred
+member:0, epoch:164, train_loss:4.32375, val_nll:18.47387, val_rmse:18.4739, test_loss:deferred
+member:0, epoch:165, train_loss:4.32241, val_nll:17.25855, val_rmse:17.2586, test_loss:deferred
+member:0, epoch:166, train_loss:4.36055, val_nll:19.08553, val_rmse:19.0855, test_loss:deferred
+member:0, epoch:167, train_loss:4.31785, val_nll:18.64767, val_rmse:18.6477, test_loss:deferred
+member:0, epoch:168, train_loss:4.27288, val_nll:16.93637, val_rmse:16.9364, test_loss:deferred
+member:0, epoch:169, train_loss:4.26749, val_nll:16.71077, val_rmse:16.7108, test_loss:deferred
+member:0, epoch:170, train_loss:4.24681, val_nll:16.20902, val_rmse:16.2090, test_loss:deferred
+member:0, epoch:171, train_loss:4.24706, val_nll:19.64362, val_rmse:19.6436, test_loss:deferred
+member:0, epoch:172, train_loss:4.23216, val_nll:15.34403, val_rmse:15.3440, test_loss:deferred
+member:0, epoch:173, train_loss:4.27650, val_nll:18.48704, val_rmse:18.4870, test_loss:deferred
+member:0, epoch:174, train_loss:4.29381, val_nll:18.16452, val_rmse:18.1645, test_loss:deferred
+member:0, epoch:175, train_loss:4.25508, val_nll:16.64138, val_rmse:16.6414, test_loss:deferred
+member:0, epoch:176, train_loss:4.15707, val_nll:14.54979, val_rmse:14.5498, test_loss:deferred
+member:0, epoch:177, train_loss:4.21258, val_nll:15.45325, val_rmse:15.4532, test_loss:deferred
+member:0, epoch:178, train_loss:4.20540, val_nll:19.32530, val_rmse:19.3253, test_loss:deferred
+member:0, epoch:179, train_loss:4.07051, val_nll:16.15504, val_rmse:16.1550, test_loss:deferred
+member:0, epoch:180, train_loss:4.09392, val_nll:12.23358, val_rmse:12.2336, test_loss:deferred
+member:0, epoch:181, train_loss:4.14619, val_nll:18.36028, val_rmse:18.3603, test_loss:deferred
+member:0, epoch:182, train_loss:4.13511, val_nll:17.45565, val_rmse:17.4556, test_loss:deferred
+member:0, epoch:183, train_loss:4.15202, val_nll:20.47615, val_rmse:20.4761, test_loss:deferred
+member:0, epoch:184, train_loss:4.21457, val_nll:16.34881, val_rmse:16.3488, test_loss:deferred
+member:0, epoch:185, train_loss:4.06244, val_nll:14.67076, val_rmse:14.6708, test_loss:deferred
+member:0, epoch:186, train_loss:3.97761, val_nll:20.42385, val_rmse:20.4238, test_loss:deferred
+member:0, epoch:187, train_loss:4.10927, val_nll:13.22188, val_rmse:13.2219, test_loss:deferred
+member:0, epoch:188, train_loss:3.99442, val_nll:12.49425, val_rmse:12.4943, test_loss:deferred
+member:0, epoch:189, train_loss:3.90349, val_nll:13.73889, val_rmse:13.7389, test_loss:deferred
+member:0, epoch:190, train_loss:4.23081, val_nll:12.31084, val_rmse:12.3108, test_loss:deferred
+member:0, epoch:191, train_loss:4.03007, val_nll:11.51033, val_rmse:11.5103, test_loss:deferred
+member:0, epoch:192, train_loss:3.92366, val_nll:12.79054, val_rmse:12.7905, test_loss:deferred
+member:0, epoch:193, train_loss:3.74742, val_nll:14.91221, val_rmse:14.9122, test_loss:deferred
+member:0, epoch:194, train_loss:4.01823, val_nll:15.88441, val_rmse:15.8844, test_loss:deferred
+member:0, epoch:195, train_loss:3.95936, val_nll:12.34134, val_rmse:12.3413, test_loss:deferred
+member:0, epoch:196, train_loss:3.91438, val_nll:10.09321, val_rmse:10.0932, test_loss:deferred
+member:0, epoch:197, train_loss:3.75561, val_nll:9.05992, val_rmse:9.0599, test_loss:deferred
+member:0, epoch:198, train_loss:3.67074, val_nll:14.23780, val_rmse:14.2378, test_loss:deferred
+member:0, epoch:199, train_loss:3.80450, val_nll:11.49890, val_rmse:11.4989, test_loss:deferred
+member:0, epoch:200, train_loss:3.76990, val_nll:11.59383, val_rmse:11.5938, test_loss:deferred
+member:0, epoch:201, train_loss:3.77675, val_nll:12.31958, val_rmse:12.3196, test_loss:deferred
+member:0, epoch:202, train_loss:3.74566, val_nll:12.35511, val_rmse:12.3551, test_loss:deferred
+member:0, epoch:203, train_loss:3.64026, val_nll:13.21555, val_rmse:13.2156, test_loss:deferred
+member:0, epoch:204, train_loss:3.48512, val_nll:8.53411, val_rmse:8.5341, test_loss:deferred
+member:0, epoch:205, train_loss:3.72415, val_nll:7.53051, val_rmse:7.5305, test_loss:deferred
+member:0, epoch:206, train_loss:3.63062, val_nll:10.58377, val_rmse:10.5838, test_loss:deferred
+member:0, epoch:207, train_loss:3.56653, val_nll:13.66968, val_rmse:13.6697, test_loss:deferred
+member:0, epoch:208, train_loss:3.30653, val_nll:15.38259, val_rmse:15.3826, test_loss:deferred
+member:0, epoch:209, train_loss:4.04589, val_nll:13.27247, val_rmse:13.2725, test_loss:deferred
+member:0, epoch:210, train_loss:3.92328, val_nll:10.66532, val_rmse:10.6653, test_loss:deferred
+member:0, epoch:211, train_loss:3.89183, val_nll:9.92234, val_rmse:9.9223, test_loss:deferred
+member:0, epoch:212, train_loss:3.75873, val_nll:9.90002, val_rmse:9.9000, test_loss:deferred
+member:0, epoch:213, train_loss:3.58699, val_nll:11.22080, val_rmse:11.2208, test_loss:deferred
+member:0, epoch:214, train_loss:3.42857, val_nll:10.27947, val_rmse:10.2795, test_loss:deferred
+member:0, epoch:215, train_loss:3.52173, val_nll:12.87097, val_rmse:12.8710, test_loss:deferred
+member:0, epoch:216, train_loss:3.51770, val_nll:12.71664, val_rmse:12.7166, test_loss:deferred
+member:0, epoch:217, train_loss:3.32004, val_nll:13.51015, val_rmse:13.5102, test_loss:deferred
+member:0, epoch:218, train_loss:3.39108, val_nll:14.11700, val_rmse:14.1170, test_loss:deferred
+member:0, epoch:219, train_loss:3.48388, val_nll:7.61758, val_rmse:7.6176, test_loss:deferred
+member:0, epoch:220, train_loss:3.34998, val_nll:11.60455, val_rmse:11.6045, test_loss:deferred
+member:0, epoch:221, train_loss:3.30114, val_nll:11.60937, val_rmse:11.6094, test_loss:deferred
+member:0, epoch:222, train_loss:3.28090, val_nll:17.00055, val_rmse:17.0005, test_loss:deferred
+member:0, epoch:223, train_loss:3.44980, val_nll:10.19283, val_rmse:10.1928, test_loss:deferred
+member:0, epoch:224, train_loss:3.23689, val_nll:10.70196, val_rmse:10.7020, test_loss:deferred
+member:0, epoch:225, train_loss:3.16864, val_nll:11.27347, val_rmse:11.2735, test_loss:deferred
+member:0, epoch:226, train_loss:3.20454, val_nll:12.06907, val_rmse:12.0691, test_loss:deferred
+member:0, epoch:227, train_loss:3.27103, val_nll:14.26885, val_rmse:14.2688, test_loss:deferred
+member:0, epoch:228, train_loss:3.22200, val_nll:9.43705, val_rmse:9.4371, test_loss:deferred
+member:0, epoch:229, train_loss:3.12960, val_nll:11.88970, val_rmse:11.8897, test_loss:deferred
+member:0, epoch:230, train_loss:3.07774, val_nll:14.06362, val_rmse:14.0636, test_loss:deferred
+member:0, epoch:231, train_loss:3.13025, val_nll:12.21974, val_rmse:12.2197, test_loss:deferred
+member:0, epoch:232, train_loss:3.04849, val_nll:11.80600, val_rmse:11.8060, test_loss:deferred
+member:0, epoch:233, train_loss:3.07109, val_nll:12.99028, val_rmse:12.9903, test_loss:deferred
+member:0, epoch:234, train_loss:3.13103, val_nll:9.14522, val_rmse:9.1452, test_loss:deferred
+member:0, epoch:235, train_loss:3.03132, val_nll:9.84738, val_rmse:9.8474, test_loss:deferred
+member:0, epoch:236, train_loss:2.94666, val_nll:9.69622, val_rmse:9.6962, test_loss:deferred
+member:0, epoch:237, train_loss:2.96985, val_nll:6.51530, val_rmse:6.5153, test_loss:deferred
+member:0, epoch:238, train_loss:3.14754, val_nll:12.30533, val_rmse:12.3053, test_loss:deferred
+member:0, epoch:239, train_loss:3.15199, val_nll:8.52313, val_rmse:8.5231, test_loss:deferred
+member:0, epoch:240, train_loss:3.02520, val_nll:10.61504, val_rmse:10.6150, test_loss:deferred
+member:0, epoch:241, train_loss:3.04179, val_nll:8.27952, val_rmse:8.2795, test_loss:deferred
+member:0, epoch:242, train_loss:3.25783, val_nll:12.01940, val_rmse:12.0194, test_loss:deferred
+member:0, epoch:243, train_loss:3.07573, val_nll:10.66619, val_rmse:10.6662, test_loss:deferred
+member:0, epoch:244, train_loss:2.99470, val_nll:10.26962, val_rmse:10.2696, test_loss:deferred
+member:0, epoch:245, train_loss:3.07484, val_nll:8.89148, val_rmse:8.8915, test_loss:deferred
+member:0, epoch:246, train_loss:3.00589, val_nll:14.16555, val_rmse:14.1655, test_loss:deferred
+member:0, epoch:247, train_loss:2.95451, val_nll:10.54715, val_rmse:10.5471, test_loss:deferred
+member:0, epoch:248, train_loss:2.89371, val_nll:10.95660, val_rmse:10.9566, test_loss:deferred
+member:0, epoch:249, train_loss:3.01813, val_nll:10.02162, val_rmse:10.0216, test_loss:deferred
+member:0, epoch:250, train_loss:2.92959, val_nll:7.18171, val_rmse:7.1817, test_loss:deferred
+member:0, epoch:251, train_loss:3.17442, val_nll:13.11914, val_rmse:13.1191, test_loss:deferred
+member:0, epoch:252, train_loss:3.10038, val_nll:11.95974, val_rmse:11.9597, test_loss:deferred
+member:0, epoch:253, train_loss:2.96011, val_nll:11.14129, val_rmse:11.1413, test_loss:deferred
+member:0, epoch:254, train_loss:2.76952, val_nll:8.94575, val_rmse:8.9457, test_loss:deferred
+member:0, epoch:255, train_loss:2.82267, val_nll:9.16321, val_rmse:9.1632, test_loss:deferred
+member:0, epoch:256, train_loss:2.77104, val_nll:9.34699, val_rmse:9.3470, test_loss:deferred
+member:0, epoch:257, train_loss:3.04330, val_nll:7.31520, val_rmse:7.3152, test_loss:deferred
+member:0, epoch:258, train_loss:3.24271, val_nll:9.59966, val_rmse:9.5997, test_loss:deferred
+member:0, epoch:259, train_loss:3.10966, val_nll:7.57673, val_rmse:7.5767, test_loss:deferred
+member:0, epoch:260, train_loss:3.07080, val_nll:10.01631, val_rmse:10.0163, test_loss:deferred
+member:0, epoch:261, train_loss:2.91657, val_nll:9.47291, val_rmse:9.4729, test_loss:deferred
+member:0, epoch:262, train_loss:2.86052, val_nll:8.33288, val_rmse:8.3329, test_loss:deferred
+member:0, epoch:263, train_loss:2.95233, val_nll:11.02234, val_rmse:11.0223, test_loss:deferred
+member:0, epoch:264, train_loss:3.09254, val_nll:11.47906, val_rmse:11.4791, test_loss:deferred
+member:0, epoch:265, train_loss:2.98385, val_nll:12.21964, val_rmse:12.2196, test_loss:deferred
+member:0, epoch:266, train_loss:2.94640, val_nll:11.85985, val_rmse:11.8599, test_loss:deferred
+member:0, epoch:267, train_loss:2.80698, val_nll:8.39557, val_rmse:8.3956, test_loss:deferred
+member:0, epoch:268, train_loss:2.77397, val_nll:7.01191, val_rmse:7.0119, test_loss:deferred
+member:0, epoch:269, train_loss:3.03060, val_nll:11.39446, val_rmse:11.3945, test_loss:deferred
+member:0, epoch:270, train_loss:3.07271, val_nll:12.75794, val_rmse:12.7579, test_loss:deferred
+member:0, epoch:271, train_loss:2.86017, val_nll:10.13419, val_rmse:10.1342, test_loss:deferred
+member:0, epoch:272, train_loss:2.73412, val_nll:10.21574, val_rmse:10.2157, test_loss:deferred
+member:0, epoch:273, train_loss:3.39611, val_nll:12.15813, val_rmse:12.1581, test_loss:deferred
+member:0, epoch:274, train_loss:3.33241, val_nll:10.57421, val_rmse:10.5742, test_loss:deferred
+member:0, epoch:275, train_loss:3.24945, val_nll:9.66615, val_rmse:9.6661, test_loss:deferred
+member:0, epoch:276, train_loss:3.09182, val_nll:11.01629, val_rmse:11.0163, test_loss:deferred
+member:0, epoch:277, train_loss:3.01376, val_nll:9.46628, val_rmse:9.4663, test_loss:deferred
+member:0, epoch:278, train_loss:2.85186, val_nll:9.58627, val_rmse:9.5863, test_loss:deferred
+member:0, epoch:279, train_loss:2.80280, val_nll:8.57873, val_rmse:8.5787, test_loss:deferred
+member:0, epoch:280, train_loss:2.70549, val_nll:8.76715, val_rmse:8.7671, test_loss:deferred
+member:0, epoch:281, train_loss:2.71636, val_nll:11.29583, val_rmse:11.2958, test_loss:deferred
+member:0, epoch:282, train_loss:2.77111, val_nll:6.85007, val_rmse:6.8501, test_loss:deferred
+member:0, epoch:283, train_loss:2.88358, val_nll:11.34440, val_rmse:11.3444, test_loss:deferred
+member:0, epoch:284, train_loss:2.83404, val_nll:11.24549, val_rmse:11.2455, test_loss:deferred
+member:0, epoch:285, train_loss:2.71553, val_nll:10.21513, val_rmse:10.2151, test_loss:deferred
+member:0, epoch:286, train_loss:2.62375, val_nll:11.03056, val_rmse:11.0306, test_loss:deferred
+member:0, epoch:287, train_loss:2.77692, val_nll:9.54644, val_rmse:9.5464, test_loss:deferred
+member:0, epoch:288, train_loss:2.75066, val_nll:8.96953, val_rmse:8.9695, test_loss:deferred
+member:0, epoch:289, train_loss:2.72496, val_nll:10.07390, val_rmse:10.0739, test_loss:deferred
+member:0, epoch:290, train_loss:2.78720, val_nll:11.56430, val_rmse:11.5643, test_loss:deferred
+member:0, epoch:291, train_loss:2.71195, val_nll:10.01112, val_rmse:10.0111, test_loss:deferred
+member:0, epoch:292, train_loss:2.89215, val_nll:9.53423, val_rmse:9.5342, test_loss:deferred
+member:0, epoch:293, train_loss:2.86244, val_nll:10.50768, val_rmse:10.5077, test_loss:deferred
+member:0, epoch:294, train_loss:2.75406, val_nll:9.21822, val_rmse:9.2182, test_loss:deferred
+member:0, epoch:295, train_loss:2.55592, val_nll:7.73361, val_rmse:7.7336, test_loss:deferred
+member:0, epoch:296, train_loss:2.61691, val_nll:7.83446, val_rmse:7.8345, test_loss:deferred
+member:0, epoch:297, train_loss:2.75203, val_nll:7.89472, val_rmse:7.8947, test_loss:deferred
+member:0, epoch:298, train_loss:2.66689, val_nll:9.56475, val_rmse:9.5647, test_loss:deferred
+member:0, epoch:299, train_loss:2.72502, val_nll:12.94151, val_rmse:12.9415, test_loss:deferred
+member:0, epoch:300, train_loss:2.72969, val_nll:9.63862, val_rmse:9.6386, test_loss:deferred
+MAE: 10.43 RMSE: 15.45 NLL: 7.6527 CRPS: 8.6292 PICP: 0.4167 MPIW: 10.5575
+=== DS08a tcn_transformer_mc start 2026-11-05 09:35:01 ===
+member:0, epoch:1, train_loss:1840.71166, val_nll:28.60602, val_rmse:28.6060, test_loss:deferred
+member:0, epoch:2, train_loss:1792.59939, val_nll:28.13484, val_rmse:28.1348, test_loss:deferred
+member:0, epoch:3, train_loss:1758.02815, val_nll:27.72098, val_rmse:27.7210, test_loss:deferred
+member:0, epoch:4, train_loss:1727.61950, val_nll:27.29553, val_rmse:27.2955, test_loss:deferred
+member:0, epoch:5, train_loss:1695.99419, val_nll:26.75179, val_rmse:26.7518, test_loss:deferred
+member:0, epoch:6, train_loss:1653.52487, val_nll:25.82166, val_rmse:25.8217, test_loss:deferred
+member:0, epoch:7, train_loss:1578.47828, val_nll:24.03249, val_rmse:24.0325, test_loss:deferred
+member:0, epoch:8, train_loss:1442.79009, val_nll:20.86287, val_rmse:20.8629, test_loss:deferred
+member:0, epoch:9, train_loss:1218.00292, val_nll:18.92263, val_rmse:18.9226, test_loss:deferred
+member:0, epoch:10, train_loss:1010.23789, val_nll:19.03948, val_rmse:19.0395, test_loss:deferred
+member:0, epoch:11, train_loss:803.27243, val_nll:15.82656, val_rmse:15.8266, test_loss:deferred
+member:0, epoch:12, train_loss:680.75816, val_nll:15.46055, val_rmse:15.4605, test_loss:deferred
+member:0, epoch:13, train_loss:591.36755, val_nll:14.84602, val_rmse:14.8460, test_loss:deferred
+member:0, epoch:14, train_loss:618.27027, val_nll:14.38231, val_rmse:14.3823, test_loss:deferred
+member:0, epoch:15, train_loss:606.44970, val_nll:14.59486, val_rmse:14.5949, test_loss:deferred
+member:0, epoch:16, train_loss:576.32690, val_nll:14.92199, val_rmse:14.9220, test_loss:deferred
+member:0, epoch:17, train_loss:512.05495, val_nll:14.00351, val_rmse:14.0035, test_loss:deferred
+member:0, epoch:18, train_loss:508.04801, val_nll:13.58443, val_rmse:13.5844, test_loss:deferred
+member:0, epoch:19, train_loss:469.34617, val_nll:13.30190, val_rmse:13.3019, test_loss:deferred
+member:0, epoch:20, train_loss:414.54428, val_nll:13.10227, val_rmse:13.1023, test_loss:deferred
+member:0, epoch:21, train_loss:360.48070, val_nll:12.94461, val_rmse:12.9446, test_loss:deferred
+member:0, epoch:22, train_loss:331.29839, val_nll:12.71012, val_rmse:12.7101, test_loss:deferred
+member:0, epoch:23, train_loss:276.11333, val_nll:13.06426, val_rmse:13.0643, test_loss:deferred
+member:0, epoch:24, train_loss:242.58229, val_nll:13.14206, val_rmse:13.1421, test_loss:deferred
+member:0, epoch:25, train_loss:206.64474, val_nll:13.87128, val_rmse:13.8713, test_loss:deferred
+member:0, epoch:26, train_loss:186.47173, val_nll:13.63988, val_rmse:13.6399, test_loss:deferred
+member:0, epoch:27, train_loss:199.47433, val_nll:13.31219, val_rmse:13.3122, test_loss:deferred
+member:0, epoch:28, train_loss:191.37444, val_nll:13.28942, val_rmse:13.2894, test_loss:deferred
+member:0, epoch:29, train_loss:167.77338, val_nll:13.67497, val_rmse:13.6750, test_loss:deferred
+member:0, epoch:30, train_loss:171.67919, val_nll:14.77792, val_rmse:14.7779, test_loss:deferred
+member:0, epoch:31, train_loss:163.11482, val_nll:13.93509, val_rmse:13.9351, test_loss:deferred
+member:0, epoch:32, train_loss:144.84156, val_nll:13.02842, val_rmse:13.0284, test_loss:deferred
+member:0, epoch:33, train_loss:160.68395, val_nll:13.10582, val_rmse:13.1058, test_loss:deferred
+member:0, epoch:34, train_loss:153.69926, val_nll:13.15304, val_rmse:13.1530, test_loss:deferred
+member:0, epoch:35, train_loss:144.64603, val_nll:14.12067, val_rmse:14.1207, test_loss:deferred
+member:0, epoch:36, train_loss:147.18310, val_nll:13.10693, val_rmse:13.1069, test_loss:deferred
+member:0, epoch:37, train_loss:130.25589, val_nll:14.20537, val_rmse:14.2054, test_loss:deferred
+member:0, epoch:38, train_loss:140.97561, val_nll:13.49445, val_rmse:13.4944, test_loss:deferred
+member:0, epoch:39, train_loss:132.19828, val_nll:13.90201, val_rmse:13.9020, test_loss:deferred
+member:0, epoch:40, train_loss:134.82861, val_nll:13.36328, val_rmse:13.3633, test_loss:deferred
+member:0, epoch:41, train_loss:138.01591, val_nll:12.87304, val_rmse:12.8730, test_loss:deferred
+member:0, epoch:42, train_loss:129.80512, val_nll:13.37949, val_rmse:13.3795, test_loss:deferred
+member:0, epoch:43, train_loss:112.76699, val_nll:12.76081, val_rmse:12.7608, test_loss:deferred
+member:0, epoch:44, train_loss:110.42918, val_nll:13.59884, val_rmse:13.5988, test_loss:deferred
+member:0, epoch:45, train_loss:115.64570, val_nll:13.07723, val_rmse:13.0772, test_loss:deferred
+member:0, epoch:46, train_loss:140.92036, val_nll:13.77284, val_rmse:13.7728, test_loss:deferred
+member:0, epoch:47, train_loss:123.07270, val_nll:13.69107, val_rmse:13.6911, test_loss:deferred
+member:0, epoch:48, train_loss:130.68649, val_nll:12.76996, val_rmse:12.7700, test_loss:deferred
+member:0, epoch:49, train_loss:122.62122, val_nll:12.79574, val_rmse:12.7957, test_loss:deferred
+member:0, epoch:50, train_loss:97.57195, val_nll:13.87108, val_rmse:13.8711, test_loss:deferred
+member:0, epoch:51, train_loss:99.06499, val_nll:12.48718, val_rmse:12.4872, test_loss:deferred
+member:0, epoch:52, train_loss:125.22187, val_nll:13.79536, val_rmse:13.7954, test_loss:deferred
+member:0, epoch:53, train_loss:123.06663, val_nll:12.86740, val_rmse:12.8674, test_loss:deferred
+member:0, epoch:54, train_loss:98.45199, val_nll:13.40086, val_rmse:13.4009, test_loss:deferred
+member:0, epoch:55, train_loss:100.00102, val_nll:13.97500, val_rmse:13.9750, test_loss:deferred
+member:0, epoch:56, train_loss:94.59521, val_nll:13.49961, val_rmse:13.4996, test_loss:deferred
+member:0, epoch:57, train_loss:107.54095, val_nll:12.49592, val_rmse:12.4959, test_loss:deferred
+member:0, epoch:58, train_loss:100.59356, val_nll:13.94337, val_rmse:13.9434, test_loss:deferred
+member:0, epoch:59, train_loss:90.13629, val_nll:13.14033, val_rmse:13.1403, test_loss:deferred
+member:0, epoch:60, train_loss:94.38229, val_nll:14.16671, val_rmse:14.1667, test_loss:deferred
+member:0, epoch:61, train_loss:99.06252, val_nll:13.58000, val_rmse:13.5800, test_loss:deferred
+member:0, epoch:62, train_loss:85.69197, val_nll:14.00745, val_rmse:14.0075, test_loss:deferred
+member:0, epoch:63, train_loss:82.49713, val_nll:13.80902, val_rmse:13.8090, test_loss:deferred
+member:0, epoch:64, train_loss:81.15025, val_nll:13.18987, val_rmse:13.1899, test_loss:deferred
+member:0, epoch:65, train_loss:87.92987, val_nll:12.51770, val_rmse:12.5177, test_loss:deferred
+member:0, epoch:66, train_loss:84.75012, val_nll:13.80167, val_rmse:13.8017, test_loss:deferred
+member:0, epoch:67, train_loss:84.62825, val_nll:13.18206, val_rmse:13.1821, test_loss:deferred
+member:0, epoch:68, train_loss:86.81070, val_nll:13.58062, val_rmse:13.5806, test_loss:deferred
+member:0, epoch:69, train_loss:105.14228, val_nll:13.09408, val_rmse:13.0941, test_loss:deferred
+member:0, epoch:70, train_loss:91.16620, val_nll:12.79553, val_rmse:12.7955, test_loss:deferred
+member:0, epoch:71, train_loss:85.47654, val_nll:13.68658, val_rmse:13.6866, test_loss:deferred
+member:0, epoch:72, train_loss:85.14741, val_nll:12.94316, val_rmse:12.9432, test_loss:deferred
+member:0, epoch:73, train_loss:83.30244, val_nll:13.64214, val_rmse:13.6421, test_loss:deferred
+member:0, epoch:74, train_loss:80.26263, val_nll:12.99735, val_rmse:12.9974, test_loss:deferred
+member:0, epoch:75, train_loss:71.98634, val_nll:12.95103, val_rmse:12.9510, test_loss:deferred
+member:0, epoch:76, train_loss:71.71029, val_nll:13.52107, val_rmse:13.5211, test_loss:deferred
+member:0, epoch:77, train_loss:79.95540, val_nll:13.21004, val_rmse:13.2100, test_loss:deferred
+member:0, epoch:78, train_loss:77.68469, val_nll:13.98187, val_rmse:13.9819, test_loss:deferred
+member:0, epoch:79, train_loss:81.91410, val_nll:12.99561, val_rmse:12.9956, test_loss:deferred
+member:0, epoch:80, train_loss:100.29266, val_nll:13.43109, val_rmse:13.4311, test_loss:deferred
+member:0, epoch:81, train_loss:80.07643, val_nll:13.90776, val_rmse:13.9078, test_loss:deferred
+member:0, epoch:82, train_loss:78.86990, val_nll:12.87256, val_rmse:12.8726, test_loss:deferred
+member:0, epoch:83, train_loss:73.38823, val_nll:11.92359, val_rmse:11.9236, test_loss:deferred
+member:0, epoch:84, train_loss:64.51932, val_nll:13.15143, val_rmse:13.1514, test_loss:deferred
+member:0, epoch:85, train_loss:79.79323, val_nll:13.02531, val_rmse:13.0253, test_loss:deferred
+member:0, epoch:86, train_loss:80.42101, val_nll:13.32425, val_rmse:13.3242, test_loss:deferred
+member:0, epoch:87, train_loss:81.71393, val_nll:12.03026, val_rmse:12.0303, test_loss:deferred
+member:0, epoch:88, train_loss:72.96254, val_nll:12.76738, val_rmse:12.7674, test_loss:deferred
+member:0, epoch:89, train_loss:85.76006, val_nll:13.32788, val_rmse:13.3279, test_loss:deferred
+member:0, epoch:90, train_loss:74.21456, val_nll:11.65175, val_rmse:11.6518, test_loss:deferred
+member:0, epoch:91, train_loss:72.14946, val_nll:12.48104, val_rmse:12.4810, test_loss:deferred
+member:0, epoch:92, train_loss:66.19647, val_nll:10.56309, val_rmse:10.5631, test_loss:deferred
+member:0, epoch:93, train_loss:63.77938, val_nll:11.05694, val_rmse:11.0569, test_loss:deferred
+member:0, epoch:94, train_loss:64.91215, val_nll:12.11026, val_rmse:12.1103, test_loss:deferred
+member:0, epoch:95, train_loss:61.45146, val_nll:10.76971, val_rmse:10.7697, test_loss:deferred
+member:0, epoch:96, train_loss:61.21794, val_nll:9.79350, val_rmse:9.7935, test_loss:deferred
+member:0, epoch:97, train_loss:59.66217, val_nll:11.01667, val_rmse:11.0167, test_loss:deferred
+member:0, epoch:98, train_loss:60.36108, val_nll:9.76570, val_rmse:9.7657, test_loss:deferred
+member:0, epoch:99, train_loss:59.59492, val_nll:11.78668, val_rmse:11.7867, test_loss:deferred
+member:0, epoch:100, train_loss:62.38162, val_nll:9.82115, val_rmse:9.8212, test_loss:deferred
+member:0, epoch:101, train_loss:61.60862, val_nll:11.65171, val_rmse:11.6517, test_loss:deferred
+member:0, epoch:102, train_loss:59.68365, val_nll:12.02669, val_rmse:12.0267, test_loss:deferred
+member:0, epoch:103, train_loss:58.12294, val_nll:10.39138, val_rmse:10.3914, test_loss:deferred
+member:0, epoch:104, train_loss:60.77846, val_nll:10.48571, val_rmse:10.4857, test_loss:deferred
+member:0, epoch:105, train_loss:68.24646, val_nll:9.65667, val_rmse:9.6567, test_loss:deferred
+member:0, epoch:106, train_loss:60.86826, val_nll:10.94191, val_rmse:10.9419, test_loss:deferred
+member:0, epoch:107, train_loss:61.11811, val_nll:10.34770, val_rmse:10.3477, test_loss:deferred
+member:0, epoch:108, train_loss:67.53330, val_nll:11.23186, val_rmse:11.2319, test_loss:deferred
+member:0, epoch:109, train_loss:66.51531, val_nll:9.88945, val_rmse:9.8895, test_loss:deferred
+member:0, epoch:110, train_loss:53.79023, val_nll:11.40997, val_rmse:11.4100, test_loss:deferred
+member:0, epoch:111, train_loss:58.10049, val_nll:10.33658, val_rmse:10.3366, test_loss:deferred
+member:0, epoch:112, train_loss:58.25211, val_nll:10.67936, val_rmse:10.6794, test_loss:deferred
+member:0, epoch:113, train_loss:53.69483, val_nll:10.55491, val_rmse:10.5549, test_loss:deferred
+member:0, epoch:114, train_loss:53.26542, val_nll:10.53959, val_rmse:10.5396, test_loss:deferred
+member:0, epoch:115, train_loss:55.00603, val_nll:10.95635, val_rmse:10.9563, test_loss:deferred
+member:0, epoch:116, train_loss:57.91309, val_nll:9.83368, val_rmse:9.8337, test_loss:deferred
+member:0, epoch:117, train_loss:53.54929, val_nll:10.75137, val_rmse:10.7514, test_loss:deferred
+member:0, epoch:118, train_loss:72.66022, val_nll:12.90497, val_rmse:12.9050, test_loss:deferred
+member:0, epoch:119, train_loss:52.62786, val_nll:10.49703, val_rmse:10.4970, test_loss:deferred
+member:0, epoch:120, train_loss:52.22522, val_nll:11.91972, val_rmse:11.9197, test_loss:deferred
+member:0, epoch:121, train_loss:50.87570, val_nll:9.66663, val_rmse:9.6666, test_loss:deferred
+member:0, epoch:122, train_loss:50.52664, val_nll:10.79073, val_rmse:10.7907, test_loss:deferred
+member:0, epoch:123, train_loss:51.34696, val_nll:9.93915, val_rmse:9.9392, test_loss:deferred
+member:0, epoch:124, train_loss:59.43735, val_nll:11.63164, val_rmse:11.6316, test_loss:deferred
+member:0, epoch:125, train_loss:53.32722, val_nll:12.38814, val_rmse:12.3881, test_loss:deferred
+member:0, epoch:126, train_loss:51.33411, val_nll:10.42348, val_rmse:10.4235, test_loss:deferred
+member:0, epoch:127, train_loss:51.95599, val_nll:11.96266, val_rmse:11.9627, test_loss:deferred
+member:0, epoch:128, train_loss:50.26432, val_nll:11.79430, val_rmse:11.7943, test_loss:deferred
+member:0, epoch:129, train_loss:51.36074, val_nll:10.38304, val_rmse:10.3830, test_loss:deferred
+member:0, epoch:130, train_loss:58.43152, val_nll:12.06364, val_rmse:12.0636, test_loss:deferred
+member:0, epoch:131, train_loss:49.21486, val_nll:10.59831, val_rmse:10.5983, test_loss:deferred
+member:0, epoch:132, train_loss:50.32584, val_nll:12.35828, val_rmse:12.3583, test_loss:deferred
+member:0, epoch:133, train_loss:50.61679, val_nll:11.00072, val_rmse:11.0007, test_loss:deferred
+member:0, epoch:134, train_loss:44.01557, val_nll:12.46523, val_rmse:12.4652, test_loss:deferred
+member:0, epoch:135, train_loss:50.41695, val_nll:10.86450, val_rmse:10.8645, test_loss:deferred
+member:0, epoch:136, train_loss:46.66389, val_nll:9.89979, val_rmse:9.8998, test_loss:deferred
+member:0, epoch:137, train_loss:44.15499, val_nll:11.62066, val_rmse:11.6207, test_loss:deferred
+member:0, epoch:138, train_loss:53.07078, val_nll:9.88428, val_rmse:9.8843, test_loss:deferred
+member:0, epoch:139, train_loss:45.30698, val_nll:13.58182, val_rmse:13.5818, test_loss:deferred
+member:0, epoch:140, train_loss:48.03056, val_nll:10.29020, val_rmse:10.2902, test_loss:deferred
+member:0, epoch:141, train_loss:45.54964, val_nll:11.08107, val_rmse:11.0811, test_loss:deferred
+member:0, epoch:142, train_loss:35.83093, val_nll:10.34736, val_rmse:10.3474, test_loss:deferred
+member:0, epoch:143, train_loss:39.53783, val_nll:11.02305, val_rmse:11.0230, test_loss:deferred
+member:0, epoch:144, train_loss:48.64799, val_nll:11.34790, val_rmse:11.3479, test_loss:deferred
+member:0, epoch:145, train_loss:48.29275, val_nll:11.53294, val_rmse:11.5329, test_loss:deferred
+member:0, epoch:146, train_loss:42.03610, val_nll:13.42044, val_rmse:13.4204, test_loss:deferred
+member:0, epoch:147, train_loss:48.39640, val_nll:9.33440, val_rmse:9.3344, test_loss:deferred
+member:0, epoch:148, train_loss:53.87004, val_nll:14.31391, val_rmse:14.3139, test_loss:deferred
+member:0, epoch:149, train_loss:41.26140, val_nll:9.85752, val_rmse:9.8575, test_loss:deferred
+member:0, epoch:150, train_loss:44.87501, val_nll:13.20961, val_rmse:13.2096, test_loss:deferred
+member:0, epoch:151, train_loss:40.25332, val_nll:10.32595, val_rmse:10.3259, test_loss:deferred
+member:0, epoch:152, train_loss:51.33276, val_nll:13.51779, val_rmse:13.5178, test_loss:deferred
+member:0, epoch:153, train_loss:54.75333, val_nll:9.18609, val_rmse:9.1861, test_loss:deferred
+member:0, epoch:154, train_loss:52.34009, val_nll:14.85426, val_rmse:14.8543, test_loss:deferred
+member:0, epoch:155, train_loss:41.53039, val_nll:11.86131, val_rmse:11.8613, test_loss:deferred
+member:0, epoch:156, train_loss:47.74312, val_nll:13.64749, val_rmse:13.6475, test_loss:deferred
+member:0, epoch:157, train_loss:46.33519, val_nll:10.95882, val_rmse:10.9588, test_loss:deferred
+member:0, epoch:158, train_loss:49.37274, val_nll:10.91412, val_rmse:10.9141, test_loss:deferred
+member:0, epoch:159, train_loss:40.55324, val_nll:12.66585, val_rmse:12.6658, test_loss:deferred
+member:0, epoch:160, train_loss:47.05827, val_nll:9.88064, val_rmse:9.8806, test_loss:deferred
+member:0, epoch:161, train_loss:51.44698, val_nll:12.30462, val_rmse:12.3046, test_loss:deferred
+member:0, epoch:162, train_loss:41.98402, val_nll:10.79625, val_rmse:10.7963, test_loss:deferred
+member:0, epoch:163, train_loss:42.85552, val_nll:12.65679, val_rmse:12.6568, test_loss:deferred
+member:0, epoch:164, train_loss:47.86411, val_nll:12.17663, val_rmse:12.1766, test_loss:deferred
+member:0, epoch:165, train_loss:46.93121, val_nll:12.98770, val_rmse:12.9877, test_loss:deferred
+member:0, epoch:166, train_loss:44.31436, val_nll:13.18929, val_rmse:13.1893, test_loss:deferred
+member:0, epoch:167, train_loss:47.35642, val_nll:13.53921, val_rmse:13.5392, test_loss:deferred
+member:0, epoch:168, train_loss:36.84667, val_nll:14.03758, val_rmse:14.0376, test_loss:deferred
+member:0, epoch:169, train_loss:40.42394, val_nll:11.60819, val_rmse:11.6082, test_loss:deferred
+member:0, epoch:170, train_loss:44.07714, val_nll:11.99716, val_rmse:11.9972, test_loss:deferred
+member:0, epoch:171, train_loss:33.94465, val_nll:13.23568, val_rmse:13.2357, test_loss:deferred
+member:0, epoch:172, train_loss:40.26124, val_nll:12.76147, val_rmse:12.7615, test_loss:deferred
+member:0, epoch:173, train_loss:45.96124, val_nll:15.28350, val_rmse:15.2835, test_loss:deferred
+member:0, epoch:174, train_loss:42.61161, val_nll:10.92887, val_rmse:10.9289, test_loss:deferred
+member:0, epoch:175, train_loss:36.25041, val_nll:14.39550, val_rmse:14.3955, test_loss:deferred
+member:0, epoch:176, train_loss:38.86208, val_nll:10.55811, val_rmse:10.5581, test_loss:deferred
+member:0, epoch:177, train_loss:46.69056, val_nll:14.19776, val_rmse:14.1978, test_loss:deferred
+member:0, epoch:178, train_loss:39.77211, val_nll:13.29345, val_rmse:13.2934, test_loss:deferred
+member:0, epoch:179, train_loss:37.09185, val_nll:14.64807, val_rmse:14.6481, test_loss:deferred
+member:0, epoch:180, train_loss:41.76695, val_nll:11.85286, val_rmse:11.8529, test_loss:deferred
+member:0, epoch:181, train_loss:37.41249, val_nll:14.12632, val_rmse:14.1263, test_loss:deferred
+member:0, epoch:182, train_loss:41.47250, val_nll:14.05246, val_rmse:14.0525, test_loss:deferred
+member:0, epoch:183, train_loss:41.88856, val_nll:9.83850, val_rmse:9.8385, test_loss:deferred
+member:0, epoch:184, train_loss:38.93012, val_nll:14.19196, val_rmse:14.1920, test_loss:deferred
+member:0, epoch:185, train_loss:36.72608, val_nll:14.00486, val_rmse:14.0049, test_loss:deferred
+member:0, epoch:186, train_loss:39.83621, val_nll:13.20504, val_rmse:13.2050, test_loss:deferred
+member:0, epoch:187, train_loss:38.60597, val_nll:12.47949, val_rmse:12.4795, test_loss:deferred
+member:0, epoch:188, train_loss:42.02550, val_nll:12.27595, val_rmse:12.2760, test_loss:deferred
+member:0, epoch:189, train_loss:39.00897, val_nll:11.41339, val_rmse:11.4134, test_loss:deferred
+member:0, epoch:190, train_loss:44.93700, val_nll:14.22391, val_rmse:14.2239, test_loss:deferred
+member:0, epoch:191, train_loss:34.83032, val_nll:13.80173, val_rmse:13.8017, test_loss:deferred
+member:0, epoch:192, train_loss:44.80282, val_nll:14.45539, val_rmse:14.4554, test_loss:deferred
+member:0, epoch:193, train_loss:37.98317, val_nll:14.37720, val_rmse:14.3772, test_loss:deferred
+member:0, epoch:194, train_loss:35.28196, val_nll:9.97544, val_rmse:9.9754, test_loss:deferred
+member:0, epoch:195, train_loss:40.99135, val_nll:14.85430, val_rmse:14.8543, test_loss:deferred
+member:0, epoch:196, train_loss:42.36455, val_nll:13.65229, val_rmse:13.6523, test_loss:deferred
+member:0, epoch:197, train_loss:36.31872, val_nll:14.35388, val_rmse:14.3539, test_loss:deferred
+member:0, epoch:198, train_loss:31.51897, val_nll:14.54181, val_rmse:14.5418, test_loss:deferred
+member:0, epoch:199, train_loss:38.66109, val_nll:14.02705, val_rmse:14.0270, test_loss:deferred
+member:0, epoch:200, train_loss:35.70920, val_nll:13.66854, val_rmse:13.6685, test_loss:deferred
+member:0, epoch:201, train_loss:37.90561, val_nll:10.83892, val_rmse:10.8389, test_loss:deferred
+member:0, epoch:202, train_loss:35.64286, val_nll:14.32946, val_rmse:14.3295, test_loss:deferred
+member:0, epoch:203, train_loss:33.72045, val_nll:13.87491, val_rmse:13.8749, test_loss:deferred
+member:0, epoch:204, train_loss:36.07163, val_nll:11.15133, val_rmse:11.1513, test_loss:deferred
+member:0, epoch:205, train_loss:32.00098, val_nll:12.49096, val_rmse:12.4910, test_loss:deferred
+member:0, epoch:206, train_loss:37.45947, val_nll:14.24634, val_rmse:14.2463, test_loss:deferred
+member:0, epoch:207, train_loss:35.78577, val_nll:14.66386, val_rmse:14.6639, test_loss:deferred
+member:0, epoch:208, train_loss:36.43411, val_nll:14.26597, val_rmse:14.2660, test_loss:deferred
+member:0, epoch:209, train_loss:37.06467, val_nll:14.23230, val_rmse:14.2323, test_loss:deferred
+member:0, epoch:210, train_loss:39.12834, val_nll:14.52300, val_rmse:14.5230, test_loss:deferred
+member:0, epoch:211, train_loss:30.85812, val_nll:14.34836, val_rmse:14.3484, test_loss:deferred
+member:0, epoch:212, train_loss:32.51247, val_nll:14.26576, val_rmse:14.2658, test_loss:deferred
+member:0, epoch:213, train_loss:37.82234, val_nll:14.55014, val_rmse:14.5501, test_loss:deferred
+member:0, epoch:214, train_loss:37.51393, val_nll:14.09557, val_rmse:14.0956, test_loss:deferred
+member:0, epoch:215, train_loss:31.11516, val_nll:15.21095, val_rmse:15.2109, test_loss:deferred
+member:0, epoch:216, train_loss:34.71611, val_nll:12.88649, val_rmse:12.8865, test_loss:deferred
+member:0, epoch:217, train_loss:32.85622, val_nll:12.74877, val_rmse:12.7488, test_loss:deferred
+member:0, epoch:218, train_loss:29.95008, val_nll:15.37654, val_rmse:15.3765, test_loss:deferred
+member:0, epoch:219, train_loss:29.28252, val_nll:10.53651, val_rmse:10.5365, test_loss:deferred
+member:0, epoch:220, train_loss:36.17628, val_nll:14.54589, val_rmse:14.5459, test_loss:deferred
+member:0, epoch:221, train_loss:28.28040, val_nll:12.48040, val_rmse:12.4804, test_loss:deferred
+member:0, epoch:222, train_loss:35.26877, val_nll:12.02150, val_rmse:12.0215, test_loss:deferred
+member:0, epoch:223, train_loss:31.57690, val_nll:14.84175, val_rmse:14.8417, test_loss:deferred
+member:0, epoch:224, train_loss:37.08634, val_nll:14.42493, val_rmse:14.4249, test_loss:deferred
+member:0, epoch:225, train_loss:35.39634, val_nll:13.58324, val_rmse:13.5832, test_loss:deferred
+member:0, epoch:226, train_loss:36.22556, val_nll:14.59919, val_rmse:14.5992, test_loss:deferred
+member:0, epoch:227, train_loss:32.70956, val_nll:13.45738, val_rmse:13.4574, test_loss:deferred
+member:0, epoch:228, train_loss:28.58378, val_nll:14.63860, val_rmse:14.6386, test_loss:deferred
+member:0, epoch:229, train_loss:34.14387, val_nll:14.63350, val_rmse:14.6335, test_loss:deferred
+member:0, epoch:230, train_loss:33.97951, val_nll:13.94742, val_rmse:13.9474, test_loss:deferred
+member:0, epoch:231, train_loss:34.51741, val_nll:14.47763, val_rmse:14.4776, test_loss:deferred
+member:0, epoch:232, train_loss:29.93043, val_nll:11.87195, val_rmse:11.8720, test_loss:deferred
+member:0, epoch:233, train_loss:38.10446, val_nll:15.22191, val_rmse:15.2219, test_loss:deferred
+member:0, epoch:234, train_loss:39.14893, val_nll:13.82718, val_rmse:13.8272, test_loss:deferred
+member:0, epoch:235, train_loss:33.90178, val_nll:14.81478, val_rmse:14.8148, test_loss:deferred
+member:0, epoch:236, train_loss:33.39851, val_nll:15.18932, val_rmse:15.1893, test_loss:deferred
+member:0, epoch:237, train_loss:32.33452, val_nll:15.31594, val_rmse:15.3159, test_loss:deferred
+member:0, epoch:238, train_loss:28.12983, val_nll:13.77589, val_rmse:13.7759, test_loss:deferred
+member:0, epoch:239, train_loss:24.91771, val_nll:14.89556, val_rmse:14.8956, test_loss:deferred
+member:0, epoch:240, train_loss:31.79893, val_nll:12.61000, val_rmse:12.6100, test_loss:deferred
+member:0, epoch:241, train_loss:32.65507, val_nll:15.65552, val_rmse:15.6555, test_loss:deferred
+member:0, epoch:242, train_loss:32.18748, val_nll:13.66102, val_rmse:13.6610, test_loss:deferred
+member:0, epoch:243, train_loss:28.13042, val_nll:14.82888, val_rmse:14.8289, test_loss:deferred
+member:0, epoch:244, train_loss:26.43377, val_nll:14.15616, val_rmse:14.1562, test_loss:deferred
+member:0, epoch:245, train_loss:27.67531, val_nll:15.07068, val_rmse:15.0707, test_loss:deferred
+member:0, epoch:246, train_loss:32.29779, val_nll:14.45290, val_rmse:14.4529, test_loss:deferred
+member:0, epoch:247, train_loss:29.98944, val_nll:14.65550, val_rmse:14.6555, test_loss:deferred
+member:0, epoch:248, train_loss:32.19206, val_nll:14.89731, val_rmse:14.8973, test_loss:deferred
+member:0, epoch:249, train_loss:25.36193, val_nll:14.78165, val_rmse:14.7817, test_loss:deferred
+member:0, epoch:250, train_loss:29.46280, val_nll:14.01962, val_rmse:14.0196, test_loss:deferred
+member:0, epoch:251, train_loss:35.73400, val_nll:14.90089, val_rmse:14.9009, test_loss:deferred
+member:0, epoch:252, train_loss:35.05398, val_nll:14.72039, val_rmse:14.7204, test_loss:deferred
+member:0, epoch:253, train_loss:30.79537, val_nll:15.13908, val_rmse:15.1391, test_loss:deferred
+member:0, epoch:254, train_loss:26.38282, val_nll:11.53326, val_rmse:11.5333, test_loss:deferred
+member:0, epoch:255, train_loss:32.04726, val_nll:14.48733, val_rmse:14.4873, test_loss:deferred
+member:0, epoch:256, train_loss:36.94843, val_nll:15.34506, val_rmse:15.3451, test_loss:deferred
+member:0, epoch:257, train_loss:30.85457, val_nll:14.51303, val_rmse:14.5130, test_loss:deferred
+member:0, epoch:258, train_loss:29.96799, val_nll:14.18809, val_rmse:14.1881, test_loss:deferred
+member:0, epoch:259, train_loss:26.89104, val_nll:11.71916, val_rmse:11.7192, test_loss:deferred
+member:0, epoch:260, train_loss:30.88174, val_nll:15.07257, val_rmse:15.0726, test_loss:deferred
+member:0, epoch:261, train_loss:29.46490, val_nll:12.36418, val_rmse:12.3642, test_loss:deferred
+member:0, epoch:262, train_loss:30.10852, val_nll:14.96785, val_rmse:14.9679, test_loss:deferred
+member:0, epoch:263, train_loss:37.15383, val_nll:11.58308, val_rmse:11.5831, test_loss:deferred
+member:0, epoch:264, train_loss:28.63483, val_nll:14.99266, val_rmse:14.9927, test_loss:deferred
+member:0, epoch:265, train_loss:29.34802, val_nll:14.48595, val_rmse:14.4860, test_loss:deferred
+member:0, epoch:266, train_loss:28.62756, val_nll:14.51870, val_rmse:14.5187, test_loss:deferred
+member:0, epoch:267, train_loss:25.26297, val_nll:15.27121, val_rmse:15.2712, test_loss:deferred
+member:0, epoch:268, train_loss:26.41698, val_nll:15.37428, val_rmse:15.3743, test_loss:deferred
+member:0, epoch:269, train_loss:29.61935, val_nll:14.62076, val_rmse:14.6208, test_loss:deferred
+member:0, epoch:270, train_loss:25.74475, val_nll:14.51743, val_rmse:14.5174, test_loss:deferred
+member:0, epoch:271, train_loss:26.59873, val_nll:14.39956, val_rmse:14.3996, test_loss:deferred
+member:0, epoch:272, train_loss:24.26938, val_nll:12.81896, val_rmse:12.8190, test_loss:deferred
+member:0, epoch:273, train_loss:21.12522, val_nll:11.35766, val_rmse:11.3577, test_loss:deferred
+member:0, epoch:274, train_loss:26.00415, val_nll:14.70196, val_rmse:14.7020, test_loss:deferred
+member:0, epoch:275, train_loss:28.46974, val_nll:13.99499, val_rmse:13.9950, test_loss:deferred
+member:0, epoch:276, train_loss:24.60250, val_nll:14.70814, val_rmse:14.7081, test_loss:deferred
+member:0, epoch:277, train_loss:29.21374, val_nll:14.27237, val_rmse:14.2724, test_loss:deferred
+member:0, epoch:278, train_loss:26.79749, val_nll:10.96041, val_rmse:10.9604, test_loss:deferred
+member:0, epoch:279, train_loss:29.21935, val_nll:14.59911, val_rmse:14.5991, test_loss:deferred
+member:0, epoch:280, train_loss:27.51212, val_nll:14.60309, val_rmse:14.6031, test_loss:deferred
+member:0, epoch:281, train_loss:28.52058, val_nll:14.33028, val_rmse:14.3303, test_loss:deferred
+member:0, epoch:282, train_loss:24.08131, val_nll:12.52934, val_rmse:12.5293, test_loss:deferred
+member:0, epoch:283, train_loss:28.29277, val_nll:15.00248, val_rmse:15.0025, test_loss:deferred
+member:0, epoch:284, train_loss:28.37302, val_nll:14.17445, val_rmse:14.1745, test_loss:deferred
+member:0, epoch:285, train_loss:29.34084, val_nll:14.52828, val_rmse:14.5283, test_loss:deferred
+member:0, epoch:286, train_loss:28.57034, val_nll:14.64865, val_rmse:14.6487, test_loss:deferred
+member:0, epoch:287, train_loss:26.08177, val_nll:14.82077, val_rmse:14.8208, test_loss:deferred
+member:0, epoch:288, train_loss:26.29733, val_nll:15.07670, val_rmse:15.0767, test_loss:deferred
+member:0, epoch:289, train_loss:27.93552, val_nll:14.55386, val_rmse:14.5539, test_loss:deferred
+member:0, epoch:290, train_loss:23.49760, val_nll:15.03677, val_rmse:15.0368, test_loss:deferred
+member:0, epoch:291, train_loss:27.76831, val_nll:14.26380, val_rmse:14.2638, test_loss:deferred
+member:0, epoch:292, train_loss:29.01439, val_nll:11.58335, val_rmse:11.5833, test_loss:deferred
+member:0, epoch:293, train_loss:31.92217, val_nll:15.90846, val_rmse:15.9085, test_loss:deferred
+member:0, epoch:294, train_loss:27.70041, val_nll:11.57560, val_rmse:11.5756, test_loss:deferred
+member:0, epoch:295, train_loss:25.94384, val_nll:14.92931, val_rmse:14.9293, test_loss:deferred
+member:0, epoch:296, train_loss:27.10179, val_nll:14.81647, val_rmse:14.8165, test_loss:deferred
+member:0, epoch:297, train_loss:25.62795, val_nll:15.86722, val_rmse:15.8672, test_loss:deferred
+member:0, epoch:298, train_loss:24.07976, val_nll:14.86075, val_rmse:14.8608, test_loss:deferred
+member:0, epoch:299, train_loss:27.22169, val_nll:15.13113, val_rmse:15.1311, test_loss:deferred
+member:0, epoch:300, train_loss:28.83897, val_nll:12.18367, val_rmse:12.1837, test_loss:deferred
+MAE: 13.39 RMSE: 20.55 NLL: 9.9387 CRPS: 11.5679 PICP: 0.3333 MPIW: 10.3281
+=== DS08a msauq start 2026-11-05 09:36:26 ===
+member:0, epoch:1, train_loss:1780.29444, val_nll:26.43243, val_rmse:26.4324, test_loss:deferred
+member:0, epoch:2, train_loss:1477.63858, val_nll:21.84749, val_rmse:21.8475, test_loss:deferred
+member:0, epoch:3, train_loss:1095.45002, val_nll:16.76532, val_rmse:16.7653, test_loss:deferred
+member:0, epoch:4, train_loss:707.59767, val_nll:17.20845, val_rmse:17.2084, test_loss:deferred
+member:0, epoch:5, train_loss:481.04063, val_nll:21.43499, val_rmse:21.4350, test_loss:deferred
+member:0, epoch:6, train_loss:355.52380, val_nll:15.17146, val_rmse:15.1715, test_loss:deferred
+member:0, epoch:7, train_loss:259.07315, val_nll:15.54089, val_rmse:15.5409, test_loss:deferred
+member:0, epoch:8, train_loss:202.37272, val_nll:15.50362, val_rmse:15.5036, test_loss:deferred
+member:0, epoch:9, train_loss:158.77908, val_nll:11.76231, val_rmse:11.7623, test_loss:deferred
+member:0, epoch:10, train_loss:118.09789, val_nll:12.21777, val_rmse:12.2178, test_loss:deferred
+member:0, epoch:11, train_loss:118.28956, val_nll:9.09675, val_rmse:9.0968, test_loss:deferred
+member:0, epoch:12, train_loss:99.04034, val_nll:17.56011, val_rmse:17.5601, test_loss:deferred
+member:0, epoch:13, train_loss:101.01254, val_nll:11.29557, val_rmse:11.2956, test_loss:deferred
+member:0, epoch:14, train_loss:102.50218, val_nll:16.64713, val_rmse:16.6471, test_loss:deferred
+member:0, epoch:15, train_loss:96.97222, val_nll:12.70636, val_rmse:12.7064, test_loss:deferred
+member:0, epoch:16, train_loss:93.79220, val_nll:9.59436, val_rmse:9.5944, test_loss:deferred
+member:0, epoch:17, train_loss:69.12636, val_nll:17.75278, val_rmse:17.7528, test_loss:deferred
+member:0, epoch:18, train_loss:101.00806, val_nll:8.91001, val_rmse:8.9100, test_loss:deferred
+member:0, epoch:19, train_loss:65.15374, val_nll:16.08603, val_rmse:16.0860, test_loss:deferred
+member:0, epoch:20, train_loss:60.49890, val_nll:8.98354, val_rmse:8.9835, test_loss:deferred
+member:0, epoch:21, train_loss:94.10464, val_nll:12.02593, val_rmse:12.0259, test_loss:deferred
+member:0, epoch:22, train_loss:67.26642, val_nll:11.37996, val_rmse:11.3800, test_loss:deferred
+member:0, epoch:23, train_loss:55.81388, val_nll:7.69691, val_rmse:7.6969, test_loss:deferred
+member:0, epoch:24, train_loss:61.82561, val_nll:16.60044, val_rmse:16.6004, test_loss:deferred
+member:0, epoch:25, train_loss:68.15034, val_nll:11.81237, val_rmse:11.8124, test_loss:deferred
+member:0, epoch:26, train_loss:61.25371, val_nll:11.06163, val_rmse:11.0616, test_loss:deferred
+member:0, epoch:27, train_loss:51.95562, val_nll:10.20941, val_rmse:10.2094, test_loss:deferred
+member:0, epoch:28, train_loss:70.65422, val_nll:15.20712, val_rmse:15.2071, test_loss:deferred
+member:0, epoch:29, train_loss:56.21331, val_nll:15.04642, val_rmse:15.0464, test_loss:deferred
+member:0, epoch:30, train_loss:83.32799, val_nll:11.17840, val_rmse:11.1784, test_loss:deferred
+member:0, epoch:31, train_loss:44.79863, val_nll:10.56918, val_rmse:10.5692, test_loss:deferred
+member:0, epoch:32, train_loss:50.60458, val_nll:16.20102, val_rmse:16.2010, test_loss:deferred
+member:0, epoch:33, train_loss:36.95502, val_nll:12.69119, val_rmse:12.6912, test_loss:deferred
+member:0, epoch:34, train_loss:43.27141, val_nll:12.85308, val_rmse:12.8531, test_loss:deferred
+member:0, epoch:35, train_loss:40.98733, val_nll:14.25114, val_rmse:14.2511, test_loss:deferred
+member:0, epoch:36, train_loss:72.90053, val_nll:14.07155, val_rmse:14.0716, test_loss:deferred
+member:0, epoch:37, train_loss:82.19997, val_nll:8.00154, val_rmse:8.0015, test_loss:deferred
+member:0, epoch:38, train_loss:67.89713, val_nll:9.59274, val_rmse:9.5927, test_loss:deferred
+member:0, epoch:39, train_loss:49.69535, val_nll:12.22331, val_rmse:12.2233, test_loss:deferred
+member:0, epoch:40, train_loss:38.23828, val_nll:13.59945, val_rmse:13.5995, test_loss:deferred
+member:0, epoch:41, train_loss:48.01847, val_nll:9.80068, val_rmse:9.8007, test_loss:deferred
+member:0, epoch:42, train_loss:63.90454, val_nll:13.24755, val_rmse:13.2476, test_loss:deferred
+member:0, epoch:43, train_loss:50.03930, val_nll:14.60505, val_rmse:14.6050, test_loss:deferred
+member:0, epoch:44, train_loss:42.67730, val_nll:14.35804, val_rmse:14.3580, test_loss:deferred
+member:0, epoch:45, train_loss:46.80437, val_nll:17.03399, val_rmse:17.0340, test_loss:deferred
+member:0, epoch:46, train_loss:52.98210, val_nll:12.07025, val_rmse:12.0702, test_loss:deferred
+member:0, epoch:47, train_loss:28.55265, val_nll:9.78584, val_rmse:9.7858, test_loss:deferred
+member:0, epoch:48, train_loss:60.36254, val_nll:9.30272, val_rmse:9.3027, test_loss:deferred
+member:0, epoch:49, train_loss:47.60583, val_nll:22.02941, val_rmse:22.0294, test_loss:deferred
+member:0, epoch:50, train_loss:46.53359, val_nll:13.38815, val_rmse:13.3882, test_loss:deferred
+member:0, epoch:51, train_loss:26.08173, val_nll:9.78131, val_rmse:9.7813, test_loss:deferred
+member:0, epoch:52, train_loss:45.44400, val_nll:10.27985, val_rmse:10.2799, test_loss:deferred
+member:0, epoch:53, train_loss:39.13423, val_nll:15.02560, val_rmse:15.0256, test_loss:deferred
+member:0, epoch:54, train_loss:38.61588, val_nll:15.42810, val_rmse:15.4281, test_loss:deferred
+member:0, epoch:55, train_loss:39.82270, val_nll:7.18478, val_rmse:7.1848, test_loss:deferred
+member:0, epoch:56, train_loss:55.08460, val_nll:18.85215, val_rmse:18.8521, test_loss:deferred
+member:0, epoch:57, train_loss:43.73993, val_nll:7.68139, val_rmse:7.6814, test_loss:deferred
+member:0, epoch:58, train_loss:55.38126, val_nll:14.13516, val_rmse:14.1352, test_loss:deferred
+member:0, epoch:59, train_loss:23.49489, val_nll:15.61204, val_rmse:15.6120, test_loss:deferred
+member:0, epoch:60, train_loss:47.53530, val_nll:7.59313, val_rmse:7.5931, test_loss:deferred
+member:0, epoch:61, train_loss:60.04868, val_nll:17.90797, val_rmse:17.9080, test_loss:deferred
+member:0, epoch:62, train_loss:36.49389, val_nll:11.56574, val_rmse:11.5657, test_loss:deferred
+member:0, epoch:63, train_loss:36.75265, val_nll:7.62922, val_rmse:7.6292, test_loss:deferred
+member:0, epoch:64, train_loss:29.37076, val_nll:13.01255, val_rmse:13.0126, test_loss:deferred
+member:0, epoch:65, train_loss:28.16572, val_nll:9.53169, val_rmse:9.5317, test_loss:deferred
+member:0, epoch:66, train_loss:31.62306, val_nll:13.46305, val_rmse:13.4630, test_loss:deferred
+member:0, epoch:67, train_loss:20.79819, val_nll:15.00984, val_rmse:15.0098, test_loss:deferred
+member:0, epoch:68, train_loss:24.39645, val_nll:10.87169, val_rmse:10.8717, test_loss:deferred
+member:0, epoch:69, train_loss:23.67032, val_nll:9.25958, val_rmse:9.2596, test_loss:deferred
+member:0, epoch:70, train_loss:23.86804, val_nll:12.86491, val_rmse:12.8649, test_loss:deferred
+member:0, epoch:71, train_loss:33.46778, val_nll:13.80541, val_rmse:13.8054, test_loss:deferred
+member:0, epoch:72, train_loss:45.89904, val_nll:7.47688, val_rmse:7.4769, test_loss:deferred
+member:0, epoch:73, train_loss:32.62751, val_nll:15.82747, val_rmse:15.8275, test_loss:deferred
+member:0, epoch:74, train_loss:30.88316, val_nll:12.02649, val_rmse:12.0265, test_loss:deferred
+member:0, epoch:75, train_loss:20.20553, val_nll:10.39610, val_rmse:10.3961, test_loss:deferred
+member:0, epoch:76, train_loss:28.76014, val_nll:12.16098, val_rmse:12.1610, test_loss:deferred
+member:0, epoch:77, train_loss:34.09022, val_nll:9.30606, val_rmse:9.3061, test_loss:deferred
+member:0, epoch:78, train_loss:37.46852, val_nll:15.03245, val_rmse:15.0325, test_loss:deferred
+member:0, epoch:79, train_loss:33.41013, val_nll:14.06442, val_rmse:14.0644, test_loss:deferred
+member:0, epoch:80, train_loss:38.06847, val_nll:16.20444, val_rmse:16.2044, test_loss:deferred
+member:0, epoch:81, train_loss:22.15498, val_nll:10.45318, val_rmse:10.4532, test_loss:deferred
+member:0, epoch:82, train_loss:22.30239, val_nll:13.90762, val_rmse:13.9076, test_loss:deferred
+member:0, epoch:83, train_loss:18.45317, val_nll:7.52123, val_rmse:7.5212, test_loss:deferred
+member:0, epoch:84, train_loss:24.57001, val_nll:11.07557, val_rmse:11.0756, test_loss:deferred
+member:0, epoch:85, train_loss:31.51754, val_nll:12.54648, val_rmse:12.5465, test_loss:deferred
+member:0, epoch:86, train_loss:25.96196, val_nll:9.16123, val_rmse:9.1612, test_loss:deferred
+member:0, epoch:87, train_loss:31.40023, val_nll:11.67059, val_rmse:11.6706, test_loss:deferred
+member:0, epoch:88, train_loss:35.50991, val_nll:13.00397, val_rmse:13.0040, test_loss:deferred
+member:0, epoch:89, train_loss:25.95068, val_nll:8.75977, val_rmse:8.7598, test_loss:deferred
+member:0, epoch:90, train_loss:21.15506, val_nll:13.49317, val_rmse:13.4932, test_loss:deferred
+member:0, epoch:91, train_loss:24.23736, val_nll:11.51664, val_rmse:11.5166, test_loss:deferred
+member:0, epoch:92, train_loss:18.04755, val_nll:8.39743, val_rmse:8.3974, test_loss:deferred
+member:0, epoch:93, train_loss:21.28239, val_nll:16.29134, val_rmse:16.2913, test_loss:deferred
+member:0, epoch:94, train_loss:19.90749, val_nll:8.59736, val_rmse:8.5974, test_loss:deferred
+member:0, epoch:95, train_loss:29.34627, val_nll:11.57211, val_rmse:11.5721, test_loss:deferred
+member:0, epoch:96, train_loss:23.36096, val_nll:15.84832, val_rmse:15.8483, test_loss:deferred
+member:0, epoch:97, train_loss:16.93472, val_nll:10.51521, val_rmse:10.5152, test_loss:deferred
+member:0, epoch:98, train_loss:36.29627, val_nll:9.32935, val_rmse:9.3293, test_loss:deferred
+member:0, epoch:99, train_loss:32.17708, val_nll:13.16822, val_rmse:13.1682, test_loss:deferred
+member:0, epoch:100, train_loss:22.98296, val_nll:8.89956, val_rmse:8.8996, test_loss:deferred
+member:0, epoch:101, train_loss:15.94689, val_nll:13.13147, val_rmse:13.1315, test_loss:deferred
+member:0, epoch:102, train_loss:15.74871, val_nll:10.21655, val_rmse:10.2165, test_loss:deferred
+member:0, epoch:103, train_loss:17.06467, val_nll:9.88062, val_rmse:9.8806, test_loss:deferred
+member:0, epoch:104, train_loss:16.07752, val_nll:11.39008, val_rmse:11.3901, test_loss:deferred
+member:0, epoch:105, train_loss:18.98681, val_nll:13.09800, val_rmse:13.0980, test_loss:deferred
+member:0, epoch:106, train_loss:15.18764, val_nll:15.37191, val_rmse:15.3719, test_loss:deferred
+member:0, epoch:107, train_loss:20.46860, val_nll:14.38185, val_rmse:14.3818, test_loss:deferred
+member:0, epoch:108, train_loss:18.79237, val_nll:16.98680, val_rmse:16.9868, test_loss:deferred
+member:0, epoch:109, train_loss:14.81870, val_nll:10.75716, val_rmse:10.7572, test_loss:deferred
+member:0, epoch:110, train_loss:21.54939, val_nll:10.63456, val_rmse:10.6346, test_loss:deferred
+member:0, epoch:111, train_loss:20.66715, val_nll:10.33762, val_rmse:10.3376, test_loss:deferred
+member:0, epoch:112, train_loss:12.52832, val_nll:14.18034, val_rmse:14.1803, test_loss:deferred
+member:0, epoch:113, train_loss:16.21609, val_nll:10.95972, val_rmse:10.9597, test_loss:deferred
+member:0, epoch:114, train_loss:17.85115, val_nll:13.35467, val_rmse:13.3547, test_loss:deferred
+member:0, epoch:115, train_loss:11.80895, val_nll:12.11815, val_rmse:12.1181, test_loss:deferred
+member:0, epoch:116, train_loss:11.92453, val_nll:12.51121, val_rmse:12.5112, test_loss:deferred
+member:0, epoch:117, train_loss:11.72663, val_nll:13.01467, val_rmse:13.0147, test_loss:deferred
+member:0, epoch:118, train_loss:10.45811, val_nll:13.87396, val_rmse:13.8740, test_loss:deferred
+member:0, epoch:119, train_loss:12.66940, val_nll:10.22168, val_rmse:10.2217, test_loss:deferred
+member:0, epoch:120, train_loss:13.33977, val_nll:18.03394, val_rmse:18.0339, test_loss:deferred
+member:0, epoch:121, train_loss:18.00998, val_nll:11.38949, val_rmse:11.3895, test_loss:deferred
+member:0, epoch:122, train_loss:15.34725, val_nll:11.42273, val_rmse:11.4227, test_loss:deferred
+member:0, epoch:123, train_loss:29.88574, val_nll:9.80678, val_rmse:9.8068, test_loss:deferred
+member:0, epoch:124, train_loss:23.91036, val_nll:15.45617, val_rmse:15.4562, test_loss:deferred
+member:0, epoch:125, train_loss:15.18693, val_nll:7.93367, val_rmse:7.9337, test_loss:deferred
+member:0, epoch:126, train_loss:25.43923, val_nll:9.41113, val_rmse:9.4111, test_loss:deferred
+member:0, epoch:127, train_loss:12.40595, val_nll:12.26916, val_rmse:12.2692, test_loss:deferred
+member:0, epoch:128, train_loss:13.76898, val_nll:14.25747, val_rmse:14.2575, test_loss:deferred
+member:0, epoch:129, train_loss:15.74192, val_nll:12.24263, val_rmse:12.2426, test_loss:deferred
+member:0, epoch:130, train_loss:14.35859, val_nll:8.73478, val_rmse:8.7348, test_loss:deferred
+member:0, epoch:131, train_loss:27.09627, val_nll:20.28803, val_rmse:20.2880, test_loss:deferred
+member:0, epoch:132, train_loss:22.25448, val_nll:14.23255, val_rmse:14.2325, test_loss:deferred
+member:0, epoch:133, train_loss:15.68172, val_nll:9.72122, val_rmse:9.7212, test_loss:deferred
+member:0, epoch:134, train_loss:15.47944, val_nll:16.00271, val_rmse:16.0027, test_loss:deferred
+member:0, epoch:135, train_loss:16.59033, val_nll:11.89697, val_rmse:11.8970, test_loss:deferred
+member:0, epoch:136, train_loss:15.10961, val_nll:11.96752, val_rmse:11.9675, test_loss:deferred
+member:0, epoch:137, train_loss:20.21727, val_nll:16.66537, val_rmse:16.6654, test_loss:deferred
+member:0, epoch:138, train_loss:16.52931, val_nll:11.81298, val_rmse:11.8130, test_loss:deferred
+member:0, epoch:139, train_loss:15.66834, val_nll:12.27256, val_rmse:12.2726, test_loss:deferred
+member:0, epoch:140, train_loss:15.89116, val_nll:9.21418, val_rmse:9.2142, test_loss:deferred
+member:0, epoch:141, train_loss:19.79380, val_nll:14.79155, val_rmse:14.7916, test_loss:deferred
+member:0, epoch:142, train_loss:17.66073, val_nll:10.33925, val_rmse:10.3393, test_loss:deferred
+member:0, epoch:143, train_loss:14.28806, val_nll:11.30154, val_rmse:11.3015, test_loss:deferred
+member:0, epoch:144, train_loss:22.29313, val_nll:9.63884, val_rmse:9.6388, test_loss:deferred
+member:0, epoch:145, train_loss:16.24305, val_nll:12.33705, val_rmse:12.3370, test_loss:deferred
+member:0, epoch:146, train_loss:13.82140, val_nll:14.18337, val_rmse:14.1834, test_loss:deferred
+member:0, epoch:147, train_loss:15.26753, val_nll:14.68650, val_rmse:14.6865, test_loss:deferred
+member:0, epoch:148, train_loss:15.75791, val_nll:11.01770, val_rmse:11.0177, test_loss:deferred
+member:0, epoch:149, train_loss:14.32048, val_nll:11.43535, val_rmse:11.4353, test_loss:deferred
+member:0, epoch:150, train_loss:11.65528, val_nll:12.83821, val_rmse:12.8382, test_loss:deferred
+member:0, epoch:151, train_loss:10.75425, val_nll:11.64712, val_rmse:11.6471, test_loss:deferred
+member:0, epoch:152, train_loss:10.76738, val_nll:13.86445, val_rmse:13.8645, test_loss:deferred
+member:0, epoch:153, train_loss:16.23951, val_nll:10.08450, val_rmse:10.0845, test_loss:deferred
+member:0, epoch:154, train_loss:7.78846, val_nll:11.94967, val_rmse:11.9497, test_loss:deferred
+member:0, epoch:155, train_loss:17.38675, val_nll:10.85933, val_rmse:10.8593, test_loss:deferred
+member:0, epoch:156, train_loss:10.16239, val_nll:11.89862, val_rmse:11.8986, test_loss:deferred
+member:0, epoch:157, train_loss:8.54085, val_nll:12.04347, val_rmse:12.0435, test_loss:deferred
+member:0, epoch:158, train_loss:11.70225, val_nll:11.88371, val_rmse:11.8837, test_loss:deferred
+member:0, epoch:159, train_loss:10.79143, val_nll:17.02666, val_rmse:17.0267, test_loss:deferred
+member:0, epoch:160, train_loss:29.83632, val_nll:13.80166, val_rmse:13.8017, test_loss:deferred
+member:0, epoch:161, train_loss:17.51595, val_nll:9.24438, val_rmse:9.2444, test_loss:deferred
+member:0, epoch:162, train_loss:25.71854, val_nll:14.13685, val_rmse:14.1369, test_loss:deferred
+member:0, epoch:163, train_loss:14.45153, val_nll:14.01404, val_rmse:14.0140, test_loss:deferred
+member:0, epoch:164, train_loss:11.41660, val_nll:11.83233, val_rmse:11.8323, test_loss:deferred
+member:0, epoch:165, train_loss:13.06299, val_nll:16.91143, val_rmse:16.9114, test_loss:deferred
+member:0, epoch:166, train_loss:10.96750, val_nll:9.88896, val_rmse:9.8890, test_loss:deferred
+member:0, epoch:167, train_loss:8.78748, val_nll:12.30764, val_rmse:12.3076, test_loss:deferred
+member:0, epoch:168, train_loss:10.37086, val_nll:11.84148, val_rmse:11.8415, test_loss:deferred
+member:0, epoch:169, train_loss:12.28015, val_nll:12.19094, val_rmse:12.1909, test_loss:deferred
+member:0, epoch:170, train_loss:14.74196, val_nll:13.38751, val_rmse:13.3875, test_loss:deferred
+member:0, epoch:171, train_loss:10.41263, val_nll:13.96866, val_rmse:13.9687, test_loss:deferred
+member:0, epoch:172, train_loss:8.01700, val_nll:15.38136, val_rmse:15.3814, test_loss:deferred
+member:0, epoch:173, train_loss:10.33311, val_nll:11.87427, val_rmse:11.8743, test_loss:deferred
+member:0, epoch:174, train_loss:8.03633, val_nll:9.96399, val_rmse:9.9640, test_loss:deferred
+member:0, epoch:175, train_loss:10.64416, val_nll:11.28970, val_rmse:11.2897, test_loss:deferred
+member:0, epoch:176, train_loss:8.22912, val_nll:12.15612, val_rmse:12.1561, test_loss:deferred
+member:0, epoch:177, train_loss:7.20631, val_nll:12.95313, val_rmse:12.9531, test_loss:deferred
+member:0, epoch:178, train_loss:7.05114, val_nll:10.63098, val_rmse:10.6310, test_loss:deferred
+member:0, epoch:179, train_loss:7.72159, val_nll:11.65254, val_rmse:11.6525, test_loss:deferred
+member:0, epoch:180, train_loss:9.94839, val_nll:14.73027, val_rmse:14.7303, test_loss:deferred
+member:0, epoch:181, train_loss:11.79104, val_nll:11.78671, val_rmse:11.7867, test_loss:deferred
+member:0, epoch:182, train_loss:9.94027, val_nll:11.69864, val_rmse:11.6986, test_loss:deferred
+member:0, epoch:183, train_loss:5.63804, val_nll:12.63402, val_rmse:12.6340, test_loss:deferred
+member:0, epoch:184, train_loss:6.12274, val_nll:11.46537, val_rmse:11.4654, test_loss:deferred
+member:0, epoch:185, train_loss:7.04854, val_nll:11.52133, val_rmse:11.5213, test_loss:deferred
+member:0, epoch:186, train_loss:5.81022, val_nll:11.44528, val_rmse:11.4453, test_loss:deferred
+member:0, epoch:187, train_loss:7.68301, val_nll:12.22230, val_rmse:12.2223, test_loss:deferred
+member:0, epoch:188, train_loss:8.03576, val_nll:14.14498, val_rmse:14.1450, test_loss:deferred
+member:0, epoch:189, train_loss:5.64274, val_nll:13.27044, val_rmse:13.2704, test_loss:deferred
+member:0, epoch:190, train_loss:5.21309, val_nll:12.93193, val_rmse:12.9319, test_loss:deferred
+member:0, epoch:191, train_loss:7.05664, val_nll:12.97688, val_rmse:12.9769, test_loss:deferred
+member:0, epoch:192, train_loss:8.00103, val_nll:11.14112, val_rmse:11.1411, test_loss:deferred
+member:0, epoch:193, train_loss:9.62837, val_nll:9.27099, val_rmse:9.2710, test_loss:deferred
+member:0, epoch:194, train_loss:11.25977, val_nll:15.41696, val_rmse:15.4170, test_loss:deferred
+member:0, epoch:195, train_loss:11.86831, val_nll:13.74310, val_rmse:13.7431, test_loss:deferred
+member:0, epoch:196, train_loss:12.20883, val_nll:12.35745, val_rmse:12.3575, test_loss:deferred
+member:0, epoch:197, train_loss:8.85955, val_nll:13.93311, val_rmse:13.9331, test_loss:deferred
+member:0, epoch:198, train_loss:10.41348, val_nll:14.24378, val_rmse:14.2438, test_loss:deferred
+member:0, epoch:199, train_loss:10.31110, val_nll:9.87213, val_rmse:9.8721, test_loss:deferred
+member:0, epoch:200, train_loss:7.66967, val_nll:11.60975, val_rmse:11.6097, test_loss:deferred
+member:0, epoch:201, train_loss:7.58490, val_nll:11.77460, val_rmse:11.7746, test_loss:deferred
+member:0, epoch:202, train_loss:8.95064, val_nll:12.27195, val_rmse:12.2720, test_loss:deferred
+member:0, epoch:203, train_loss:5.75607, val_nll:12.95412, val_rmse:12.9541, test_loss:deferred
+member:0, epoch:204, train_loss:5.32192, val_nll:10.91759, val_rmse:10.9176, test_loss:deferred
+member:0, epoch:205, train_loss:7.41831, val_nll:13.49721, val_rmse:13.4972, test_loss:deferred
+member:0, epoch:206, train_loss:6.24968, val_nll:12.37403, val_rmse:12.3740, test_loss:deferred
+member:0, epoch:207, train_loss:7.00407, val_nll:12.99823, val_rmse:12.9982, test_loss:deferred
+member:0, epoch:208, train_loss:5.16085, val_nll:11.95213, val_rmse:11.9521, test_loss:deferred
+member:0, epoch:209, train_loss:6.65648, val_nll:13.29224, val_rmse:13.2922, test_loss:deferred
+member:0, epoch:210, train_loss:6.41632, val_nll:11.67811, val_rmse:11.6781, test_loss:deferred
+member:0, epoch:211, train_loss:6.04743, val_nll:11.98990, val_rmse:11.9899, test_loss:deferred
+member:0, epoch:212, train_loss:6.15276, val_nll:12.15559, val_rmse:12.1556, test_loss:deferred
+member:0, epoch:213, train_loss:7.72602, val_nll:12.88304, val_rmse:12.8830, test_loss:deferred
+member:0, epoch:214, train_loss:5.02746, val_nll:13.32438, val_rmse:13.3244, test_loss:deferred
+member:0, epoch:215, train_loss:7.71416, val_nll:11.18489, val_rmse:11.1849, test_loss:deferred
+member:0, epoch:216, train_loss:5.98491, val_nll:14.44624, val_rmse:14.4462, test_loss:deferred
+member:0, epoch:217, train_loss:5.91775, val_nll:14.34678, val_rmse:14.3468, test_loss:deferred
+member:0, epoch:218, train_loss:4.79093, val_nll:13.59797, val_rmse:13.5980, test_loss:deferred
+member:0, epoch:219, train_loss:7.93785, val_nll:13.09177, val_rmse:13.0918, test_loss:deferred
+member:0, epoch:220, train_loss:9.73112, val_nll:16.09988, val_rmse:16.0999, test_loss:deferred
+member:0, epoch:221, train_loss:8.52091, val_nll:14.49571, val_rmse:14.4957, test_loss:deferred
+member:0, epoch:222, train_loss:8.25662, val_nll:13.47137, val_rmse:13.4714, test_loss:deferred
+member:0, epoch:223, train_loss:9.49079, val_nll:12.83516, val_rmse:12.8352, test_loss:deferred
+member:0, epoch:224, train_loss:7.91350, val_nll:13.62061, val_rmse:13.6206, test_loss:deferred
+member:0, epoch:225, train_loss:7.98265, val_nll:11.44326, val_rmse:11.4433, test_loss:deferred
+member:0, epoch:226, train_loss:8.06911, val_nll:12.26839, val_rmse:12.2684, test_loss:deferred
+member:0, epoch:227, train_loss:7.91376, val_nll:11.92734, val_rmse:11.9273, test_loss:deferred
+member:0, epoch:228, train_loss:6.48514, val_nll:12.17125, val_rmse:12.1712, test_loss:deferred
+member:0, epoch:229, train_loss:6.84280, val_nll:12.24014, val_rmse:12.2401, test_loss:deferred
+member:0, epoch:230, train_loss:6.53294, val_nll:13.88277, val_rmse:13.8828, test_loss:deferred
+member:0, epoch:231, train_loss:7.49479, val_nll:10.65482, val_rmse:10.6548, test_loss:deferred
+member:0, epoch:232, train_loss:6.48954, val_nll:11.50626, val_rmse:11.5063, test_loss:deferred
+member:0, epoch:233, train_loss:6.93082, val_nll:14.63965, val_rmse:14.6397, test_loss:deferred
+member:0, epoch:234, train_loss:5.05497, val_nll:13.29104, val_rmse:13.2910, test_loss:deferred
+member:0, epoch:235, train_loss:5.14440, val_nll:15.68602, val_rmse:15.6860, test_loss:deferred
+member:0, epoch:236, train_loss:5.94158, val_nll:13.28544, val_rmse:13.2854, test_loss:deferred
+member:0, epoch:237, train_loss:6.54431, val_nll:10.47363, val_rmse:10.4736, test_loss:deferred
+member:0, epoch:238, train_loss:5.88593, val_nll:12.65176, val_rmse:12.6518, test_loss:deferred
+member:0, epoch:239, train_loss:5.64534, val_nll:12.48235, val_rmse:12.4824, test_loss:deferred
+member:0, epoch:240, train_loss:5.14710, val_nll:12.03192, val_rmse:12.0319, test_loss:deferred
+member:0, epoch:241, train_loss:5.57926, val_nll:13.01961, val_rmse:13.0196, test_loss:deferred
+member:0, epoch:242, train_loss:5.56281, val_nll:12.85361, val_rmse:12.8536, test_loss:deferred
+member:0, epoch:243, train_loss:10.49240, val_nll:10.52423, val_rmse:10.5242, test_loss:deferred
+member:0, epoch:244, train_loss:8.88767, val_nll:10.81326, val_rmse:10.8133, test_loss:deferred
+member:0, epoch:245, train_loss:9.12786, val_nll:15.65912, val_rmse:15.6591, test_loss:deferred
+member:0, epoch:246, train_loss:7.94999, val_nll:15.30323, val_rmse:15.3032, test_loss:deferred
+member:0, epoch:247, train_loss:8.39201, val_nll:12.37865, val_rmse:12.3787, test_loss:deferred
+member:0, epoch:248, train_loss:7.22544, val_nll:10.81027, val_rmse:10.8103, test_loss:deferred
+member:0, epoch:249, train_loss:11.65798, val_nll:9.07602, val_rmse:9.0760, test_loss:deferred
+member:0, epoch:250, train_loss:9.28054, val_nll:13.20971, val_rmse:13.2097, test_loss:deferred
+member:0, epoch:251, train_loss:7.35402, val_nll:13.11797, val_rmse:13.1180, test_loss:deferred
+member:0, epoch:252, train_loss:8.40892, val_nll:11.46427, val_rmse:11.4643, test_loss:deferred
+member:0, epoch:253, train_loss:6.80968, val_nll:11.03377, val_rmse:11.0338, test_loss:deferred
+member:0, epoch:254, train_loss:9.37875, val_nll:10.97496, val_rmse:10.9750, test_loss:deferred
+member:0, epoch:255, train_loss:6.53158, val_nll:11.46388, val_rmse:11.4639, test_loss:deferred
+member:0, epoch:256, train_loss:8.09988, val_nll:13.09502, val_rmse:13.0950, test_loss:deferred
+member:0, epoch:257, train_loss:7.27675, val_nll:14.11240, val_rmse:14.1124, test_loss:deferred
+member:0, epoch:258, train_loss:5.75001, val_nll:13.06010, val_rmse:13.0601, test_loss:deferred
+member:0, epoch:259, train_loss:8.40769, val_nll:13.40972, val_rmse:13.4097, test_loss:deferred
+member:0, epoch:260, train_loss:11.58064, val_nll:14.53366, val_rmse:14.5337, test_loss:deferred
+member:0, epoch:261, train_loss:12.97100, val_nll:12.94533, val_rmse:12.9453, test_loss:deferred
+member:0, epoch:262, train_loss:9.20854, val_nll:12.47724, val_rmse:12.4772, test_loss:deferred
+member:0, epoch:263, train_loss:6.09897, val_nll:12.70446, val_rmse:12.7045, test_loss:deferred
+member:0, epoch:264, train_loss:7.42177, val_nll:11.94799, val_rmse:11.9480, test_loss:deferred
+member:0, epoch:265, train_loss:7.38254, val_nll:12.99128, val_rmse:12.9913, test_loss:deferred
+member:0, epoch:266, train_loss:6.55387, val_nll:13.29067, val_rmse:13.2907, test_loss:deferred
+member:0, epoch:267, train_loss:5.50462, val_nll:12.49968, val_rmse:12.4997, test_loss:deferred
+member:0, epoch:268, train_loss:6.39291, val_nll:12.17885, val_rmse:12.1788, test_loss:deferred
+member:0, epoch:269, train_loss:6.53796, val_nll:12.93734, val_rmse:12.9373, test_loss:deferred
+member:0, epoch:270, train_loss:6.05259, val_nll:11.26724, val_rmse:11.2672, test_loss:deferred
+member:0, epoch:271, train_loss:8.84054, val_nll:12.07552, val_rmse:12.0755, test_loss:deferred
+member:0, epoch:272, train_loss:6.90282, val_nll:12.86606, val_rmse:12.8661, test_loss:deferred
+member:0, epoch:273, train_loss:7.01911, val_nll:15.58251, val_rmse:15.5825, test_loss:deferred
+member:0, epoch:274, train_loss:11.45725, val_nll:14.48549, val_rmse:14.4855, test_loss:deferred
+member:0, epoch:275, train_loss:7.54027, val_nll:11.42098, val_rmse:11.4210, test_loss:deferred
+member:0, epoch:276, train_loss:6.69600, val_nll:11.97221, val_rmse:11.9722, test_loss:deferred
+member:0, epoch:277, train_loss:5.67050, val_nll:13.64729, val_rmse:13.6473, test_loss:deferred
+member:0, epoch:278, train_loss:6.74230, val_nll:10.64210, val_rmse:10.6421, test_loss:deferred
+member:0, epoch:279, train_loss:9.72196, val_nll:12.21636, val_rmse:12.2164, test_loss:deferred
+member:0, epoch:280, train_loss:5.75849, val_nll:11.42915, val_rmse:11.4292, test_loss:deferred
+member:0, epoch:281, train_loss:8.00659, val_nll:12.35504, val_rmse:12.3550, test_loss:deferred
+member:0, epoch:282, train_loss:5.71103, val_nll:11.97620, val_rmse:11.9762, test_loss:deferred
+member:0, epoch:283, train_loss:7.45749, val_nll:13.33887, val_rmse:13.3389, test_loss:deferred
+member:0, epoch:284, train_loss:7.59240, val_nll:11.38128, val_rmse:11.3813, test_loss:deferred
+member:0, epoch:285, train_loss:5.27183, val_nll:14.03983, val_rmse:14.0398, test_loss:deferred
+member:0, epoch:286, train_loss:5.01743, val_nll:12.54355, val_rmse:12.5436, test_loss:deferred
+member:0, epoch:287, train_loss:5.98126, val_nll:10.94857, val_rmse:10.9486, test_loss:deferred
+member:0, epoch:288, train_loss:5.11514, val_nll:12.17717, val_rmse:12.1772, test_loss:deferred
+member:0, epoch:289, train_loss:8.00236, val_nll:12.41856, val_rmse:12.4186, test_loss:deferred
+member:0, epoch:290, train_loss:5.47833, val_nll:11.98612, val_rmse:11.9861, test_loss:deferred
+member:0, epoch:291, train_loss:6.44332, val_nll:13.80248, val_rmse:13.8025, test_loss:deferred
+member:0, epoch:292, train_loss:6.20462, val_nll:13.52343, val_rmse:13.5234, test_loss:deferred
+member:0, epoch:293, train_loss:8.24079, val_nll:12.42252, val_rmse:12.4225, test_loss:deferred
+member:0, epoch:294, train_loss:4.77172, val_nll:12.08766, val_rmse:12.0877, test_loss:deferred
+member:0, epoch:295, train_loss:6.98543, val_nll:14.42654, val_rmse:14.4265, test_loss:deferred
+member:0, epoch:296, train_loss:5.58268, val_nll:13.28903, val_rmse:13.2890, test_loss:deferred
+member:0, epoch:297, train_loss:7.76004, val_nll:11.63367, val_rmse:11.6337, test_loss:deferred
+member:0, epoch:298, train_loss:7.61274, val_nll:10.44902, val_rmse:10.4490, test_loss:deferred
+member:0, epoch:299, train_loss:6.70337, val_nll:12.14411, val_rmse:12.1441, test_loss:deferred
+member:0, epoch:300, train_loss:9.68013, val_nll:16.43242, val_rmse:16.4324, test_loss:deferred
+MAE: 10.67 RMSE: 15.67 NLL: 30.6908 CRPS: 9.8625 PICP: 0.1250 MPIW: 4.2239
+=== DS08a bcpt start 2026-11-05 09:37:30 ===
+bcpt, epoch:1, train_loss:14230.18852, val_fused_rmse:29.4744, test_loss:deferred
+bcpt, epoch:2, train_loss:13083.19130, val_fused_rmse:29.4674, test_loss:deferred
+bcpt, epoch:3, train_loss:11151.58803, val_fused_rmse:29.4671, test_loss:deferred
+bcpt, epoch:4, train_loss:8844.98471, val_fused_rmse:29.4886, test_loss:deferred
+bcpt, epoch:5, train_loss:6750.29995, val_fused_rmse:29.4790, test_loss:deferred
+bcpt, epoch:6, train_loss:4868.48812, val_fused_rmse:29.4277, test_loss:deferred
+bcpt, epoch:7, train_loss:3269.67588, val_fused_rmse:29.3197, test_loss:deferred
+bcpt, epoch:8, train_loss:2156.16118, val_fused_rmse:29.1843, test_loss:deferred
+bcpt, epoch:9, train_loss:1520.27704, val_fused_rmse:29.0901, test_loss:deferred
+bcpt, epoch:10, train_loss:1257.22396, val_fused_rmse:28.9951, test_loss:deferred
+bcpt, epoch:11, train_loss:1190.76933, val_fused_rmse:28.8975, test_loss:deferred
+bcpt, epoch:12, train_loss:1177.24712, val_fused_rmse:28.7655, test_loss:deferred
+bcpt, epoch:13, train_loss:1172.56269, val_fused_rmse:28.4932, test_loss:deferred
+bcpt, epoch:14, train_loss:1166.65999, val_fused_rmse:28.4345, test_loss:deferred
+bcpt, epoch:15, train_loss:1161.56512, val_fused_rmse:28.4052, test_loss:deferred
+bcpt, epoch:16, train_loss:1159.27912, val_fused_rmse:28.4421, test_loss:deferred
+bcpt, epoch:17, train_loss:1156.29932, val_fused_rmse:28.3857, test_loss:deferred
+bcpt, epoch:18, train_loss:1153.11712, val_fused_rmse:28.2709, test_loss:deferred
+bcpt, epoch:19, train_loss:1149.65212, val_fused_rmse:28.1747, test_loss:deferred
+bcpt, epoch:20, train_loss:1146.52964, val_fused_rmse:28.0816, test_loss:deferred
+bcpt, epoch:21, train_loss:1143.55195, val_fused_rmse:28.0198, test_loss:deferred
+bcpt, epoch:22, train_loss:1140.13424, val_fused_rmse:27.9549, test_loss:deferred
+bcpt, epoch:23, train_loss:1136.39300, val_fused_rmse:27.8783, test_loss:deferred
+bcpt, epoch:24, train_loss:1132.06648, val_fused_rmse:27.7090, test_loss:deferred
+bcpt, epoch:25, train_loss:1126.98543, val_fused_rmse:27.5699, test_loss:deferred
+bcpt, epoch:26, train_loss:1121.43535, val_fused_rmse:27.3690, test_loss:deferred
+bcpt, epoch:27, train_loss:1115.25457, val_fused_rmse:27.3051, test_loss:deferred
+bcpt, epoch:28, train_loss:1109.44714, val_fused_rmse:27.0584, test_loss:deferred
+bcpt, epoch:29, train_loss:1103.01212, val_fused_rmse:26.6993, test_loss:deferred
+bcpt, epoch:30, train_loss:1094.61906, val_fused_rmse:26.4565, test_loss:deferred
+bcpt, epoch:31, train_loss:1086.17552, val_fused_rmse:26.2591, test_loss:deferred
+bcpt, epoch:32, train_loss:1076.83255, val_fused_rmse:26.0689, test_loss:deferred
+bcpt, epoch:33, train_loss:1067.14101, val_fused_rmse:25.6132, test_loss:deferred
+bcpt, epoch:34, train_loss:1055.60183, val_fused_rmse:25.3887, test_loss:deferred
+bcpt, epoch:35, train_loss:1042.76539, val_fused_rmse:24.8514, test_loss:deferred
+bcpt, epoch:36, train_loss:1032.33977, val_fused_rmse:24.2463, test_loss:deferred
+bcpt, epoch:37, train_loss:1016.93832, val_fused_rmse:23.8948, test_loss:deferred
+bcpt, epoch:38, train_loss:1002.54012, val_fused_rmse:23.2080, test_loss:deferred
+bcpt, epoch:39, train_loss:986.45345, val_fused_rmse:23.4146, test_loss:deferred
+bcpt, epoch:40, train_loss:969.25966, val_fused_rmse:22.0488, test_loss:deferred
+bcpt, epoch:41, train_loss:949.03424, val_fused_rmse:21.6467, test_loss:deferred
+bcpt, epoch:42, train_loss:930.83276, val_fused_rmse:21.4903, test_loss:deferred
+bcpt, epoch:43, train_loss:911.78345, val_fused_rmse:20.3371, test_loss:deferred
+bcpt, epoch:44, train_loss:890.78625, val_fused_rmse:19.7550, test_loss:deferred
+bcpt, epoch:45, train_loss:871.38179, val_fused_rmse:19.4559, test_loss:deferred
+bcpt, epoch:46, train_loss:843.96897, val_fused_rmse:18.3681, test_loss:deferred
+bcpt, epoch:47, train_loss:820.09224, val_fused_rmse:18.5202, test_loss:deferred
+bcpt, epoch:48, train_loss:794.96300, val_fused_rmse:17.3208, test_loss:deferred
+bcpt, epoch:49, train_loss:773.07284, val_fused_rmse:16.9980, test_loss:deferred
+bcpt, epoch:50, train_loss:753.91172, val_fused_rmse:16.4778, test_loss:deferred
+bcpt, epoch:51, train_loss:726.12486, val_fused_rmse:16.2681, test_loss:deferred
+bcpt, epoch:52, train_loss:700.29106, val_fused_rmse:16.0466, test_loss:deferred
+bcpt, epoch:53, train_loss:677.84377, val_fused_rmse:16.0375, test_loss:deferred
+bcpt, epoch:54, train_loss:654.38935, val_fused_rmse:16.1597, test_loss:deferred
+bcpt, epoch:55, train_loss:638.21338, val_fused_rmse:16.2922, test_loss:deferred
+bcpt, epoch:56, train_loss:616.98361, val_fused_rmse:16.5884, test_loss:deferred
+bcpt, epoch:57, train_loss:598.28689, val_fused_rmse:16.7894, test_loss:deferred
+bcpt, epoch:58, train_loss:580.64440, val_fused_rmse:17.4301, test_loss:deferred
+bcpt, epoch:59, train_loss:567.91029, val_fused_rmse:17.3572, test_loss:deferred
+bcpt, epoch:60, train_loss:554.03285, val_fused_rmse:17.7437, test_loss:deferred
+bcpt, epoch:61, train_loss:543.32642, val_fused_rmse:18.0111, test_loss:deferred
+bcpt, epoch:62, train_loss:534.91748, val_fused_rmse:18.3184, test_loss:deferred
+bcpt, epoch:63, train_loss:526.60998, val_fused_rmse:18.2355, test_loss:deferred
+bcpt, epoch:64, train_loss:520.83136, val_fused_rmse:18.3434, test_loss:deferred
+bcpt, epoch:65, train_loss:516.00028, val_fused_rmse:18.6230, test_loss:deferred
+bcpt, epoch:66, train_loss:515.17388, val_fused_rmse:18.7556, test_loss:deferred
+bcpt, epoch:67, train_loss:511.26721, val_fused_rmse:18.9937, test_loss:deferred
+bcpt, epoch:68, train_loss:510.09113, val_fused_rmse:19.0542, test_loss:deferred
+bcpt, epoch:69, train_loss:507.35639, val_fused_rmse:19.1189, test_loss:deferred
+bcpt, epoch:70, train_loss:510.46958, val_fused_rmse:19.1776, test_loss:deferred
+bcpt, epoch:71, train_loss:506.87433, val_fused_rmse:19.3507, test_loss:deferred
+bcpt, epoch:72, train_loss:505.09269, val_fused_rmse:19.3949, test_loss:deferred
+bcpt, epoch:73, train_loss:503.65919, val_fused_rmse:19.5024, test_loss:deferred
+bcpt, epoch:74, train_loss:510.85837, val_fused_rmse:19.4417, test_loss:deferred
+bcpt, epoch:75, train_loss:504.58994, val_fused_rmse:19.5445, test_loss:deferred
+bcpt, epoch:76, train_loss:503.11358, val_fused_rmse:19.5540, test_loss:deferred
+bcpt, epoch:77, train_loss:502.94520, val_fused_rmse:19.5129, test_loss:deferred
+bcpt, epoch:78, train_loss:502.64793, val_fused_rmse:19.6117, test_loss:deferred
+bcpt, epoch:79, train_loss:499.24648, val_fused_rmse:19.5300, test_loss:deferred
+bcpt, epoch:80, train_loss:499.97223, val_fused_rmse:19.6790, test_loss:deferred
+bcpt, epoch:81, train_loss:498.06588, val_fused_rmse:19.7146, test_loss:deferred
+bcpt, epoch:82, train_loss:510.84369, val_fused_rmse:19.8070, test_loss:deferred
+bcpt, epoch:83, train_loss:507.84522, val_fused_rmse:19.6298, test_loss:deferred
+bcpt, epoch:84, train_loss:500.95291, val_fused_rmse:19.7741, test_loss:deferred
+bcpt, epoch:85, train_loss:499.08553, val_fused_rmse:19.7219, test_loss:deferred
+bcpt, epoch:86, train_loss:497.06711, val_fused_rmse:19.7736, test_loss:deferred
+bcpt, epoch:87, train_loss:497.05197, val_fused_rmse:19.9466, test_loss:deferred
+bcpt, epoch:88, train_loss:497.57803, val_fused_rmse:19.8741, test_loss:deferred
+bcpt, epoch:89, train_loss:495.78078, val_fused_rmse:20.1312, test_loss:deferred
+bcpt, epoch:90, train_loss:497.42223, val_fused_rmse:19.8347, test_loss:deferred
+bcpt, epoch:91, train_loss:495.22645, val_fused_rmse:20.0752, test_loss:deferred
+bcpt, epoch:92, train_loss:495.37173, val_fused_rmse:19.8961, test_loss:deferred
+bcpt, epoch:93, train_loss:496.55319, val_fused_rmse:20.0749, test_loss:deferred
+bcpt, epoch:94, train_loss:497.66419, val_fused_rmse:20.0776, test_loss:deferred
+bcpt, epoch:95, train_loss:496.10054, val_fused_rmse:20.1157, test_loss:deferred
+bcpt, epoch:96, train_loss:494.15692, val_fused_rmse:20.1889, test_loss:deferred
+bcpt, epoch:97, train_loss:494.80296, val_fused_rmse:20.1453, test_loss:deferred
+bcpt, epoch:98, train_loss:493.48162, val_fused_rmse:20.0499, test_loss:deferred
+bcpt, epoch:99, train_loss:494.13836, val_fused_rmse:20.2870, test_loss:deferred
+bcpt, epoch:100, train_loss:493.99495, val_fused_rmse:20.2781, test_loss:deferred
+bcpt, epoch:101, train_loss:494.38591, val_fused_rmse:20.3496, test_loss:deferred
+bcpt, epoch:102, train_loss:493.21591, val_fused_rmse:20.4758, test_loss:deferred
+bcpt, epoch:103, train_loss:492.73005, val_fused_rmse:20.4064, test_loss:deferred
+bcpt, epoch:104, train_loss:492.86458, val_fused_rmse:20.4341, test_loss:deferred
+bcpt, epoch:105, train_loss:492.94646, val_fused_rmse:20.3355, test_loss:deferred
+bcpt, epoch:106, train_loss:491.95687, val_fused_rmse:20.2659, test_loss:deferred
+bcpt, epoch:107, train_loss:491.45412, val_fused_rmse:20.2976, test_loss:deferred
+bcpt, epoch:108, train_loss:492.49896, val_fused_rmse:20.4521, test_loss:deferred
+bcpt, epoch:109, train_loss:490.67044, val_fused_rmse:20.3066, test_loss:deferred
+bcpt, epoch:110, train_loss:490.97018, val_fused_rmse:20.3939, test_loss:deferred
+bcpt, epoch:111, train_loss:491.65706, val_fused_rmse:20.5153, test_loss:deferred
+bcpt, epoch:112, train_loss:494.62420, val_fused_rmse:20.4498, test_loss:deferred
+bcpt, epoch:113, train_loss:501.99666, val_fused_rmse:20.5984, test_loss:deferred
+bcpt, epoch:114, train_loss:493.20288, val_fused_rmse:20.4462, test_loss:deferred
+bcpt, epoch:115, train_loss:492.28387, val_fused_rmse:20.4641, test_loss:deferred
+bcpt, epoch:116, train_loss:491.65511, val_fused_rmse:20.5960, test_loss:deferred
+bcpt, epoch:117, train_loss:491.53409, val_fused_rmse:20.5074, test_loss:deferred
+bcpt, epoch:118, train_loss:491.68057, val_fused_rmse:20.4563, test_loss:deferred
+bcpt, epoch:119, train_loss:490.56766, val_fused_rmse:20.4493, test_loss:deferred
+bcpt, epoch:120, train_loss:489.79903, val_fused_rmse:20.6003, test_loss:deferred
+bcpt, epoch:121, train_loss:489.64965, val_fused_rmse:20.5403, test_loss:deferred
+bcpt, epoch:122, train_loss:488.82721, val_fused_rmse:20.6299, test_loss:deferred
+bcpt, epoch:123, train_loss:488.88021, val_fused_rmse:20.5218, test_loss:deferred
+bcpt, epoch:124, train_loss:490.17719, val_fused_rmse:20.6609, test_loss:deferred
+bcpt, epoch:125, train_loss:494.15648, val_fused_rmse:20.6231, test_loss:deferred
+bcpt, epoch:126, train_loss:489.37413, val_fused_rmse:20.5342, test_loss:deferred
+bcpt, epoch:127, train_loss:488.98625, val_fused_rmse:20.6200, test_loss:deferred
+bcpt, epoch:128, train_loss:488.30389, val_fused_rmse:20.5237, test_loss:deferred
+bcpt, epoch:129, train_loss:488.54386, val_fused_rmse:20.6571, test_loss:deferred
+bcpt, epoch:130, train_loss:487.30463, val_fused_rmse:20.6823, test_loss:deferred
+bcpt, epoch:131, train_loss:487.20285, val_fused_rmse:20.8439, test_loss:deferred
+bcpt, epoch:132, train_loss:487.37291, val_fused_rmse:20.6213, test_loss:deferred
+bcpt, epoch:133, train_loss:487.31653, val_fused_rmse:20.7229, test_loss:deferred
+bcpt, epoch:134, train_loss:487.01951, val_fused_rmse:20.6829, test_loss:deferred
+bcpt, epoch:135, train_loss:487.87476, val_fused_rmse:20.8258, test_loss:deferred
+bcpt, epoch:136, train_loss:486.48607, val_fused_rmse:20.9652, test_loss:deferred
+bcpt, epoch:137, train_loss:486.22584, val_fused_rmse:20.8326, test_loss:deferred
+bcpt, epoch:138, train_loss:487.29657, val_fused_rmse:20.8759, test_loss:deferred
+bcpt, epoch:139, train_loss:488.10674, val_fused_rmse:20.4482, test_loss:deferred
+bcpt, epoch:140, train_loss:488.25471, val_fused_rmse:20.9378, test_loss:deferred
+bcpt, epoch:141, train_loss:488.24477, val_fused_rmse:20.6995, test_loss:deferred
+bcpt, epoch:142, train_loss:532.41664, val_fused_rmse:20.8768, test_loss:deferred
+bcpt, epoch:143, train_loss:494.19884, val_fused_rmse:20.8263, test_loss:deferred
+bcpt, epoch:144, train_loss:489.63504, val_fused_rmse:20.7782, test_loss:deferred
+bcpt, epoch:145, train_loss:487.79638, val_fused_rmse:20.7823, test_loss:deferred
+bcpt, epoch:146, train_loss:486.09301, val_fused_rmse:20.8960, test_loss:deferred
+bcpt, epoch:147, train_loss:497.88118, val_fused_rmse:21.0137, test_loss:deferred
+bcpt, epoch:148, train_loss:490.12922, val_fused_rmse:20.8096, test_loss:deferred
+bcpt, epoch:149, train_loss:487.86199, val_fused_rmse:21.0182, test_loss:deferred
+bcpt, epoch:150, train_loss:486.41909, val_fused_rmse:20.9006, test_loss:deferred
+bcpt, epoch:151, train_loss:485.67323, val_fused_rmse:20.9470, test_loss:deferred
+bcpt, epoch:152, train_loss:485.58304, val_fused_rmse:20.9918, test_loss:deferred
+bcpt, epoch:153, train_loss:485.20110, val_fused_rmse:21.0568, test_loss:deferred
+bcpt, epoch:154, train_loss:485.54210, val_fused_rmse:21.0192, test_loss:deferred
+bcpt, epoch:155, train_loss:484.71570, val_fused_rmse:21.0529, test_loss:deferred
+bcpt, epoch:156, train_loss:485.10056, val_fused_rmse:21.0779, test_loss:deferred
+bcpt, epoch:157, train_loss:484.82911, val_fused_rmse:21.0300, test_loss:deferred
+bcpt, epoch:158, train_loss:484.79188, val_fused_rmse:21.0362, test_loss:deferred
+bcpt, epoch:159, train_loss:484.15950, val_fused_rmse:20.8986, test_loss:deferred
+bcpt, epoch:160, train_loss:484.43586, val_fused_rmse:20.9974, test_loss:deferred
+bcpt, epoch:161, train_loss:484.41883, val_fused_rmse:21.0596, test_loss:deferred
+bcpt, epoch:162, train_loss:484.45866, val_fused_rmse:21.1031, test_loss:deferred
+bcpt, epoch:163, train_loss:485.01639, val_fused_rmse:20.9282, test_loss:deferred
+bcpt, epoch:164, train_loss:484.44885, val_fused_rmse:21.0512, test_loss:deferred
+bcpt, epoch:165, train_loss:484.17972, val_fused_rmse:21.0462, test_loss:deferred
+bcpt, epoch:166, train_loss:484.72144, val_fused_rmse:21.0693, test_loss:deferred
+bcpt, epoch:167, train_loss:484.81156, val_fused_rmse:21.0249, test_loss:deferred
+bcpt, epoch:168, train_loss:484.30966, val_fused_rmse:21.0297, test_loss:deferred
+bcpt, epoch:169, train_loss:484.33771, val_fused_rmse:21.0087, test_loss:deferred
+bcpt, epoch:170, train_loss:484.10622, val_fused_rmse:21.1027, test_loss:deferred
+bcpt, epoch:171, train_loss:484.17528, val_fused_rmse:21.0481, test_loss:deferred
+bcpt, epoch:172, train_loss:484.80977, val_fused_rmse:21.0110, test_loss:deferred
+bcpt, epoch:173, train_loss:484.04645, val_fused_rmse:20.9338, test_loss:deferred
+bcpt, epoch:174, train_loss:483.83819, val_fused_rmse:21.1007, test_loss:deferred
+bcpt, epoch:175, train_loss:484.14507, val_fused_rmse:21.0943, test_loss:deferred
+bcpt, epoch:176, train_loss:484.01152, val_fused_rmse:21.0384, test_loss:deferred
+bcpt, epoch:177, train_loss:483.75754, val_fused_rmse:21.1263, test_loss:deferred
+bcpt, epoch:178, train_loss:484.06901, val_fused_rmse:21.0251, test_loss:deferred
+bcpt, epoch:179, train_loss:483.52250, val_fused_rmse:21.0705, test_loss:deferred
+bcpt, epoch:180, train_loss:483.64478, val_fused_rmse:21.0300, test_loss:deferred
+bcpt, epoch:181, train_loss:484.01211, val_fused_rmse:21.0342, test_loss:deferred
+bcpt, epoch:182, train_loss:483.01283, val_fused_rmse:21.1031, test_loss:deferred
+bcpt, epoch:183, train_loss:483.62675, val_fused_rmse:21.0882, test_loss:deferred
+bcpt, epoch:184, train_loss:483.77474, val_fused_rmse:21.1070, test_loss:deferred
+bcpt, epoch:185, train_loss:483.62798, val_fused_rmse:21.0319, test_loss:deferred
+bcpt, epoch:186, train_loss:483.03983, val_fused_rmse:21.0253, test_loss:deferred
+bcpt, epoch:187, train_loss:483.33298, val_fused_rmse:21.2002, test_loss:deferred
+bcpt, epoch:188, train_loss:483.12742, val_fused_rmse:21.1971, test_loss:deferred
+bcpt, epoch:189, train_loss:483.39633, val_fused_rmse:21.1329, test_loss:deferred
+bcpt, epoch:190, train_loss:483.31371, val_fused_rmse:20.9531, test_loss:deferred
+bcpt, epoch:191, train_loss:483.56061, val_fused_rmse:21.0801, test_loss:deferred
+bcpt, epoch:192, train_loss:482.53141, val_fused_rmse:21.1118, test_loss:deferred
+bcpt, epoch:193, train_loss:482.95976, val_fused_rmse:21.0838, test_loss:deferred
+bcpt, epoch:194, train_loss:482.88161, val_fused_rmse:21.0537, test_loss:deferred
+bcpt, epoch:195, train_loss:482.93111, val_fused_rmse:21.1588, test_loss:deferred
+bcpt, epoch:196, train_loss:482.58218, val_fused_rmse:21.1111, test_loss:deferred
+bcpt, epoch:197, train_loss:482.88250, val_fused_rmse:21.0283, test_loss:deferred
+bcpt, epoch:198, train_loss:482.98729, val_fused_rmse:21.2497, test_loss:deferred
+bcpt, epoch:199, train_loss:482.49319, val_fused_rmse:21.0153, test_loss:deferred
+bcpt, epoch:200, train_loss:482.01866, val_fused_rmse:21.1464, test_loss:deferred
+bcpt, epoch:201, train_loss:482.29803, val_fused_rmse:21.1598, test_loss:deferred
+bcpt, epoch:202, train_loss:482.51574, val_fused_rmse:21.1679, test_loss:deferred
+bcpt, epoch:203, train_loss:482.09269, val_fused_rmse:21.0721, test_loss:deferred
+bcpt, epoch:204, train_loss:482.34979, val_fused_rmse:21.1168, test_loss:deferred
+bcpt, epoch:205, train_loss:482.52246, val_fused_rmse:21.1740, test_loss:deferred
+bcpt, epoch:206, train_loss:481.80911, val_fused_rmse:21.1270, test_loss:deferred
+bcpt, epoch:207, train_loss:481.50004, val_fused_rmse:21.1232, test_loss:deferred
+bcpt, epoch:208, train_loss:482.12812, val_fused_rmse:21.0970, test_loss:deferred
+bcpt, epoch:209, train_loss:481.62863, val_fused_rmse:21.1731, test_loss:deferred
+bcpt, epoch:210, train_loss:482.41517, val_fused_rmse:21.0800, test_loss:deferred
+bcpt, epoch:211, train_loss:481.64919, val_fused_rmse:21.2070, test_loss:deferred
+bcpt, epoch:212, train_loss:482.01071, val_fused_rmse:21.1545, test_loss:deferred
+bcpt, epoch:213, train_loss:481.57393, val_fused_rmse:21.1544, test_loss:deferred
+bcpt, epoch:214, train_loss:481.26501, val_fused_rmse:21.0874, test_loss:deferred
+bcpt, epoch:215, train_loss:481.82856, val_fused_rmse:21.0603, test_loss:deferred
+bcpt, epoch:216, train_loss:481.41071, val_fused_rmse:21.1731, test_loss:deferred
+bcpt, epoch:217, train_loss:481.58639, val_fused_rmse:21.1785, test_loss:deferred
+bcpt, epoch:218, train_loss:480.76744, val_fused_rmse:21.1718, test_loss:deferred
+bcpt, epoch:219, train_loss:481.24934, val_fused_rmse:21.1191, test_loss:deferred
+bcpt, epoch:220, train_loss:481.05870, val_fused_rmse:21.1486, test_loss:deferred
+bcpt, epoch:221, train_loss:480.44063, val_fused_rmse:21.1304, test_loss:deferred
+bcpt, epoch:222, train_loss:481.21219, val_fused_rmse:21.2198, test_loss:deferred
+bcpt, epoch:223, train_loss:481.04794, val_fused_rmse:21.1536, test_loss:deferred
+bcpt, epoch:224, train_loss:481.05074, val_fused_rmse:21.1217, test_loss:deferred
+bcpt, epoch:225, train_loss:480.19456, val_fused_rmse:21.2440, test_loss:deferred
+bcpt, epoch:226, train_loss:480.94639, val_fused_rmse:21.1166, test_loss:deferred
+bcpt, epoch:227, train_loss:480.28169, val_fused_rmse:21.1688, test_loss:deferred
+bcpt, epoch:228, train_loss:481.31627, val_fused_rmse:21.2364, test_loss:deferred
+bcpt, epoch:229, train_loss:481.12738, val_fused_rmse:21.2127, test_loss:deferred
+bcpt, epoch:230, train_loss:480.52099, val_fused_rmse:21.1876, test_loss:deferred
+bcpt, epoch:231, train_loss:480.26388, val_fused_rmse:21.2382, test_loss:deferred
+bcpt, epoch:232, train_loss:480.83692, val_fused_rmse:21.1922, test_loss:deferred
+bcpt, epoch:233, train_loss:479.84270, val_fused_rmse:21.2484, test_loss:deferred
+bcpt, epoch:234, train_loss:480.21437, val_fused_rmse:21.1932, test_loss:deferred
+bcpt, epoch:235, train_loss:480.13052, val_fused_rmse:21.2575, test_loss:deferred
+bcpt, epoch:236, train_loss:479.36397, val_fused_rmse:21.2848, test_loss:deferred
+bcpt, epoch:237, train_loss:479.93568, val_fused_rmse:21.1325, test_loss:deferred
+bcpt, epoch:238, train_loss:479.83169, val_fused_rmse:21.1248, test_loss:deferred
+bcpt, epoch:239, train_loss:480.14140, val_fused_rmse:21.1645, test_loss:deferred
+bcpt, epoch:240, train_loss:479.30242, val_fused_rmse:21.1835, test_loss:deferred
+bcpt, epoch:241, train_loss:479.72682, val_fused_rmse:21.1798, test_loss:deferred
+bcpt, epoch:242, train_loss:479.24643, val_fused_rmse:21.2679, test_loss:deferred
+bcpt, epoch:243, train_loss:479.62795, val_fused_rmse:21.2551, test_loss:deferred
+bcpt, epoch:244, train_loss:479.33869, val_fused_rmse:21.2937, test_loss:deferred
+bcpt, epoch:245, train_loss:479.27560, val_fused_rmse:21.1673, test_loss:deferred
+bcpt, epoch:246, train_loss:479.16524, val_fused_rmse:21.1770, test_loss:deferred
+bcpt, epoch:247, train_loss:479.34796, val_fused_rmse:21.2607, test_loss:deferred
+bcpt, epoch:248, train_loss:479.27582, val_fused_rmse:21.2416, test_loss:deferred
+bcpt, epoch:249, train_loss:478.53269, val_fused_rmse:21.2515, test_loss:deferred
+bcpt, epoch:250, train_loss:478.51958, val_fused_rmse:21.3028, test_loss:deferred
+bcpt, epoch:251, train_loss:478.32989, val_fused_rmse:21.2920, test_loss:deferred
+bcpt, epoch:252, train_loss:478.05953, val_fused_rmse:21.3125, test_loss:deferred
+bcpt, epoch:253, train_loss:478.81368, val_fused_rmse:21.3030, test_loss:deferred
+bcpt, epoch:254, train_loss:479.01217, val_fused_rmse:21.2372, test_loss:deferred
+bcpt, epoch:255, train_loss:478.37181, val_fused_rmse:21.2462, test_loss:deferred
+bcpt, epoch:256, train_loss:479.07494, val_fused_rmse:21.2736, test_loss:deferred
+bcpt, epoch:257, train_loss:478.26649, val_fused_rmse:21.3106, test_loss:deferred
+bcpt, epoch:258, train_loss:478.40912, val_fused_rmse:21.2160, test_loss:deferred
+bcpt, epoch:259, train_loss:477.94370, val_fused_rmse:21.1726, test_loss:deferred
+bcpt, epoch:260, train_loss:478.22679, val_fused_rmse:21.3545, test_loss:deferred
+bcpt, epoch:261, train_loss:478.37646, val_fused_rmse:21.3288, test_loss:deferred
+bcpt, epoch:262, train_loss:478.18499, val_fused_rmse:21.2559, test_loss:deferred
+bcpt, epoch:263, train_loss:477.78489, val_fused_rmse:21.3027, test_loss:deferred
+bcpt, epoch:264, train_loss:477.93687, val_fused_rmse:21.3212, test_loss:deferred
+bcpt, epoch:265, train_loss:477.59035, val_fused_rmse:21.2541, test_loss:deferred
+bcpt, epoch:266, train_loss:477.40699, val_fused_rmse:21.3386, test_loss:deferred
+bcpt, epoch:267, train_loss:477.64177, val_fused_rmse:21.2756, test_loss:deferred
+bcpt, epoch:268, train_loss:477.70521, val_fused_rmse:21.3081, test_loss:deferred
+bcpt, epoch:269, train_loss:477.80574, val_fused_rmse:21.3800, test_loss:deferred
+bcpt, epoch:270, train_loss:476.83530, val_fused_rmse:21.3288, test_loss:deferred
+bcpt, epoch:271, train_loss:477.36296, val_fused_rmse:21.2795, test_loss:deferred
+bcpt, epoch:272, train_loss:477.64614, val_fused_rmse:21.1550, test_loss:deferred
+bcpt, epoch:273, train_loss:476.96090, val_fused_rmse:21.4719, test_loss:deferred
+bcpt, epoch:274, train_loss:477.45748, val_fused_rmse:21.3763, test_loss:deferred
+bcpt, epoch:275, train_loss:477.10070, val_fused_rmse:21.2402, test_loss:deferred
+bcpt, epoch:276, train_loss:476.79926, val_fused_rmse:21.3368, test_loss:deferred
+bcpt, epoch:277, train_loss:477.51173, val_fused_rmse:21.3825, test_loss:deferred
+bcpt, epoch:278, train_loss:477.17363, val_fused_rmse:21.4195, test_loss:deferred
+bcpt, epoch:279, train_loss:476.75163, val_fused_rmse:21.2618, test_loss:deferred
+bcpt, epoch:280, train_loss:476.46651, val_fused_rmse:21.4136, test_loss:deferred
+bcpt, epoch:281, train_loss:476.68603, val_fused_rmse:21.4390, test_loss:deferred
+bcpt, epoch:282, train_loss:476.82533, val_fused_rmse:21.2922, test_loss:deferred
+bcpt, epoch:283, train_loss:476.37324, val_fused_rmse:21.3248, test_loss:deferred
+bcpt, epoch:284, train_loss:476.11254, val_fused_rmse:21.3472, test_loss:deferred
+bcpt, epoch:285, train_loss:476.49833, val_fused_rmse:21.2500, test_loss:deferred
+bcpt, epoch:286, train_loss:476.35475, val_fused_rmse:21.3584, test_loss:deferred
+bcpt, epoch:287, train_loss:477.05448, val_fused_rmse:21.3700, test_loss:deferred
+bcpt, epoch:288, train_loss:476.95929, val_fused_rmse:21.3975, test_loss:deferred
+bcpt, epoch:289, train_loss:476.42903, val_fused_rmse:21.2879, test_loss:deferred
+bcpt, epoch:290, train_loss:476.78747, val_fused_rmse:21.2678, test_loss:deferred
+bcpt, epoch:291, train_loss:475.98343, val_fused_rmse:21.4218, test_loss:deferred
+bcpt, epoch:292, train_loss:475.59029, val_fused_rmse:21.2921, test_loss:deferred
+bcpt, epoch:293, train_loss:475.33989, val_fused_rmse:21.3212, test_loss:deferred
+bcpt, epoch:294, train_loss:475.66182, val_fused_rmse:21.2453, test_loss:deferred
+bcpt, epoch:295, train_loss:475.21419, val_fused_rmse:21.2809, test_loss:deferred
+bcpt, epoch:296, train_loss:475.09888, val_fused_rmse:21.3335, test_loss:deferred
+bcpt, epoch:297, train_loss:475.74908, val_fused_rmse:21.4112, test_loss:deferred
+bcpt, epoch:298, train_loss:475.01438, val_fused_rmse:21.3439, test_loss:deferred
+bcpt, epoch:299, train_loss:475.05246, val_fused_rmse:21.3105, test_loss:deferred
+bcpt, epoch:300, train_loss:474.36434, val_fused_rmse:21.2236, test_loss:deferred
+MAE: 14.14 RMSE: 16.02 NLL: 4.9973 CRPS: 10.5560 PICP: 0.3333 MPIW: 21.7615
+=== DS08a lane done 2026-11-05 09:40:23 ===

@@ -1,0 +1,23 @@
+{
+  "MAE": 16.467231035232544,
+  "RMSE": 18.751904418471927,
+  "NLL": 5.468656541493097,
+  "CRPS": 12.600010214491924,
+  "PICP": 0.25,
+  "MPIW": 23.016077041625977,
+  "coverage_gap": 0.55,
+  "IntervalScore": 91.4692268371582,
+  "dataset": "DS03",
+  "method": "bcpt",
+  "seed": 0,
+  "device": "cuda",
+  "best_epochs": [
+    62
+  ],
+  "ensemble_members": 1,
+  "selection_criterion": "val_fused_rmse",
+  "train_seconds": 158.96600350737572,
+  "inference_seconds": 0.2772723212838173,
+  "mc_samples": 30,
+  "parameter_count": 15732
+}

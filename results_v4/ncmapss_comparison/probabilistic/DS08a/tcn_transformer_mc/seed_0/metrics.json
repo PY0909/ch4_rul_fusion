@@ -1,0 +1,23 @@
+{
+  "MAE": 13.388755708891486,
+  "RMSE": 20.548704093743172,
+  "NLL": 9.938744751719348,
+  "CRPS": 11.567906364776002,
+  "PICP": 0.3333333333333333,
+  "MPIW": 10.32806222892056,
+  "coverage_gap": 0.46666666666666673,
+  "IntervalScore": 101.92753117537747,
+  "dataset": "DS08a",
+  "method": "tcn_transformer_mc",
+  "seed": 0,
+  "device": "cuda",
+  "best_epochs": [
+    153
+  ],
+  "ensemble_members": 1,
+  "selection_criterion": "val_rmse",
+  "train_seconds": 69.02163842320442,
+  "inference_seconds": 0.10860733687877655,
+  "mc_samples": 30,
+  "parameter_count": 6525
+}
