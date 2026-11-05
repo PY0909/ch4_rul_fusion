@@ -7,6 +7,30 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+#: Configurable nonlinearities for the LOSO search. "legacy" keeps each
+#: module's original mixed activation (relu conv stem / gelu router+graph)
+#: so default behaviour is bit-identical; the named options switch every
+#: nonlinearity uniformly.
+_ACTIVATION_FUNCTIONS = {"relu": F.relu, "gelu": F.gelu, "silu": F.silu}
+
+
+def _activation_function(name: str, legacy):
+    if name == "legacy":
+        return legacy
+    if name in _ACTIVATION_FUNCTIONS:
+        return _ACTIVATION_FUNCTIONS[name]
+    raise ValueError(f"activation must be 'legacy' or one of "
+                     f"{sorted(_ACTIVATION_FUNCTIONS)}")
+
+
+def _activation_module(name: str, legacy: str):
+    modules = {"relu": nn.ReLU, "gelu": nn.GELU, "silu": nn.SiLU}
+    if name == "legacy":
+        return modules[legacy]()
+    if name in modules:
+        return modules[name]()
+    raise ValueError(f"activation must be 'legacy' or one of {sorted(modules)}")
+
 
 def _as_coords(coords: Optional[torch.Tensor], length: int, reference: torch.Tensor) -> torch.Tensor:
     if coords is None:
@@ -165,7 +189,7 @@ class CrossScaleRouter(nn.Module):
     """Router attention over scale tokens for each sensor."""
 
     def __init__(self, d_model: int, num_heads: int = 4, num_routers: int = 4,
-                 dropout: float = 0.1):
+                 dropout: float = 0.1, activation: str = "legacy"):
         super().__init__()
         if d_model % num_heads:
             raise ValueError("d_model must be divisible by num_heads")
@@ -173,11 +197,11 @@ class CrossScaleRouter(nn.Module):
         self.sender = nn.MultiheadAttention(d_model, num_heads, dropout=dropout,
                                              batch_first=True)
         self.receiver = nn.MultiheadAttention(d_model, num_heads, dropout=dropout,
-                                               batch_first=True)
+                                              batch_first=True)
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
         self.ffn = nn.Sequential(
-            nn.Linear(d_model, 4 * d_model), nn.GELU(),
+            nn.Linear(d_model, 4 * d_model), _activation_module(activation, "gelu"),
             nn.Dropout(dropout), nn.Linear(4 * d_model, d_model),
         )
         self.dropout = nn.Dropout(dropout)
@@ -197,11 +221,13 @@ class SensorGraphBlock(nn.Module):
     """One shared sensor graph with optional level/trend dynamic logits."""
 
     def __init__(self, sensor_dim: int, d_model: int, layers: int = 1,
-                 dropout: float = 0.1, graph_mode: str = "static"):
+                 dropout: float = 0.1, graph_mode: str = "static",
+                 activation: str = "legacy"):
         super().__init__()
         if graph_mode not in {"static", "level", "trend"}:
             raise ValueError("graph_mode must be static, level, or trend")
         self.graph_mode = graph_mode
+        self.act = _activation_function(activation, F.gelu)
         self.src = nn.Parameter(torch.randn(sensor_dim, d_model) * 0.02)
         self.dst = nn.Parameter(torch.randn(sensor_dim, d_model) * 0.02)
         self.updates = nn.ModuleList([nn.Linear(d_model, d_model) for _ in range(layers)])
@@ -233,25 +259,26 @@ class SensorGraphBlock(nn.Module):
         out = x
         for update, norm in zip(self.updates, self.norms):
             msg = torch.einsum("bij,bjd->bid", adjacency, out)
-            out = norm(out + self.dropout(F.gelu(update(msg))))
+            out = norm(out + self.dropout(self.act(update(msg))))
         return out
 
 
 class SensorPatchStem(nn.Module):
     """Per-sensor temporal CNN stem."""
 
-    def __init__(self, d_model: int, hidden: int = 8):
+    def __init__(self, d_model: int, hidden: int = 8, activation: str = "legacy"):
         super().__init__()
         self.conv1 = nn.Conv1d(1, hidden, kernel_size=2, padding="same")
         self.bn1 = nn.BatchNorm1d(hidden)
         self.conv2 = nn.Conv1d(hidden, d_model, kernel_size=2, padding="same")
         self.bn2 = nn.BatchNorm1d(d_model)
+        self.act = _activation_function(activation, F.relu)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         b, l, c = x.shape
         series = x.permute(0, 2, 1).reshape(b * c, 1, l)
-        h = F.relu(self.bn1(self.conv1(series)))
-        h = F.relu(self.bn2(self.conv2(h)))
+        h = self.act(self.bn1(self.conv1(series)))
+        h = self.act(self.bn2(self.conv2(h)))
         return h.permute(0, 2, 1).reshape(b, c, l, -1)
 
 
@@ -279,12 +306,16 @@ class MultiScalePhaseGraphRUL(nn.Module):
                  input_norm: str = "none", variant: Optional[str] = None,
                  downsample_mode: str = "legacy", graph_mode: str = "static",
                  readout: str = "legacy", use_trend_features: bool = False,
-                 trend_window_size: int = 5, condition_mode: str = "full"):
+                 trend_window_size: int = 5, condition_mode: str = "full",
+                 activation: str = "legacy"):
         super().__init__()
         if sensor_dim < 1 or condition_dim < 0:
             raise ValueError("sensor_dim must be positive and condition_dim non-negative")
         if num_scales < 1:
             raise ValueError("num_scales must be positive")
+        if activation not in {"legacy", *_ACTIVATION_FUNCTIONS}:
+            raise ValueError(f"activation must be 'legacy' or one of "
+                             f"{sorted(_ACTIVATION_FUNCTIONS)}")
         if encoder not in {"linear", "patch_cnn"}:
             raise ValueError("encoder must be 'linear' or 'patch_cnn'")
         if input_norm not in {"none", "bn"}:
@@ -318,7 +349,7 @@ class MultiScalePhaseGraphRUL(nn.Module):
         self.use_trend_features, self.condition_mode = use_trend_features, condition_mode
 
         if encoder == "patch_cnn":
-            self.stem = SensorPatchStem(d_model)
+            self.stem = SensorPatchStem(d_model, activation=activation)
             self.cond_proj = nn.Linear(max(condition_dim, 1), d_model)
         else:
             self.input_proj = nn.Linear(1 + condition_dim, d_model)
@@ -326,8 +357,10 @@ class MultiScalePhaseGraphRUL(nn.Module):
         self.scale_convs = nn.ModuleList([nn.Conv1d(d_model, d_model, 3, padding=1) for _ in range(num_scales)])
         self.scale_norms = nn.ModuleList([nn.LayerNorm(d_model) for _ in range(num_scales)])
         self.scale_embedding = nn.Parameter(torch.randn(num_scales, d_model) * 0.02)
-        self.router = CrossScaleRouter(d_model, num_heads, num_routers, dropout)
-        self.graph = SensorGraphBlock(sensor_dim, d_model, graph_layers, dropout, graph_mode)
+        self.router = CrossScaleRouter(d_model, num_heads, num_routers, dropout,
+                                       activation=activation)
+        self.graph = SensorGraphBlock(sensor_dim, d_model, graph_layers, dropout,
+                                      graph_mode, activation=activation)
         self.shared_gate = nn.Linear(d_model, d_model)
         self.condition_pool = nn.Sequential(nn.Linear(max(condition_dim, 1), d_model), nn.GELU())
         head_dim = 5 * d_model if readout == "legacy" else d_model

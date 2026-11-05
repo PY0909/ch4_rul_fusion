@@ -507,7 +507,8 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
                            test_path: Optional[Path] = None,
                            registered_split: bool = False,
                            min_calibration_units: int = 1,
-                           calibration_fracs: Optional[Sequence[float]] = None
+                           calibration_fracs: Optional[Sequence[float]] = None,
+                           unit_override: Optional[Dict[str, Sequence[int]]] = None
                            ) -> DataBundle:
     dataset = dataset.upper()
     if dataset not in {"DS03", "DS08A"}:
@@ -539,31 +540,49 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
     dev = _records_from_nc(Path(dev_path), "dev", include_virtual)
     test = _records_from_nc(Path(test_path), "test", include_virtual)
     dev_units = sorted(dev)
-    rng = np.random.default_rng(split_seed)
-    shuffled = np.asarray(dev_units, dtype=np.int64)
-    rng.shuffle(shuffled)
-    n_holdout = max(1, int(round(len(dev_units) * val_ratio))) if len(dev_units) > 1 else 0
-    if registered_split and len(dev_units) >= 5:
-        # Registered external check reserves exactly five units when possible:
-        # three validation and two calibration units.
-        n_holdout = min(len(dev_units) - 1, 5)
-    holdout_units = shuffled[:n_holdout].tolist()
-    train_units = sorted(shuffled[n_holdout:].tolist())
-    if calibration_ratio is None:
-        val_units = sorted(holdout_units)
-        calibration_units = []
+    if unit_override is not None:
+        # Explicit engine partition (LOSO folds / final arm); bypasses every
+        # ratio-based rule. train/val/calibration must be disjoint dev units;
+        # val and calibration may be empty.
+        if set(unit_override) != {"train", "val", "calibration"}:
+            raise ValueError("unit_override needs exactly train/val/calibration keys")
+        train_units = sorted(int(u) for u in unit_override["train"])
+        val_units = sorted(int(u) for u in unit_override["val"])
+        calibration_units = sorted(int(u) for u in unit_override["calibration"])
+        selected = train_units + val_units + calibration_units
+        if len(set(selected)) != len(selected):
+            raise ValueError("unit_override sets must be disjoint")
+        unknown = sorted(set(selected) - {int(u) for u in dev_units})
+        if unknown:
+            raise ValueError(f"unit_override references non-dev units: {unknown}")
+        if not train_units:
+            raise ValueError("unit_override leaves no training units")
     else:
-        if len(holdout_units) < 2:
-            raise ValueError("calibration_ratio requires at least 2 holdout units")
-        n_calibration = (max(1, int(round(len(holdout_units) * calibration_ratio)))
-                         if len(holdout_units) > 1 else 0)
-        n_calibration = min(len(holdout_units) - 1, n_calibration)
-        if n_calibration < min_calibration_units:
-            raise ValueError(
-                f"calibration split has {n_calibration} units; "
-                f"requires at least {min_calibration_units}")
-        val_units = sorted(holdout_units[:-n_calibration])
-        calibration_units = sorted(holdout_units[-n_calibration:])
+        rng = np.random.default_rng(split_seed)
+        shuffled = np.asarray(dev_units, dtype=np.int64)
+        rng.shuffle(shuffled)
+        n_holdout = max(1, int(round(len(dev_units) * val_ratio))) if len(dev_units) > 1 else 0
+        if registered_split and len(dev_units) >= 5:
+            # Registered external check reserves exactly five units when possible:
+            # three validation and two calibration units.
+            n_holdout = min(len(dev_units) - 1, 5)
+        holdout_units = shuffled[:n_holdout].tolist()
+        train_units = sorted(shuffled[n_holdout:].tolist())
+        if calibration_ratio is None:
+            val_units = sorted(holdout_units)
+            calibration_units = []
+        else:
+            if len(holdout_units) < 2:
+                raise ValueError("calibration_ratio requires at least 2 holdout units")
+            n_calibration = (max(1, int(round(len(holdout_units) * calibration_ratio)))
+                             if len(holdout_units) > 1 else 0)
+            n_calibration = min(len(holdout_units) - 1, n_calibration)
+            if n_calibration < min_calibration_units:
+                raise ValueError(
+                    f"calibration split has {n_calibration} units; "
+                    f"requires at least {min_calibration_units}")
+            val_units = sorted(holdout_units[:-n_calibration])
+            calibration_units = sorted(holdout_units[-n_calibration:])
     if not train_units:
         raise ValueError("unit split leaves no training units")
 
@@ -600,6 +619,9 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
         "calibration_ratio": calibration_ratio,
         "registered_split": registered_split,
         "min_calibration_units": min_calibration_units,
+        "unit_override": ({key: sorted(int(u) for u in value) for key, value
+                           in unit_override.items()}
+                          if unit_override is not None else None),
         "validation_protocol": validation_protocol,
         "calibration_fracs": (list(calibration_fracs)
                               if calibration_fracs is not None else None),

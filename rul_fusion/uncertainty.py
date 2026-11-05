@@ -14,10 +14,18 @@ from torch.nn import functional as F
 class NonCrossingQuantileHead(nn.Module):
     """Return q(0.1), q(0.5), q(0.9) in guaranteed sorted order."""
 
-    def __init__(self, d_model: int, dropout: float = 0.1):
+    def __init__(self, d_model: int, dropout: float = 0.1,
+                 activation: str = "legacy"):
         super().__init__()
+        modules = {"relu": nn.ReLU, "gelu": nn.GELU, "silu": nn.SiLU}
+        if activation == "legacy":
+            nonlinearity = nn.GELU()
+        elif activation in modules:
+            nonlinearity = modules[activation]()
+        else:
+            raise ValueError(f"activation must be 'legacy' or one of {sorted(modules)}")
         self.base = nn.Sequential(
-            nn.Linear(d_model, 2 * d_model), nn.GELU(), nn.Dropout(dropout)
+            nn.Linear(d_model, 2 * d_model), nonlinearity, nn.Dropout(dropout)
         )
         self.lower = nn.Linear(2 * d_model, 1)
         self.middle_gap = nn.Linear(2 * d_model, 1)
@@ -36,11 +44,13 @@ class NonCrossingQuantileHead(nn.Module):
 class A6QuantileRUL(nn.Module):
     """Quantile wrapper around an A6 single-readout backbone."""
 
-    def __init__(self, backbone: nn.Module, dropout: float = 0.1):
+    def __init__(self, backbone: nn.Module, dropout: float = 0.1,
+                 activation: str = "legacy"):
         super().__init__()
         self.backbone = backbone
         self.backbone.head = nn.Identity()
-        self.head = NonCrossingQuantileHead(backbone.d_model, dropout)
+        self.head = NonCrossingQuantileHead(backbone.d_model, dropout,
+                                            activation=activation)
 
     def forward(self, x: torch.Tensor, condition: torch.Tensor,
                 return_aux: bool = False):
