@@ -74,22 +74,29 @@ def _latest_mask(units, sample_ids):
     return mask
 
 
-def _features(q, cond_means, normalization=1.0):
-    """Observable window covariates; no labels, no unit lengths."""
+def _features(q, cond_means, normalization=1.0, feature_spec=("q50", "width", "cond")):
+    """Observable window covariates; no labels, no unit lengths.
+
+    ``feature_spec`` selects columns: q50 -> normalized median, width ->
+    normalized q90-q10, cond -> condition mean. Default is the frozen
+    production triple (plan F5).
+    """
     normalized = normalize_quantile_features(q, normalization)
-    return np.column_stack([
-        normalized[:, 1], normalized[:, 2] - normalized[:, 0],
-        cond_means,
-    ])
+    columns = {"q50": normalized[:, 1],
+               "width": normalized[:, 2] - normalized[:, 0],
+               "cond": np.asarray(cond_means, dtype=np.float64)}
+    if not feature_spec or any(name not in columns for name in feature_spec):
+        raise ValueError(f"unknown feature spec: {feature_spec}")
+    return np.column_stack([columns[name] for name in feature_spec])
 
 
-def _density_ratio(cal_feats, target_feats, clip=20.0):
+def _density_ratio(cal_feats, target_feats, clip=20.0, lr_c=1.0):
     """w(x) = p_target(x) / p_cal(x) via the logistic odds identity."""
     x = np.vstack([cal_feats, target_feats])
     y = np.concatenate([np.zeros(len(cal_feats)), np.ones(len(target_feats))])
     clf = make_pipeline(
         StandardScaler(),
-        LogisticRegression(C=1.0, max_iter=2000, class_weight="balanced"),
+        LogisticRegression(C=float(lr_c), max_iter=2000, class_weight="balanced"),
     )
     clf.fit(x, y)
     p = clf.predict_proba(cal_feats)[:, 1]
@@ -124,20 +131,20 @@ def _plain_threshold(scores, alpha):
     return float(s[max(0, min(idx, len(s) - 1))])
 
 
-def _apply(y, q, threshold):
+def _apply(y, q, threshold, alpha=ALPHA):
     lower, upper = q[:, 0] - threshold, q[:, 2] + threshold
-    out = interval_metrics(y, lower, upper, alpha=ALPHA)
+    out = interval_metrics(y, lower, upper, alpha=alpha)
     out["q50_RMSE"] = float(rmse(y, q[:, 1]))
     out["threshold"] = float(threshold)
     out.update(quantile_metrics(y, q[:, 0], q[:, 1], q[:, 2]))
     return out
 
 
-def _rank_key(metrics):
+def _rank_key(metrics, alpha=ALPHA):
     coverage = metrics["PICP"]
     eligible = 0.75 <= coverage <= 0.85
     return (0 if eligible else 1,
-            metrics["IntervalScore"] + 100.0 * abs(coverage - (1.0 - ALPHA)))
+            metrics["IntervalScore"] + 100.0 * abs(coverage - (1.0 - alpha)))
 
 
 def main(argv=None):
@@ -147,8 +154,18 @@ def main(argv=None):
         ROOT / "results_v4/chapter4_main/quantile_cqr/global"))
     parser.add_argument("--output_root", default=str(ROOT / "results_v4/weighted_cqr"))
     parser.add_argument("--endpoint", choices=("val", "test"), required=True)
+    parser.add_argument("--ratio_features", default="q50,width,cond",
+                        help="comma list of q50,width,cond (default: frozen F5)")
+    parser.add_argument("--clip", type=float, default=20.0,
+                        help="density-ratio clip bound (lower bound is 1/clip)")
+    parser.add_argument("--lr_c", type=float, default=1.0,
+                        help="logistic regression inverse regularization C")
+    parser.add_argument("--alpha", type=float, default=ALPHA)
     parser.add_argument("--device", default="auto")
     args = parser.parse_args(argv)
+    feature_spec = tuple(part.strip() for part in args.ratio_features.split(",")
+                         if part.strip())
+    alpha = float(args.alpha)
     device = torch.device(("cuda" if torch.cuda.is_available() else "cpu")
                           if args.device == "auto" else args.device)
     out_root = Path(args.output_root) / args.endpoint
@@ -166,7 +183,7 @@ def main(argv=None):
         cal_y, cal_q, cal_units, cal_ids, cal_cond = _predict(
             model, _loader(bundle.calibration_endpoint), device)
         cal_scores_w = _window_scores(cal_y, cal_q)
-        cal_feats = _features(cal_q, cal_cond)
+        cal_feats = _features(cal_q, cal_cond, feature_spec=feature_spec)
         block_scores, block_idx = _block_max(cal_scores_w, cal_units)
 
         if args.endpoint == "val":
@@ -182,8 +199,9 @@ def main(argv=None):
                 model, _loader(bundle.test), device)
             tgt_name = "official test"
 
-        tgt_feats = _features(tgt_q, tgt_cond)
-        weights_w = _density_ratio(cal_feats, tgt_feats)
+        tgt_feats = _features(tgt_q, tgt_cond, feature_spec=feature_spec)
+        weights_w = _density_ratio(cal_feats, tgt_feats, clip=args.clip,
+                                   lr_c=args.lr_c)
         weights_b = np.asarray([
             weights_w[cal_units == unit].mean() for unit in np.unique(cal_units)])
 
@@ -197,10 +215,10 @@ def main(argv=None):
         }
         rows = []
         for name, (scores, weights, fitter) in variants.items():
-            threshold = (fitter(scores, weights, ALPHA)
+            threshold = (fitter(scores, weights, alpha)
                          if fitter is _weighted_threshold
-                         else fitter(scores, ALPHA))
-            metrics = _apply(tgt_y, tgt_q, threshold)
+                         else fitter(scores, alpha))
+            metrics = _apply(tgt_y, tgt_q, threshold, alpha=alpha)
             rows.append({"dataset": dataset, "variant": name,
                          "endpoint": args.endpoint, "target": tgt_name,
                          "n_cal_points": int(len(scores)),
@@ -208,7 +226,7 @@ def main(argv=None):
                          "weight_min": float(weights.min()),
                          "weight_max": float(weights.max()),
                          **metrics})
-        rows.sort(key=_rank_key)
+        rows.sort(key=lambda row: _rank_key(row, alpha))
         best = rows[0]
         all_rows.extend(rows)
         print(f"[{dataset}] target={tgt_name} n={len(tgt_y)}", flush=True)
@@ -226,7 +244,10 @@ def main(argv=None):
         "endpoint": args.endpoint,
         "device": str(device),
         "official_test_evaluated": args.endpoint == "test",
-        "ratio_features": ["q50/125", "width/125", "condition_mean"],
+        "ratio_features": list(feature_spec),
+        "clip": args.clip,
+        "lr_c": args.lr_c,
+        "alpha": alpha,
         "ratio_fit": ("logistic regression on observable covariates; test run "
                       "fits weights against unlabeled test-window features"),
         "generated": datetime.now().isoformat(timespec="seconds"),
