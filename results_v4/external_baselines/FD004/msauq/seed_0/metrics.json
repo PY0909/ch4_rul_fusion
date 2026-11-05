@@ -1,0 +1,24 @@
+{
+  "MAE": 17.87773612111807,
+  "RMSE": 24.935810399971633,
+  "NASA_Score": 3819.968639389556,
+  "NLL": 387.85856418540493,
+  "CRPS": 16.8608997563757,
+  "PICP": 0.12903225806451613,
+  "MPIW": 5.491282309873642,
+  "coverage_gap": 0.6709677419354839,
+  "IntervalScore": 159.16858205218585,
+  "dataset": "FD004",
+  "method": "msauq",
+  "seed": 0,
+  "device": "cuda",
+  "best_epochs": [
+    32
+  ],
+  "ensemble_members": 1,
+  "selection_criterion": "val_rmse",
+  "train_seconds": 367.45706854760647,
+  "inference_seconds": 1.4455220997333527,
+  "mc_samples": 100,
+  "parameter_count": 76801
+}
