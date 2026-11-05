@@ -1,0 +1,13 @@
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS08a] G9: n_cal=18 global=27.647 weighted=20.411
+[DS08a] G17: n_cal=34 global=27.647 weighted=20.411
+A_4cuts    4cuts  global_block_max_cqr   thr=  16.376 PICP=0.917 MPIW=  61.063 IS=  64.029
+A_4cuts    4cuts  window_weighted        thr=  16.376 PICP=0.917 MPIW=  61.063 IS=  64.029
+A_4cuts    4cuts  block_max_weighted     thr=  16.376 PICP=0.917 MPIW=  61.063 IS=  64.029
+B_G9       G9     global_block_max_cqr   thr=  27.647 PICP=1.000 MPIW=  83.605 IS=  83.605
+B_G9       G9     window_weighted        thr=  20.411 PICP=0.958 MPIW=  69.133 IS=  69.992
+B_G9       G9     block_max_weighted     thr=  27.647 PICP=1.000 MPIW=  83.605 IS=  83.605
+B_G17      G17    global_block_max_cqr   thr=  27.647 PICP=1.000 MPIW=  83.605 IS=  83.605
+B_G17      G17    window_weighted        thr=  20.411 PICP=0.958 MPIW=  69.133 IS=  69.992
+B_G17      G17    block_max_weighted     thr=  27.647 PICP=1.000 MPIW=  83.605 IS=  83.605

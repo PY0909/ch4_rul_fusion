@@ -4,3 +4,17 @@
 [2026-11-04T13:43:02] conditional_coverage_diag: official test read for per-group coverage DIAGNOSTIC on frozen window-weighted intervals (no parameter or threshold changes)
 [2026-11-04T15:23:03] eval_cap0_arm_test: P1 raw-cap arm one-shot test evaluation (q50 + block-max + window-weighted variants, frozen checkpoints, no selection)
 [2026-11-05] external_baselines (B3-B6): official test evaluated exactly once per run at the end of training, 8 runs total (lstm_prob/tcn_transformer_mc/msauq/bcpt x FD002/FD004, seed 0, frozen paper-registered configs; no test-based selection anywhere; checkpoint selection used validation endpoints only). B3/FD002 was rerun once after correcting its selection criterion from val_nll to val_rmse before any downstream analysis; the superseded run's artifacts were deleted at rerun time.
+[2026-11-04T12:23:22] ncmapss_probabilistic: official test evaluated for DS03 hnn seed 0
+[2026-11-04T12:24:03] ncmapss_probabilistic: official test evaluated for DS03 edl_nig seed 0
+[2026-11-04T12:31:04] ncmapss_probabilistic: official test evaluated for DS08a hnn seed 0
+[2026-11-04T12:31:42] ncmapss_probabilistic: official test evaluated for DS08a edl_nig seed 0
+[2026-11-05T09:35:00] ncmapss_probabilistic: official test evaluated for DS08a lstm_prob seed 0
+[2026-11-05T09:35:04] ncmapss_probabilistic: official test evaluated for DS03 lstm_prob seed 0
+[2026-11-05T09:36:25] ncmapss_probabilistic: official test evaluated for DS08a tcn_transformer_mc seed 0
+[2026-11-05T09:36:37] ncmapss_probabilistic: official test evaluated for DS03 tcn_transformer_mc seed 0
+[2026-11-05T09:37:29] ncmapss_probabilistic: official test evaluated for DS08a msauq seed 0
+[2026-11-05T09:37:46] ncmapss_probabilistic: official test evaluated for DS03 msauq seed 0
+[2026-11-05T09:40:22] ncmapss_probabilistic: official test evaluated for DS08a bcpt seed 0
+[2026-11-05T09:40:42] ncmapss_probabilistic: official test evaluated for DS03 bcpt seed 0
+[2026-11-05T11:44:52] ncmapss_cqr_expanded_cuts (Arm B, pre-registered): official test endpoints evaluated once for DS03 seed 0 under grids G9/G17 on the frozen checkpoint; both grids and Arm A reported side by side, no selection
+[2026-11-05T11:51:05] ncmapss_cqr_expanded_cuts (Arm B, pre-registered): official test endpoints evaluated once for DS08a seed 0 under grids G9/G17 on the frozen checkpoint; both grids and Arm A reported side by side, no selection
