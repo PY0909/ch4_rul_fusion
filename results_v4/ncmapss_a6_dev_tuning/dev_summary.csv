@@ -1,0 +1,9 @@
+dataset,config,seed,lr,weight_decay,dropout,status,best_epoch,val_q50_RMSE,calibration_threshold,path
+DS03,p0,0,0.001,0.001,0.1,complete,26,17.874544258604466,16.627334594726562,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_comparison/cqr/DS03/seed_0/calibration_only.json
+DS03,lr3e4,0,0.0003,0.001,0.1,complete,221,16.192111228466732,30.531429290771484,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_a6_dev_tuning/lr3e4/DS03/seed_0/calibration_only.json
+DS03,wd3e3,0,0.001,0.003,0.1,complete,25,18.11948061123281,19.71453857421875,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_a6_dev_tuning/wd3e3/DS03/seed_0/calibration_only.json
+DS03,dropout02,0,0.001,0.001,0.2,complete,24,18.010313430460748,20.051300048828125,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_a6_dev_tuning/dropout02/DS03/seed_0/calibration_only.json
+DS08a,p0,0,0.001,0.001,0.1,complete,5,16.30833816550622,16.376373291015625,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_comparison/cqr/DS08a/seed_0/calibration_only.json
+DS08a,lr3e4,0,0.0003,0.001,0.1,complete,15,16.018774293343302,16.520950317382812,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_a6_dev_tuning/lr3e4/DS08a/seed_0/calibration_only.json
+DS08a,wd3e3,0,0.001,0.003,0.1,complete,5,16.182178850778566,17.805377960205078,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_a6_dev_tuning/wd3e3/DS08a/seed_0/calibration_only.json
+DS08a,dropout02,0,0.001,0.001,0.2,complete,228,15.661008238174569,31.478654861450195,/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_a6_dev_tuning/dropout02/DS08a/seed_0/calibration_only.json

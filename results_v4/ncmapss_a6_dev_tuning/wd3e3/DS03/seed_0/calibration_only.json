@@ -1,0 +1,11 @@
+{
+  "dataset": "DS03",
+  "best_epoch": 25,
+  "val_q50_RMSE": 18.11948061123281,
+  "alpha": 0.2,
+  "calibration_mode": "global",
+  "seed": 0,
+  "n_calibration": 2,
+  "calibration_threshold": 19.71453857421875,
+  "test_evaluated": false
+}
