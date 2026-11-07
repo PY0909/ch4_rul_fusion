@@ -1,0 +1,77 @@
+=== A6-Quantile train DS03 2026-11-07 20:51:55 ===
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+epoch:1/27 train_loss:17.49210
+epoch:2/27 train_loss:16.65831
+epoch:3/27 train_loss:15.63847
+epoch:4/27 train_loss:14.52056
+epoch:5/27 train_loss:13.18221
+epoch:6/27 train_loss:11.80294
+epoch:7/27 train_loss:10.34953
+epoch:8/27 train_loss:9.10023
+epoch:9/27 train_loss:8.04800
+epoch:10/27 train_loss:7.32844
+epoch:11/27 train_loss:6.86323
+epoch:12/27 train_loss:6.63615
+epoch:13/27 train_loss:6.48505
+epoch:14/27 train_loss:6.30620
+epoch:15/27 train_loss:5.88197
+epoch:16/27 train_loss:5.63701
+epoch:17/27 train_loss:5.41601
+epoch:18/27 train_loss:5.32885
+epoch:19/27 train_loss:5.01216
+epoch:20/27 train_loss:4.90927
+epoch:21/27 train_loss:4.77514
+epoch:22/27 train_loss:4.71644
+epoch:23/27 train_loss:4.58833
+epoch:24/27 train_loss:4.46721
+epoch:25/27 train_loss:4.40780
+epoch:26/27 train_loss:4.24823
+epoch:27/27 train_loss:4.37816
+[DS03] trained 27 epochs; checkpoint fcdd2cdd3297; test not loaded
+=== A6-Quantile train DS08a 2026-11-07 20:52:36 ===
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+epoch:1/22 train_loss:15.42701
+epoch:2/22 train_loss:12.89208
+epoch:3/22 train_loss:9.66050
+epoch:4/22 train_loss:7.06134
+epoch:5/22 train_loss:6.27628
+epoch:6/22 train_loss:5.93907
+epoch:7/22 train_loss:5.57913
+epoch:8/22 train_loss:5.17666
+epoch:9/22 train_loss:4.76831
+epoch:10/22 train_loss:4.49740
+epoch:11/22 train_loss:4.27243
+epoch:12/22 train_loss:4.15640
+epoch:13/22 train_loss:4.01836
+epoch:14/22 train_loss:4.06182
+epoch:15/22 train_loss:3.96387
+epoch:16/22 train_loss:3.92897
+epoch:17/22 train_loss:3.75638
+epoch:18/22 train_loss:3.68816
+epoch:19/22 train_loss:3.49926
+epoch:20/22 train_loss:3.50772
+epoch:21/22 train_loss:3.53298
+epoch:22/22 train_loss:3.31524
+[DS08a] trained 22 epochs; checkpoint 532d84bdf01e; test not loaded
+=== baselines final_train 2026-11-07 20:53:08 ===
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS03/a6_point] trained 49/49 epochs; test not loaded
+[DS03/fc_stgnn] trained 63/63 epochs; test not loaded
+[DS03/hnn] trained 44/44 epochs; test not loaded
+[DS03/edl_nig] trained 78/78 epochs; test not loaded
+[DS03/lstm_prob] trained 6/6 epochs; test not loaded
+[DS03/tcn_transformer_mc] trained 47/47 epochs; test not loaded
+[DS03/msauq] trained 25/25 epochs; test not loaded
+[DS03/bcpt] trained 38/38 epochs; test not loaded
+[DS08a/a6_point] trained 18/18 epochs; test not loaded
+[DS08a/fc_stgnn] trained 34/34 epochs; test not loaded
+[DS08a/hnn] trained 46/46 epochs; test not loaded
+[DS08a/edl_nig] trained 31/31 epochs; test not loaded
+[DS08a/lstm_prob] trained 5/5 epochs; test not loaded
+[DS08a/tcn_transformer_mc] trained 37/37 epochs; test not loaded
+[DS08a/msauq] trained 43/43 epochs; test not loaded
+[DS08a/bcpt] trained 38/38 epochs; test not loaded
+=== training stage done 2026-11-07 21:06:17 ===

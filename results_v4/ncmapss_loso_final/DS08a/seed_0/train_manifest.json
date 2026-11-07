@@ -1,0 +1,45 @@
+{
+  "stage": "train",
+  "dataset": "DS08a",
+  "seed": 0,
+  "selection_file": "/root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_frozen/selection.json",
+  "selection_sha256": "034f126a6daa4057fad7056e38f5e2faca908de150d65bc2b6261e0b582533b8",
+  "config": {
+    "activation": "legacy",
+    "lr": 0.001,
+    "dropout": 0.1,
+    "weight_decay": 0.001
+  },
+  "epochs": 22,
+  "epochs_trained": 22,
+  "train_units": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8,
+    9
+  ],
+  "calibration_units": [
+    4,
+    7
+  ],
+  "calibration_fracs": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "n_calibration_windows": 18,
+  "checkpoint_sha256": "532d84bdf01ee6b732aca2f5929bbb42edbe5cf2e76bbe1e58f52a57264ab105",
+  "calibration_sha256": "80fa26b355e7d5495ca5bf043b9cf754fcf8776876677ea70890e0ed37e3b4ad",
+  "runner_sha256": "2f1a07c1d42a02decae6597333866fc98ec28f87215e0029b991e7e87682baf6",
+  "test_loaded": false,
+  "generated": "2026-11-07T20:53:07"
+}

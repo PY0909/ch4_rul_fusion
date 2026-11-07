@@ -1,0 +1,59 @@
+{
+  "identity": {
+    "dataset": "DS08a",
+    "method": "msauq",
+    "phase": "final_train",
+    "epochs": 43,
+    "patience": 30,
+    "batch_size": 32,
+    "history": 16,
+    "mc_samples_override": 0,
+    "dev_path": "/root/autodl-tmp/kst_light_v2/dataset/data_set/N-CMAPSS_DS08a-009.h5",
+    "dev_size": 3236762200,
+    "dev_mtime_ns": 1610529682000000000,
+    "source_hashes": {
+      "scripts/run_ncmapss_loso_baselines.py": "df9549f1466d747637a4af8a5f72ccfa6d4097d05df1b6a53b6a2f2bc770b90d",
+      "rul_fusion/data.py": "bfbd04618f9dfe2c34a48fa70ee0ce29b1713ed9baa283cbbe085d36d6b62273",
+      "rul_fusion/model.py": "f1cfa86186c4623b3f844c102905e45cac74090925f1b04b11554af6b9cfddc4",
+      "rul_fusion/probabilistic.py": "c68f8cbb1b03583a58d7f2aa9ef3292b9fcdba83918f9eef2837cba6155c8a44",
+      "rul_fusion/probabilistic_runner.py": "3d1e1119aa42cbaa53e62da99d55fc062aa35b726a1b9ef615be8b0e26c8cf5c",
+      "scripts/run_ncmapss_probabilistic.py": "b659c3fbaa52225ec765a08531962751cfea8a4587b698d011533b12e73b0259"
+    },
+    "selection_sha256": "034f126a6daa4057fad7056e38f5e2faca908de150d65bc2b6261e0b582533b8"
+  },
+  "result": {
+    "dataset": "DS08a",
+    "method": "msauq",
+    "seed": 0,
+    "best_epochs": [
+      43
+    ],
+    "selection_criterion": "fixed_epoch",
+    "train_seconds": 10.706534698605537,
+    "test_evaluated": false
+  },
+  "phase": "final_train",
+  "train_units": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8,
+    9
+  ],
+  "val_units": [],
+  "calibration_units": [
+    4,
+    7
+  ],
+  "calibration_units_excluded": [
+    4,
+    7
+  ],
+  "test_loaded": false,
+  "test_evaluated": false,
+  "test_result_role": null,
+  "checkpoint_sha256": "373eff081121184d021cf7514c643bb8275adabf63399bbf7822dbc6ab61e934",
+  "epochs_trained": 43
+}
