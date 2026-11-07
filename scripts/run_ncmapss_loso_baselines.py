@@ -42,6 +42,15 @@ FC_DIMS = dict(indim_fea=2, Conv_out=4, lstmhidden_dim=8, lstmout_dim=12,
                conv_kernel=2, hidden_dim=8, time_length=8, num_node=14,
                num_windows=11, moving_window=[2, 2], stride=[1, 2],
                decay=0.7, pooling_choice="mean")
+# P0 N-CMAPSS locks (results_v4/ncmapss_comparison/point/*/seed_0/config.json):
+# A6-Point d32 / 2 heads / 2 routers with weight decay 1e-3; FC-STGNN wd 0.
+A6_POINT_DIMS = dict(d_model=32, num_heads=2, num_routers=2)
+POINT_WEIGHT_DECAY = {"a6_point": 1e-3, "fc_stgnn": 0.0}
+# Uniform development budget for all eight baselines, set by
+# docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md.
+DEV_MAX_EPOCHS = 400
+DEV_PATIENCE = 100
+BOUNDARY_MARGIN = 10
 DEFAULT_FC_SOURCES = (
     Path("/home/v2/FCSTGNN/FC_STGNN"),
     Path("/Users/ppy/研/FCSTGNN-upstream/FC_STGNN"),
@@ -104,7 +113,7 @@ def _point_model(bundle, method, fc_source, device):
         return _fc_model(fc_source, bundle.sensor_dim, device), False
     return MultiScalePhaseGraphRUL(
         sensor_dim=bundle.sensor_dim, condition_dim=bundle.condition_dim,
-        d_model=64, num_heads=4, num_routers=4, dropout=0.1,
+        **A6_POINT_DIMS, dropout=0.1,
         encoder="patch_cnn", variant="A6", condition_mode="full"), True
 
 
@@ -141,7 +150,8 @@ def _train_point(bundle, method, output, *, epochs, patience, batch_size,
     if not evaluate_test:
         val_data = bundle.val_endpoint if conditions else WindowToPatch(bundle.val_endpoint)
         val = DataLoader(val_data, batch_size=batch_size)
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3,
+                                 weight_decay=POINT_WEIGHT_DECAY[method])
     loss_fn = nn.MSELoss()
     best, best_epoch, stale, history = float("inf"), 0, 0, []
     for epoch in range(1, epochs + 1):
@@ -302,7 +312,7 @@ def _read_selection(path, dataset, method):
             entry.get("n_folds") != 7):
         raise ValueError("frozen selection lacks registered seven-fold protocol")
     epochs = entry.get("methods", {}).get(method, {}).get("epochs")
-    if type(epochs) is not int or not 1 <= epochs <= 120:
+    if type(epochs) is not int or not 1 <= epochs <= DEV_MAX_EPOCHS:
         raise ValueError(f"frozen selection lacks valid epochs for {dataset}/{method}")
     return epochs
 
@@ -326,9 +336,10 @@ def main(argv=None):
     parser.add_argument("--dev_path")
     parser.add_argument("--test_path")
     parser.add_argument("--fc_source")
-    parser.add_argument("--output_dir", default=str(ROOT / "results_v4/ncmapss_loso_baselines"))
-    parser.add_argument("--max_epochs", type=int, default=120)
-    parser.add_argument("--patience", type=int, default=30)
+    parser.add_argument("--output_dir", default=str(
+        ROOT / "results_v4/ncmapss_loso_baselines_v2"))
+    parser.add_argument("--max_epochs", type=int, default=DEV_MAX_EPOCHS)
+    parser.add_argument("--patience", type=int, default=DEV_PATIENCE)
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--mc_samples", type=int, default=0,
                         help="synthetic smoke override; zero uses registered method setting")
@@ -338,8 +349,9 @@ def main(argv=None):
     parser.add_argument("--eval_test", action="store_true")
     parser.add_argument("--device", default="cpu")
     args = parser.parse_args(argv)
-    if not 1 <= args.max_epochs <= 120 or args.patience < 1 or args.batch_size < 1:
-        parser.error("epochs, patience and batch size must be positive; epochs <= 120")
+    if not 1 <= args.max_epochs <= DEV_MAX_EPOCHS or args.patience < 1 or args.batch_size < 1:
+        parser.error(f"epochs, patience and batch size must be positive; "
+                     f"epochs <= {DEV_MAX_EPOCHS}")
     if not 0 <= args.folds <= 7 or args.mc_samples < 0:
         parser.error("folds must be 0..7 and MC samples nonnegative")
     if args.phase == "final":
@@ -350,8 +362,10 @@ def main(argv=None):
     elif args.eval_test or args.selection:
         parser.error("development cannot load test or use a frozen selection")
     if args.phase == "development" and args.folds == 0 and \
-            (args.max_epochs, args.patience, args.batch_size) != (120, 30, 32):
-        parser.error("complete development run requires 120 epochs, patience 30, batch 32")
+            (args.max_epochs, args.patience, args.batch_size) != (
+                DEV_MAX_EPOCHS, DEV_PATIENCE, 32):
+        parser.error(f"complete development run requires {DEV_MAX_EPOCHS} epochs, "
+                     f"patience {DEV_PATIENCE}, batch 32")
     if args.device == "auto":
         args.device = "cuda" if torch.cuda.is_available() else "cpu"
     frozen_epochs = ({(dataset, method): _read_selection(args.selection, dataset, method)
@@ -372,6 +386,9 @@ def main(argv=None):
                     epoch = result.get("best_epoch", result.get("best_epochs", [None])[0])
                     rows.append({"dataset": dataset, "method": method,
                                  "held_unit": held, "best_epoch": epoch,
+                                 "boundary_censored": (
+                                     epoch is not None and
+                                     int(epoch) > args.max_epochs - BOUNDARY_MARGIN),
                                  "selection_criterion": result["selection_criterion"],
                                  "val_rmse": result.get("val_rmse")})
                     print(f"[{dataset}/{method}] held={held} epoch={epoch}", flush=True)
@@ -404,16 +421,22 @@ def main(argv=None):
                                     if len(group) == 7 else None),
                                 "mean_held_rmse": float(np.mean(
                                     [row["val_rmse"] for row in group])),
+                                "n_boundary_censored": int(sum(
+                                    bool(row["boundary_censored"]) for row in group)),
                                 "selection_criterion": group[0]["selection_criterion"],
                                 "selection_status": "development_candidate"})
         _write_csv(out / "development_summary.csv", summary)
         (out / "manifest.json").write_text(json.dumps({
             "phase": "development", "test_loaded": False,
+            "amendment": "docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md",
             "search_units": SEARCH_UNITS,
             "calibration_units_excluded": CALIBRATION_UNITS,
             "status": ("complete" if args.folds == 0 and len(args.datasets) == 2 and
                        set(args.methods) == set(METHODS) else "partial_smoke"),
             "max_epochs": args.max_epochs, "patience": args.patience,
+            "boundary_margin": BOUNDARY_MARGIN,
+            "a6_point_dims": A6_POINT_DIMS,
+            "point_weight_decay": POINT_WEIGHT_DECAY,
             "method_specific_selection": True,
             "common_ranking_metric": "held_out_endpoint_rmse_after_frozen_selection",
         }, indent=2))

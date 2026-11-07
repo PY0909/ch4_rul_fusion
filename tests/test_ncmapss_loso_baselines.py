@@ -126,3 +126,33 @@ def test_all_eight_baselines_short_development_matrix(tmp_path):
     assert all(float(row["mean_held_rmse"]) >= 0 for row in summary)
     assert all(row["candidate_fixed_epochs"] == "" for row in summary)
     assert json.loads((out / "manifest.json").read_text())["status"] == "partial_smoke"
+
+
+def test_a6_point_matches_p0_lock_and_uniform_budget(tmp_path):
+    import types
+    from scripts import run_ncmapss_loso_baselines as runner
+    assert runner.A6_POINT_DIMS == {"d_model": 32, "num_heads": 2, "num_routers": 2}
+    assert runner.POINT_WEIGHT_DECAY == {"a6_point": 1e-3, "fc_stgnn": 0.0}
+    assert (runner.DEV_MAX_EPOCHS, runner.DEV_PATIENCE) == (400, 100)
+    bundle = types.SimpleNamespace(sensor_dim=14, condition_dim=4)
+    model, uses_conditions = runner._point_model(bundle, "a6_point", None, None)
+    assert uses_conditions and model.d_model == 32
+    assert model.router.sender.num_heads == 2
+    assert model.router.routers.shape[0] == 2
+
+
+def test_development_rows_flag_boundary_censoring(tmp_path):
+    dev = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(dev)
+    out = tmp_path / "runs"
+    main(["--phase", "development", "--data_root", str(tmp_path),
+          "--datasets", "DS03", "--methods", "a6_point",
+          "--dev_path", str(dev), "--test_path", str(tmp_path / "absent.h5"),
+          "--max_epochs", "2", "--patience", "5", "--folds", "1",
+          "--output_dir", str(out), "--device", "cpu"])
+    rows = list(csv.DictReader((out / "development.csv").open()))
+    # With a 2-epoch cap every selected epoch lies within cap - 10.
+    assert rows and all(row["boundary_censored"] == "True" for row in rows)
+    manifest = json.loads((out / "manifest.json").read_text())
+    assert manifest["status"] == "partial_smoke"
+    assert manifest["a6_point_dims"]["d_model"] == 32
