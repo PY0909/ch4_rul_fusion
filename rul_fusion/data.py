@@ -508,7 +508,8 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
                            registered_split: bool = False,
                            min_calibration_units: int = 1,
                            calibration_fracs: Optional[Sequence[float]] = None,
-                           unit_override: Optional[Dict[str, Sequence[int]]] = None
+                           unit_override: Optional[Dict[str, Sequence[int]]] = None,
+                           load_test: bool = True
                            ) -> DataBundle:
     dataset = dataset.upper()
     if dataset not in {"DS03", "DS08A"}:
@@ -534,11 +535,12 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
                                else "N-CMAPSS_DS08a-009.h5")
     if test_path is None:
         test_path = dev_path
-    if not Path(dev_path).exists() or not Path(test_path).exists():
+    if not Path(dev_path).exists() or (load_test and not Path(test_path).exists()):
         raise FileNotFoundError("N-CMAPSS HDF5 file not found")
 
     dev = _records_from_nc(Path(dev_path), "dev", include_virtual)
-    test = _records_from_nc(Path(test_path), "test", include_virtual)
+    test = (_records_from_nc(Path(test_path), "test", include_virtual)
+            if load_test else {})
     dev_units = sorted(dev)
     if unit_override is not None:
         # Explicit engine partition (LOSO folds / final arm); bypasses every
@@ -638,10 +640,10 @@ def build_ncmapss_datasets(data_root, dataset: str, history: int = 16,
                                    "(final Y=0), so the frozen evaluation uses the same fixed "
                                    "cuts {0.25, 0.5, 0.75, 0.9} per test unit; labels are the "
                                    "file's Y at each cut"
-                                   if validation_protocol == "fixed_cuts" else None),
+                                   if load_test and validation_protocol == "fixed_cuts" else None),
     }
     test_endpoint_samples, test_endpoint_cuts = [], []
-    if validation_protocol == "fixed_cuts":
+    if load_test and validation_protocol == "fixed_cuts":
         test_rng = np.random.default_rng(7_000_031 * split_seed + 13)
         test_endpoint_samples, test_endpoint_cuts = _endpoint_samples(
             scaled_test, {u: scaled_test[u][2] for u in scaled_test}, sorted(scaled_test),

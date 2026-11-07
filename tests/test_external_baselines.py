@@ -21,6 +21,7 @@ from rul_fusion.probabilistic_runner import (_bcpt_channel_weights,
                                              crps_from_draws, fit_probabilistic,
                                              gaussian_fit_outputs,
                                              kde_quantiles)
+import rul_fusion.probabilistic_runner as probabilistic_runner
 
 
 def _samples(count, offset=0):
@@ -176,3 +177,47 @@ def test_defer_test_skips_evaluation_for_new_methods(tmp_path):
                                    seed=1, mc_samples=3, defer_test=True)
         assert result["test_evaluated"] is False
         assert not (tmp_path / f"defer_{kind}" / "predictions.csv").exists()
+
+
+def test_fixed_epoch_probabilistic_training_needs_no_validation(tmp_path):
+    bundle = _bundle()
+    bundle.val_endpoint = None
+    result = fit_probabilistic(
+        bundle, "lstm_prob", tmp_path / "lstm_fixed", epochs=2,
+        batch_size=4, patience=30, fixed_epochs=True, device="cpu",
+        seed=0, defer_test=True)
+    assert result["best_epochs"] == [2]
+    assert result["selection_criterion"] == "fixed_epoch"
+    assert result["test_evaluated"] is False
+    state = torch.load(tmp_path / "lstm_fixed/best.pt", map_location="cpu",
+                       weights_only=False)
+    assert state["best_epoch"] == 2
+
+
+def test_fixed_epoch_bcpt_uses_training_units_for_channel_weights(tmp_path):
+    bundle = _bundle()
+    bundle.val_endpoint = None
+    result = fit_probabilistic(
+        bundle, "bcpt", tmp_path / "bcpt_fixed", epochs=1,
+        batch_size=4, patience=30, fixed_epochs=True, mc_samples=3,
+        device="cpu", seed=0, defer_test=True)
+    assert result["best_epochs"] == [1]
+    assert result["selection_criterion"] == "fixed_epoch"
+    state = torch.load(tmp_path / "bcpt_fixed/best.pt", map_location="cpu",
+                       weights_only=False)
+    assert {"lu_state", "hu_state"}.issubset(state)
+
+
+def test_bcpt_validation_uses_post_update_models(tmp_path, monkeypatch):
+    original = probabilistic_runner._bcpt_draw_components
+    calls = []
+
+    def tracked(model, loader, device, draws):
+        calls.append(id(model))
+        return original(model, loader, device, draws)
+
+    monkeypatch.setattr(probabilistic_runner, "_bcpt_draw_components", tracked)
+    fit_probabilistic(_bundle(), "bcpt", tmp_path / "bcpt_post_update",
+                      epochs=1, batch_size=4, patience=1, device="cpu",
+                      seed=0, mc_samples=3, defer_test=True)
+    assert len(calls) == 4  # two pre-update training weights, two post-update val draws

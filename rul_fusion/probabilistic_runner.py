@@ -347,14 +347,16 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                       edl_hidden_dim=128, mc_samples=None, bcpt_gamma=0.2,
                       bcpt_lam=0.1,
                       device="auto", num_workers=0, config=None,
-                      test_dataset=None, defer_test=False):
+                      test_dataset=None, defer_test=False, fixed_epochs=False):
     """Train a probabilistic baseline; evaluate test once."""
     supported = set(PAPER_METHOD_DEFAULTS)
     if kind not in supported:
         raise ValueError(f"kind must be one of {sorted(supported)}")
     if kind == "ensemble" and ensemble_members < 2:
         raise ValueError("ensemble_members must be at least 2")
-    if bundle.val_endpoint is None:
+    if fixed_epochs and kind == "ensemble":
+        raise ValueError("fixed_epoch ensemble is not registered for N-CMAPSS")
+    if bundle.val_endpoint is None and not fixed_epochs:
         raise ValueError("bundle must use fixed-cuts validation")
     default_epochs, default_batch, default_lr, default_wd, default_dropout, \
         _scaler, default_criterion, default_mc = PAPER_METHOD_DEFAULTS[kind]
@@ -374,8 +376,9 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
     output_dir.mkdir(parents=True, exist_ok=True)
     train_loader = DataLoader(bundle.train, batch_size=batch_size, shuffle=True,
                               num_workers=num_workers)
-    val_loader = DataLoader(bundle.val_endpoint, batch_size=batch_size, shuffle=False,
-                            num_workers=num_workers)
+    val_loader = (None if fixed_epochs else DataLoader(
+        bundle.val_endpoint, batch_size=batch_size, shuffle=False,
+        num_workers=num_workers))
     test_dataset = (test_dataset if test_dataset is not None else
                     (getattr(bundle, "test_endpoint", None) or bundle.test))
     test_loader = (None if defer_test else DataLoader(
@@ -473,10 +476,11 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
             optimizer_hu, milestones=[milestone], gamma=0.2)
         best, best_epoch, stale = float("inf"), 0, 0
         checkpoint = output_dir / "best.pt"
+        weight_loader = train_loader if fixed_epochs else val_loader
         for epoch in range(1, epochs + 1):
-            lu_components = _bcpt_draw_components(lu, val_loader, device_obj,
+            lu_components = _bcpt_draw_components(lu, weight_loader, device_obj,
                                                   mc_samples)
-            hu_components = _bcpt_draw_components(hu, val_loader, device_obj,
+            hu_components = _bcpt_draw_components(hu, weight_loader, device_obj,
                                                   mc_samples)
             weight_lu = torch.as_tensor(_weights_from_components(lu_components, False),
                                         dtype=torch.float32, device=device_obj)
@@ -499,9 +503,23 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                     count += len(y)
                 epoch_losses.append(loss_sum / max(count, 1))
             train_loss = float(np.mean(epoch_losses))
-            fused_mean, _total_u, _fused_c, _fused_u = _bcpt_fuse(
-                lu_components, hu_components)
-            val_score = rmse(lu_components["target"], fused_mean)
+            if fixed_epochs:
+                history.append({"member": -1, "epoch": epoch,
+                                "train_loss": train_loss, "val_rmse": None,
+                                "val_selection_score": None, "learning_rate": lr})
+                if epoch == epochs:
+                    best_epoch = epoch
+                    torch.save({"lu_state": lu.state_dict(),
+                                "hu_state": hu.state_dict(),
+                                "best_epoch": epoch, "selection": None,
+                                "selection_criterion": "fixed_epoch"}, checkpoint)
+                scheduler_lu.step()
+                scheduler_hu.step()
+                continue
+            val_lu = _bcpt_draw_components(lu, val_loader, device_obj, mc_samples)
+            val_hu = _bcpt_draw_components(hu, val_loader, device_obj, mc_samples)
+            fused_mean, _total_u, _fused_c, _fused_u = _bcpt_fuse(val_lu, val_hu)
+            val_score = rmse(val_lu["target"], fused_mean)
             history.append({"member": -1, "epoch": epoch, "train_loss": train_loss,
                             "val_rmse": val_score, "val_selection_score": val_score,
                             "learning_rate": lr})
@@ -523,7 +541,7 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
         hu.load_state_dict(state["hu_state"])
         models.extend((lu, hu))
         best_epochs.append(int(state["best_epoch"]))
-        selection_criterion = "val_fused_rmse"
+        selection_criterion = "fixed_epoch" if fixed_epochs else "val_fused_rmse"
 
     for member in range(member_count if kind not in {"ensemble", BCPT_KIND} else 0):
         member_seed = seed + member * 1009
@@ -552,6 +570,15 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                 loss_sum += float(loss.detach()) * len(y)
                 count += len(y)
             train_loss = loss_sum / max(count, 1)
+            if fixed_epochs:
+                history.append({"member": member, "epoch": epoch,
+                                "train_loss": train_loss, "val_rmse": None,
+                                "val_selection_score": None, "learning_rate": lr})
+                if epoch == epochs:
+                    torch.save({"model_state": model.state_dict(),
+                                "best_epoch": epoch, "selection": None,
+                                "selection_criterion": "fixed_epoch"}, checkpoint)
+                continue
             val_y, val_params, _, _, _ = _predict(model, val_loader, device_obj)
             val_rmse = rmse(val_y, _mean(kind, val_params))
             if kind == "ensemble":
@@ -585,6 +612,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
         model.load_state_dict(state["model_state"])
         models.append(model)
         best_epochs.append(int(state["best_epoch"]))
+        if fixed_epochs:
+            selection_criterion = "fixed_epoch"
 
     train_seconds = time.perf_counter() - start_train
     if defer_test:
@@ -657,11 +686,12 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
     point = regression_metrics(target, mean)
     if bundle.metadata.get("dataset") in {"DS03", "DS08a", "DS08A"}:
         point.pop("NASA_Score", None)
-    selection_criterion = {"hnn": "val_nll", "edl_nig": "val_rmse",
-                           "ensemble": "val_mixture_nll",
-                           "lstm_prob": "val_rmse",
-                           "tcn_transformer_mc": "val_rmse", "msauq": "val_rmse",
-                           "bcpt": "val_fused_rmse"}[kind]
+    if not fixed_epochs:
+        selection_criterion = {"hnn": "val_nll", "edl_nig": "val_rmse",
+                               "ensemble": "val_mixture_nll",
+                               "lstm_prob": "val_rmse",
+                               "tcn_transformer_mc": "val_rmse", "msauq": "val_rmse",
+                               "bcpt": "val_fused_rmse"}[kind]
     interval = ((target >= lower) & (target <= upper)).mean()
     width = upper - lower
     alpha = 0.2
@@ -694,7 +724,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
     _save_history(output_dir / "history.csv", history)
     config_data = {"model": kind, "seed": seed, "epochs": epochs,
                    "batch_size": batch_size, "lr": lr, "weight_decay": weight_decay,
-                   "patience": patience, "dropout": dropout,
+                   "patience": patience, "fixed_epochs": fixed_epochs,
+                   "dropout": dropout,
                    "selection_criterion": selection_criterion,
                    "ensemble_members": member_count, "evidence_weight": evidence_weight,
                    "edl_hidden_dim": edl_hidden_dim,

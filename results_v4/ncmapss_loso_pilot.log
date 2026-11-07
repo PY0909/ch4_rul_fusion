@@ -1,0 +1,34 @@
+[DS03] fold=0 held=1 config=legacy_lr0.001_do0.1_wd0.001
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS03] fold=0 held=1 config=legacy_lr0.0003_do0.1_wd0.001
+[DS03] fold=1 held=2 config=legacy_lr0.001_do0.1_wd0.001
+[DS03] fold=1 held=2 config=legacy_lr0.0003_do0.1_wd0.001
+[DS03] fold=2 held=3 config=legacy_lr0.001_do0.1_wd0.001
+[DS03] fold=2 held=3 config=legacy_lr0.0003_do0.1_wd0.001
+[DS03] fold=3 held=5 config=legacy_lr0.001_do0.1_wd0.001
+[DS03] fold=3 held=5 config=legacy_lr0.0003_do0.1_wd0.001
+[DS03] fold=4 held=6 config=legacy_lr0.001_do0.1_wd0.001
+[DS03] fold=4 held=6 config=legacy_lr0.0003_do0.1_wd0.001
+[DS03] fold=5 held=8 config=legacy_lr0.001_do0.1_wd0.001
+[DS03] fold=5 held=8 config=legacy_lr0.0003_do0.1_wd0.001
+[DS03] fold=6 held=9 config=legacy_lr0.001_do0.1_wd0.001
+[DS03] fold=6 held=9 config=legacy_lr0.0003_do0.1_wd0.001
+[DS08a] fold=0 held=1 config=legacy_lr0.001_do0.1_wd0.001
+[DS08a] fold=0 held=1 config=legacy_lr0.0003_do0.1_wd0.001
+[DS08a] fold=1 held=2 config=legacy_lr0.001_do0.1_wd0.001
+[DS08a] fold=1 held=2 config=legacy_lr0.0003_do0.1_wd0.001
+[DS08a] fold=2 held=3 config=legacy_lr0.001_do0.1_wd0.001
+[DS08a] fold=2 held=3 config=legacy_lr0.0003_do0.1_wd0.001
+[DS08a] fold=3 held=5 config=legacy_lr0.001_do0.1_wd0.001
+[DS08a] fold=3 held=5 config=legacy_lr0.0003_do0.1_wd0.001
+[DS08a] fold=4 held=6 config=legacy_lr0.001_do0.1_wd0.001
+[DS08a] fold=4 held=6 config=legacy_lr0.0003_do0.1_wd0.001
+[DS08a] fold=5 held=8 config=legacy_lr0.001_do0.1_wd0.001
+[DS08a] fold=5 held=8 config=legacy_lr0.0003_do0.1_wd0.001
+[DS08a] fold=6 held=9 config=legacy_lr0.001_do0.1_wd0.001
+[DS08a] fold=6 held=9 config=legacy_lr0.0003_do0.1_wd0.001
+[DS03] legacy_lr0.001_do0.1_wd0.001         budget=242 pinball=4.2793 q50=13.971 rawIS=75.30 rawPICP=0.357
+[DS03] legacy_lr0.0003_do0.1_wd0.001        budget= 27 pinball=4.5394 q50=17.475 rawIS=59.61 rawPICP=0.679
+[DS08a] legacy_lr0.001_do0.1_wd0.001         budget= 24 pinball=4.6598 q50=17.538 rawIS=62.29 rawPICP=0.571
+[DS08a] legacy_lr0.0003_do0.1_wd0.001        budget= 39 pinball=5.5495 q50=20.036 rawIS=80.95 rawPICP=0.393

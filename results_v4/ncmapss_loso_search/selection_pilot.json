@@ -1,0 +1,95 @@
+{
+  "preregistration": "docs/ncmapss-loso-preparation-amendment-2026-11-06.md",
+  "grid": "pilot",
+  "configs": [
+    {
+      "activation": "legacy",
+      "lr": 0.001,
+      "dropout": 0.1,
+      "weight_decay": 0.001
+    },
+    {
+      "activation": "legacy",
+      "lr": 0.0003,
+      "dropout": 0.1,
+      "weight_decay": 0.001
+    }
+  ],
+  "max_epochs": 300,
+  "partitions": {
+    "DS03": {
+      "search_units": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8,
+        9
+      ],
+      "calibration_units": [
+        4,
+        7
+      ]
+    },
+    "DS08a": {
+      "search_units": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8,
+        9
+      ],
+      "calibration_units": [
+        4,
+        7
+      ]
+    }
+  },
+  "folds_limited_to": null,
+  "generated": "2026-11-06T19:09:33",
+  "ranking": [
+    {
+      "dataset": "DS03",
+      "config": "legacy_lr0.001_do0.1_wd0.001",
+      "budget_epoch": 242,
+      "pinball_mean": 4.279338802610125,
+      "q50_rmse": 13.971493176051549,
+      "raw_interval_score": 75.30322169406074,
+      "raw_PICP": 0.35714285714285715,
+      "raw_MPIW": 11.036668087754931
+    },
+    {
+      "dataset": "DS03",
+      "config": "legacy_lr0.0003_do0.1_wd0.001",
+      "budget_epoch": 27,
+      "pinball_mean": 4.539432457515171,
+      "q50_rmse": 17.47537899017334,
+      "raw_interval_score": 59.60562246186392,
+      "raw_PICP": 0.6785714285714286,
+      "raw_MPIW": 34.83813949993679
+    },
+    {
+      "dataset": "DS08a",
+      "config": "legacy_lr0.001_do0.1_wd0.001",
+      "budget_epoch": 24,
+      "pinball_mean": 4.659752982003348,
+      "q50_rmse": 17.537516730172293,
+      "raw_interval_score": 62.294598954064504,
+      "raw_PICP": 0.5714285714285714,
+      "raw_MPIW": 34.63228290421622
+    },
+    {
+      "dataset": "DS08a",
+      "config": "legacy_lr0.0003_do0.1_wd0.001",
+      "budget_epoch": 39,
+      "pinball_mean": 5.549513714654105,
+      "q50_rmse": 20.035938671657018,
+      "raw_interval_score": 80.95037691933769,
+      "raw_PICP": 0.39285714285714285,
+      "raw_MPIW": 31.053994996207102
+    }
+  ]
+}

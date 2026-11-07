@@ -1,8 +1,11 @@
 import csv
+import importlib
+import json
 import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 import torch
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
@@ -15,6 +18,8 @@ from rul_fusion.uncertainty import (A6QuantileRUL,  # noqa: E402
                                     NonCrossingQuantileHead)
 from scripts.run_ncmapss_loso_search import (main as search_main,  # noqa: E402
                                              parse_configs, pick_budget)
+from scripts.run_ncmapss_loso_final import (  # noqa: E402
+    _frozen_selection, main as final_main)
 
 
 def _quantile_model(activation, seed=3):
@@ -81,6 +86,20 @@ def test_unit_override_loso_fold_partition(tmp_path):
     assert train_units_seen == [1, 2, 3, 4, 5, 6, 7, 8]
 
 
+def test_dev_only_bundle_does_not_open_test_file(tmp_path):
+    path = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(path)
+    bundle = build_ncmapss_datasets(
+        tmp_path, "DS03", history=2, dev_path=path,
+        test_path=tmp_path / "missing_test.h5", load_test=False,
+        validation_protocol="fixed_cuts", registered_split=True)
+    assert bundle.metadata["test_units"] == []
+    assert bundle.metadata["test_endpoint"] == []
+    assert len(bundle.test) == 0
+    assert bundle.test_endpoint is None
+    assert len(bundle.val_endpoint) == 3 * 4
+
+
 def test_unit_override_final_arm_shape(tmp_path):
     path = tmp_path / "N-CMAPSS_DS03-012.h5"
     _write_ncmapss_nine_units(path)
@@ -135,7 +154,8 @@ def test_loso_search_smoke_on_synthetic(tmp_path):
     _write_ncmapss_nine_units(path)
     out = tmp_path / "loso_out"
     search_main(["--data_root", str(tmp_path), "--datasets", "DS03",
-                 "--dev_path", str(path), "--test_path", str(path),
+                 "--dev_path", str(path), "--test_path",
+                 str(tmp_path / "missing_test.h5"),
                  "--grid", "custom", "--configs", "legacy:0.001:0.1:0.001",
                  "--max_epochs", "2", "--folds", "3",
                  "--output_dir", str(out), "--device", "cpu"])
@@ -144,3 +164,114 @@ def test_loso_search_smoke_on_synthetic(tmp_path):
     selection = list(csv.DictReader(open(out / "selection_custom.csv")))
     assert len(selection) == 1 and selection[0]["config"].startswith("legacy")
     assert np.isfinite(float(selection[0]["pinball_mean"]))
+    budgets = list(csv.DictReader(open(out / "criterion_budgets_custom.csv")))
+    assert {row["criterion"] for row in budgets} == {
+        "pinball_mean", "q50_rmse", "raw_interval_score"}
+    assert all("raw_MPIW" in row for row in budgets)
+    aggregate = list(csv.DictReader(open(out / "aggregate_custom.csv")))
+    assert all("raw_MPIW" in row for row in aggregate)
+
+
+def test_loso_search_excludes_registered_calibration_units(tmp_path, monkeypatch):
+    path = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(path)
+    out = tmp_path / "pilot"
+    args = ["--data_root", str(tmp_path), "--datasets", "DS03",
+            "--dev_path", str(path), "--test_path",
+            str(tmp_path / "missing_test.h5"), "--grid", "pilot",
+            "--max_epochs", "1", "--output_dir", str(out),
+            "--device", "cpu"]
+    search_main(args)
+    curves = list(csv.DictReader(open(out / "curves_DS03_pilot.csv")))
+    assert len(curves) == 7 * 2
+    assert {int(row["held_unit"]) for row in curves} == {1, 2, 3, 5, 6, 8, 9}
+    assert {row["config"] for row in curves} == {
+        "legacy_lr0.001_do0.1_wd0.001", "legacy_lr0.0003_do0.1_wd0.001"}
+    assert len(list((out / "folds" / "DS03").rglob("held_*.csv"))) == 14
+    search = importlib.import_module("scripts.run_ncmapss_loso_search")
+
+    def refuse_retraining(*_args, **_kwargs):
+        raise AssertionError("completed folds must be reused")
+
+    monkeypatch.setattr(search, "run_fold_config", refuse_retraining)
+    search_main(args)
+
+
+def test_loso_search_rejects_changed_calibration_ids(tmp_path, monkeypatch):
+    path = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(path)
+    search = importlib.import_module("scripts.run_ncmapss_loso_search")
+    real_build = search.build_ncmapss_datasets
+
+    def changed_split(*args, **kwargs):
+        bundle = real_build(*args, **kwargs)
+        if kwargs.get("unit_override") is None:
+            bundle.metadata["calibration_units"] = [1, 2]
+        return bundle
+
+    monkeypatch.setattr(search, "build_ncmapss_datasets", changed_split)
+    with pytest.raises(RuntimeError, match="registered calibration units"):
+        search_main(["--data_root", str(tmp_path), "--datasets", "DS03",
+                     "--dev_path", str(path), "--grid", "pilot",
+                     "--max_epochs", "1", "--folds", "1",
+                     "--output_dir", str(tmp_path / "out"), "--device", "cpu"])
+
+
+def test_loso_final_requires_frozen_selection_and_explicit_test(tmp_path, capsys):
+    args = ["--dataset", "DS03", "--data_root", str(tmp_path)]
+    with pytest.raises(SystemExit):
+        final_main(args)
+    assert "--selection_file" in capsys.readouterr().err
+
+    selection = tmp_path / "selection.json"
+    selection.write_text(json.dumps({
+        "status": "frozen", "datasets": {"DS03": {
+            "config": {"activation": "legacy", "lr": 0.001,
+                       "dropout": 0.1, "weight_decay": 0.001},
+            "budget_epoch": 26, "criterion": "pinball_mean",
+            "n_folds": 7, "boundary_censored": False,
+            "search_units": [1, 2, 3, 5, 6, 8, 9],
+            "calibration_units": [4, 7],
+        }},
+    }))
+    with pytest.raises(SystemExit):
+        final_main(args + ["--selection_file", str(selection)])
+    assert "--eval_test" in capsys.readouterr().err
+
+    record = json.loads(selection.read_text())
+    record["datasets"]["DS03"].pop("n_folds")
+    selection.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match="complete seven-fold"):
+        _frozen_selection(selection, "DS03")
+
+
+def test_loso_final_synthetic_frozen_run(tmp_path, monkeypatch):
+    final = importlib.import_module("scripts.run_ncmapss_loso_final")
+    data_dir = tmp_path / "data_set"
+    data_dir.mkdir()
+    _write_ncmapss_nine_units(data_dir / "N-CMAPSS_DS03-012.h5")
+    selection = tmp_path / "selection.json"
+    selection.write_text(json.dumps({
+        "status": "frozen", "datasets": {"DS03": {
+            "config": {"activation": "legacy", "lr": 0.001,
+                       "dropout": 0.1, "weight_decay": 0.001},
+            "budget_epoch": 1, "criterion": "pinball_mean",
+            "n_folds": 7, "boundary_censored": False,
+            "search_units": [1, 2, 3, 5, 6, 8, 9],
+            "calibration_units": [4, 7],
+        }},
+    }))
+    monkeypatch.setattr(final, "ROOT", tmp_path)
+    monkeypatch.setattr(final, "_registered_calibration_units",
+                        lambda _dataset: [4, 7])
+    final.main(["--dataset", "DS03", "--data_root", str(tmp_path),
+                "--selection_file", str(selection), "--eval_test",
+                "--output_dir", str(tmp_path / "final"), "--device", "cpu"])
+    result = json.loads((tmp_path / "final/DS03/seed_0/summary.json").read_text())
+    assert result["train_units"] == [1, 2, 3, 5, 6, 8, 9]
+    assert result["calibration_units"] == [4, 7]
+    assert len(result["rows"]) == 3
+    assert all(row["n_cal_windows"] == 18 for row in result["rows"])
+    touch = (tmp_path / "results_v4/chapter4_main_logs/test_touches.log").read_text()
+    assert "test access started" in touch
+    assert "official test evaluated once" in touch

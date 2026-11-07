@@ -1,0 +1,17 @@
+candidate_fixed_epochs,dataset,mean_held_rmse,method,n_folds,selection_criterion,selection_status
+48,DS03,7.799404932599859,a6_point,7,val_endpoint_rmse,development_candidate
+63,DS03,10.434918401565207,fc_stgnn,7,val_endpoint_rmse,development_candidate
+44,DS03,10.67374453716141,hnn,7,val_nll,development_candidate
+78,DS03,3.589151526689509,edl_nig,7,val_rmse,development_candidate
+6,DS03,18.17514949990053,lstm_prob,7,val_rmse,development_candidate
+47,DS03,4.641267792159103,tcn_transformer_mc,7,val_rmse,development_candidate
+25,DS03,2.7040446961285567,msauq,7,val_rmse,development_candidate
+38,DS03,18.22569177028021,bcpt,7,val_fused_rmse,development_candidate
+31,DS08a,12.735404247882567,a6_point,7,val_endpoint_rmse,development_candidate
+34,DS08a,14.935083423957048,fc_stgnn,7,val_endpoint_rmse,development_candidate
+46,DS08a,8.375557158565568,hnn,7,val_nll,development_candidate
+31,DS08a,6.4183904477714195,edl_nig,7,val_rmse,development_candidate
+5,DS08a,17.0278638834985,lstm_prob,7,val_rmse,development_candidate
+37,DS08a,8.172898072591057,tcn_transformer_mc,7,val_rmse,development_candidate
+43,DS08a,5.722484191655961,msauq,7,val_rmse,development_candidate
+38,DS08a,16.617561766320794,bcpt,7,val_fused_rmse,development_candidate

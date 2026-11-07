@@ -1,0 +1,48 @@
+{
+  "identity": {
+    "dataset": "DS03",
+    "method": "a6_point",
+    "phase": "development",
+    "epochs": 120,
+    "patience": 30,
+    "batch_size": 32,
+    "history": 16,
+    "mc_samples_override": 0,
+    "dev_path": "/root/autodl-tmp/kst_light_v2/dataset/data_set/N-CMAPSS_DS03-012.h5",
+    "dev_size": 3693395776,
+    "dev_mtime_ns": 1610510016000000000,
+    "source_hashes": {
+      "scripts/run_ncmapss_loso_baselines.py": "ba20482aff40a9442367e3d891dd2e0741aff275b0f4a9be6d0b67329d1b5a60",
+      "rul_fusion/data.py": "bfbd04618f9dfe2c34a48fa70ee0ce29b1713ed9baa283cbbe085d36d6b62273",
+      "rul_fusion/model.py": "f1cfa86186c4623b3f844c102905e45cac74090925f1b04b11554af6b9cfddc4",
+      "rul_fusion/probabilistic.py": "c68f8cbb1b03583a58d7f2aa9ef3292b9fcdba83918f9eef2837cba6155c8a44",
+      "rul_fusion/probabilistic_runner.py": "4d7662ddad0ab6b8a294ce9d5261f848a0149918072f07348987ae9129cb48a4",
+      "scripts/run_ncmapss_probabilistic.py": "b659c3fbaa52225ec765a08531962751cfea8a4587b698d011533b12e73b0259"
+    },
+    "selection_sha256": null
+  },
+  "result": {
+    "best_epoch": 42,
+    "val_rmse": 16.18006205056298,
+    "selection_criterion": "val_endpoint_rmse"
+  },
+  "train_units": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8
+  ],
+  "val_units": [
+    9
+  ],
+  "calibration_units": [],
+  "calibration_units_excluded": [
+    4,
+    7
+  ],
+  "test_loaded": false,
+  "test_evaluated": false,
+  "test_result_role": null
+}

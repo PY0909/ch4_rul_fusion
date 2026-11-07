@@ -1,17 +1,18 @@
-"""N-CMAPSS LOSO hyperparameter/activation search (preregistered S1/S2).
+"""N-CMAPSS LOSO search over non-calibration development units.
 
-Plan: docs/ncmapss-loso-tuning-prereg-2026-11-05.md. Nine leave-one-engine-out
-folds over the dev units per dataset; each fold trains 8 engines and records
+Plan: docs/ncmapss-loso-preparation-amendment-2026-11-06.md. Seven folds
+exclude the two registered calibration units; each fold trains six and records
 per-epoch metrics on the held-out engine's fixed-cut endpoints. Primary
 selection criterion: mean pinball loss over q10/q50/q90 on the held-out
 endpoints; secondary: q50 RMSE, raw (no-conformal) Interval Score at nominal
-80%. The official test set is never read. Epoch budget per config = argmin of
-the 5-epoch moving average of the fold-mean primary curve.
+80%. The official test set is never read. The pilot also compares budgets
+chosen from all three metrics on the same training trajectories.
 """
 from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import sys
 from datetime import datetime
@@ -36,8 +37,14 @@ from run_ncmapss_cqr import (REGISTERED_CALIBRATION_RATIO,  # noqa: E402
 
 HISTORY = 16
 DIMS = dict(d_model=32, num_heads=2, num_routers=2, dropout=0.1)
-MAX_EPOCHS = 150
+MAX_EPOCHS = 300
 BATCH = 32
+SEARCH_UNITS = [1, 2, 3, 5, 6, 8, 9]
+CALIBRATION_UNITS = [4, 7]
+PILOT_GRID = [
+    {"activation": "legacy", "lr": lr, "dropout": 0.1,
+     "weight_decay": 1e-3} for lr in (1e-3, 3e-4)
+]
 S1_GRID = [
     {"activation": "legacy", "lr": 1e-3, "dropout": 0.1, "weight_decay": 1e-3},
     {"activation": "legacy", "lr": 3e-4, "dropout": 0.1, "weight_decay": 1e-3},
@@ -65,6 +72,51 @@ def parse_configs(text):
 def config_id(config):
     return (f"{config['activation']}_lr{config['lr']:g}"
             f"_do{config['dropout']:g}_wd{config['weight_decay']:g}")
+
+
+def _fold_cache_path(output, dataset, config, held, train_units, dev_path,
+                     max_epochs):
+    source_paths = [Path(__file__), ROOT / "rul_fusion/data.py",
+                    ROOT / "rul_fusion/model.py",
+                    ROOT / "rul_fusion/uncertainty.py"]
+    path = Path(dev_path).resolve()
+    stat = path.stat()
+    identity = json.dumps({
+        "dataset": dataset, "config": config, "held": held,
+        "train_units": train_units, "max_epochs": max_epochs,
+        "dev_path": str(path), "dev_size": stat.st_size,
+        "dev_mtime_ns": stat.st_mtime_ns,
+        "source_hashes": {str(p.relative_to(ROOT)): hashlib.sha256(
+            p.read_bytes()).hexdigest() for p in source_paths},
+    }, sort_keys=True)
+    digest = hashlib.sha256(identity.encode()).hexdigest()[:12]
+    return output / "folds" / dataset / f"{config_id(config)}_{digest}" / f"held_{held}.csv"
+
+
+def _read_fold_cache(path, dataset, tag, held, max_epochs):
+    with path.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    if (len(rows) != max_epochs or
+            [int(row["epoch"]) for row in rows] != list(range(1, max_epochs + 1)) or
+            any(row["dataset"] != dataset or row["config"] != tag or
+                int(row["held_unit"]) != held for row in rows)):
+        raise RuntimeError(f"invalid completed-fold cache: {path}")
+    numeric_int = {"fold", "held_unit", "epoch"}
+    numeric_float = {"lr", "dropout", "weight_decay", "pinball_mean",
+                     "q50_rmse", "raw_interval_score", "raw_PICP", "raw_MPIW"}
+    return [{key: (int(value) if key in numeric_int else
+                   float(value) if key in numeric_float else value)
+             for key, value in row.items()} for row in rows]
+
+
+def _write_fold_cache(path, rows):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(".tmp")
+    with temporary.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=sorted(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+    temporary.replace(path)
 
 
 def moving_average(values, window=5):
@@ -143,7 +195,8 @@ def main(argv=None):
     parser.add_argument("--dev_path", default=None,
                         help="override dev HDF5 path (tests); default data_root/data_set")
     parser.add_argument("--test_path", default=None)
-    parser.add_argument("--grid", choices=("s1", "custom"), default="s1")
+    parser.add_argument("--grid", choices=("pilot", "s1", "custom"),
+                        default="pilot")
     parser.add_argument("--configs", help="custom S2 list, e.g. gelu:0.001:0.2:0.001,...")
     parser.add_argument("--max_epochs", type=int, default=MAX_EPOCHS)
     parser.add_argument("--output_dir", default=str(
@@ -154,7 +207,10 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.grid == "custom" and not args.configs:
         parser.error("--grid custom requires --configs")
-    configs = S1_GRID if args.grid == "s1" else parse_configs(args.configs)
+    if args.max_epochs < 1 or args.folds < 0:
+        parser.error("max_epochs must be positive and folds must be nonnegative")
+    configs = (PILOT_GRID if args.grid == "pilot" else
+               S1_GRID if args.grid == "s1" else parse_configs(args.configs))
     device = torch.device(("cuda" if torch.cuda.is_available() else "cpu")
                           if args.device == "auto" else args.device)
 
@@ -165,30 +221,53 @@ def main(argv=None):
             calibration_ratio=REGISTERED_CALIBRATION_RATIO,
             validation_protocol="fixed_cuts", registered_split=True,
             min_calibration_units=MIN_CALIBRATION_UNITS,
-            dev_path=args.dev_path, test_path=args.test_path, **kwargs)
+            dev_path=args.dev_path, test_path=args.test_path,
+            load_test=False, **kwargs)
 
     output = Path(args.output_dir)
     output.mkdir(parents=True, exist_ok=True)
     curve_rows = []
+    partitions = {}
     for dataset in args.datasets:
         base = build(dataset)
         dev_units = [int(u) for u in base.metadata["dev_units"]]
-        fold_units = dev_units[:args.folds] if args.folds else dev_units
+        calibration_units = [int(u) for u in base.metadata["calibration_units"]]
+        search_units = [u for u in dev_units if u not in calibration_units]
+        if (len(dev_units) != 9 or calibration_units != CALIBRATION_UNITS or
+                search_units != SEARCH_UNITS):
+            raise RuntimeError("registered calibration units or search pool changed")
+        partitions[dataset] = {"search_units": search_units,
+                               "calibration_units": calibration_units}
+        fold_units = search_units[:args.folds] if args.folds else search_units
         for fold, held in enumerate(fold_units):
-            train_units = [u for u in dev_units if u != held]
-            bundle = build(dataset, unit_override={"train": train_units,
-                                                   "val": [held],
-                                                   "calibration": []})
+            train_units = [u for u in search_units if u != held]
+            bundle = None
             for config in configs:
                 tag = config_id(config)
-                print(f"[{dataset}] fold={fold} held={held} config={tag}",
-                      flush=True)
-                for row in run_fold_config(bundle, config, device,
-                                           max_epochs=args.max_epochs):
-                    curve_rows.append({"dataset": dataset, "fold": fold,
-                                       "held_unit": held, "config": tag,
-                                       **config, **row})
-                # checkpoint-free search: only curves are persisted
+                dev_path = (args.dev_path or Path(args.data_root) / "data_set" /
+                            ("N-CMAPSS_DS03-012.h5" if dataset == "DS03" else
+                             "N-CMAPSS_DS08a-009.h5"))
+                cache = _fold_cache_path(output, dataset, config, held,
+                                         train_units, dev_path, args.max_epochs)
+                if cache.exists():
+                    print(f"[{dataset}] reuse held={held} config={tag}", flush=True)
+                    fold_rows = _read_fold_cache(cache, dataset, tag, held,
+                                                 args.max_epochs)
+                else:
+                    print(f"[{dataset}] fold={fold} held={held} config={tag}",
+                          flush=True)
+                    if bundle is None:
+                        bundle = build(dataset, unit_override={
+                            "train": train_units, "val": [held],
+                            "calibration": []})
+                    fold_rows = [{"dataset": dataset, "fold": fold,
+                                  "held_unit": held, "config": tag,
+                                  **config, **row}
+                                 for row in run_fold_config(
+                                     bundle, config, device,
+                                     max_epochs=args.max_epochs)]
+                    _write_fold_cache(cache, fold_rows)
+                curve_rows.extend(fold_rows)
         write_curves = output / f"curves_{dataset}_{args.grid}.csv"
         rows_here = [r for r in curve_rows if r["dataset"] == dataset]
         with write_curves.open("w", newline="", encoding="utf-8") as handle:
@@ -211,7 +290,8 @@ def main(argv=None):
                 "q50_rmse": float(np.mean([m["q50_rmse"] for m in members])),
                 "raw_interval_score": float(np.mean(
                     [m["raw_interval_score"] for m in members])),
-                "raw_PICP": float(np.mean([m["raw_PICP"] for m in members]))})
+                "raw_PICP": float(np.mean([m["raw_PICP"] for m in members])),
+                "raw_MPIW": float(np.mean([m["raw_MPIW"] for m in members]))})
     with (output / f"aggregate_{args.grid}.csv").open("w", newline="",
                                                       encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=sorted(aggregate[0]))
@@ -219,18 +299,33 @@ def main(argv=None):
         writer.writerows(aggregate)
 
     selection = []
+    criterion_budgets = []
     for dataset in args.datasets:
         rows_here = [r for r in aggregate if r["dataset"] == dataset]
         for config in sorted({r["config"] for r in rows_here}):
             curve = [r for r in rows_here if r["config"] == config]
             curve.sort(key=lambda r: r["epoch"])
-            budget = pick_budget([r["pinball_mean"] for r in curve])
+            for criterion in ("pinball_mean", "q50_rmse", "raw_interval_score"):
+                criterion_budget = pick_budget([r[criterion] for r in curve])
+                at_criterion = next(r for r in curve
+                                    if r["epoch"] == criterion_budget)
+                criterion_budgets.append({
+                    "dataset": dataset, "config": config,
+                    "criterion": criterion, "budget_epoch": criterion_budget,
+                    "boundary_censored": criterion_budget > args.max_epochs - 10,
+                    **{k: at_criterion[k] for k in
+                       ("pinball_mean", "q50_rmse", "raw_interval_score",
+                        "raw_PICP", "raw_MPIW")}})
+            budget = next(r["budget_epoch"] for r in criterion_budgets
+                          if r["dataset"] == dataset and r["config"] == config
+                          and r["criterion"] == "pinball_mean")
             at_budget = next(r for r in curve if r["epoch"] == budget)
             selection.append({"dataset": dataset, "config": config,
                               "budget_epoch": budget,
                               **{k: at_budget[k] for k in
                                  ("pinball_mean", "q50_rmse",
-                                  "raw_interval_score", "raw_PICP")}})
+                                  "raw_interval_score", "raw_PICP",
+                                  "raw_MPIW")}})
     selection.sort(key=lambda r: (r["dataset"], r["pinball_mean"],
                                   r["q50_rmse"], r["raw_interval_score"]))
     with (output / f"selection_{args.grid}.csv").open("w", newline="",
@@ -238,9 +333,15 @@ def main(argv=None):
         writer = csv.DictWriter(handle, fieldnames=sorted(selection[0]))
         writer.writeheader()
         writer.writerows(selection)
+    with (output / f"criterion_budgets_{args.grid}.csv").open(
+            "w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=sorted(criterion_budgets[0]))
+        writer.writeheader()
+        writer.writerows(criterion_budgets)
     (output / f"selection_{args.grid}.json").write_text(json.dumps({
-        "preregistration": "docs/ncmapss-loso-tuning-prereg-2026-11-05.md",
+        "preregistration": "docs/ncmapss-loso-preparation-amendment-2026-11-06.md",
         "grid": args.grid, "configs": configs, "max_epochs": args.max_epochs,
+        "partitions": partitions,
         "folds_limited_to": args.folds or None,
         "generated": datetime.now().isoformat(timespec="seconds"),
         "ranking": selection}, indent=2, default=float), encoding="utf-8")
