@@ -438,8 +438,11 @@ def main(argv=None):
             "amendment": "docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md",
             "search_units": SEARCH_UNITS,
             "calibration_units_excluded": CALIBRATION_UNITS,
-            "status": ("complete" if args.folds == 0 and len(args.datasets) == 2 and
-                       set(args.methods) == set(METHODS) else "partial_smoke"),
+            "status": (("complete" if set(args.methods) == set(METHODS)
+                        else "complete_methods_subset")
+                       if args.folds == 0 and len(args.datasets) == 2
+                       else "partial_smoke"),
+            "methods": list(args.methods),
             "max_epochs": args.max_epochs, "patience": args.patience,
             "boundary_margin": BOUNDARY_MARGIN,
             "a6_point_dims": A6_POINT_DIMS,

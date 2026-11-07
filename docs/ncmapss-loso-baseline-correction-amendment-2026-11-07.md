@@ -65,15 +65,23 @@ comparison is not rerun.
 
 ## Reruns and retained records
 
-- Rerun: the eight baselines × 7 folds × 2 datasets at 120/30 with the
-  corrected A6-Point into `results_v4/ncmapss_loso_baselines_v2/`
-  (`scripts/queue_ncmapss_loso_baselines.sh`). The runner's result identity
-  includes its source hash, so all eight rerun under one code version; the
-  seven baselines whose configuration did not change are expected to
-  reproduce their previous development results up to GPU nondeterminism, which
-  serves as a consistency check.
-- Superseded but retained unchanged: `results_v4/ncmapss_loso_baselines/`
-  (FD-sized A6-Point). It must not be used to freeze any budget.
+- Rerun (user decision, 2026-11-07): **only A6-Point**, 7 folds × 2 datasets
+  at 120/30 with the corrected P0 lock, into
+  `results_v4/ncmapss_loso_baselines_v2/` (`--methods a6_point`; its manifest
+  status is `complete_methods_subset`). The seven other baselines keep their
+  original development results in `results_v4/ncmapss_loso_baselines/`: their
+  configuration, budget and training code path did not change, so their
+  selected epochs remain valid.
+- Merge: `scripts/merge_ncmapss_loso_baselines.py` writes the corrected
+  development table to `results_v4/ncmapss_loso_baselines_corrected/`
+  (A6-Point from v2, the other seven from the original run, each row tagged
+  with its source; stop epochs and reasons for the original folds are derived
+  from their saved per-fold histories; both input tables are hashed in the
+  manifest). This merged table, not either input, is the basis for freezing
+  baseline budgets.
+- Superseded A6-Point rows: the FD-sized A6-Point folds in
+  `results_v4/ncmapss_loso_baselines/` stay on disk unchanged and are excluded
+  by the merge.
 - The candidate fixed budget stays the low median of the seven selected
-  epochs. Budgets are frozen only in the next step, after this rerun is
+  epochs. Budgets are frozen only in the next step, after the merged table is
   reviewed; that step also records the A6 selection criterion.
