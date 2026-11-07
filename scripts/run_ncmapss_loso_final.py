@@ -49,6 +49,10 @@ from run_weighted_cqr import _features, _loader  # noqa: E402
 ALPHA = 0.2
 G9 = [round(0.1 * step, 2) for step in range(1, 10)]
 FROZEN_CRITERION = "raw_interval_score"
+# Training runs on CUDA and evaluation may run on CPU; the same checkpoint then
+# reproduces its calibration quantiles to about 2e-3 cycles. A tolerance of
+# 0.01 cycles separates that float noise from a changed model or data path.
+REPRODUCTION_TOLERANCE = 0.01
 
 
 def _sha256(path):
@@ -225,27 +229,34 @@ def _stage_evaluate(args, out_dir, config, epochs, selection_path):
     device = _device(args)
     train_units, calibration_units = manifest["train_units"], manifest["calibration_units"]
 
+    # Reproduce the saved calibration predictions before the test split is
+    # loaded at all; a failure here aborts without any test access.
+    check_bundle = _bundle(args, train_units, calibration_units, load_test=False)
+    model = _build_model(check_bundle, config, device)
+    state = torch.load(out_dir / "best.pt", map_location=device, weights_only=False)
+    model.load_state_dict(state["model_state"])
+    model.eval()
+    saved = np.load(out_dir / "calibration_predictions.npz")
+    cal_y, cal_q, cal_units, cal_ids, cal_cond = _predict(
+        model, _loader(check_bundle.calibration_endpoint), device)
+    max_abs_diff = float(np.max(np.abs(cal_q - saved["q"])))
+    if not (np.array_equal(cal_units, saved["units"]) and
+            np.array_equal(cal_ids, saved["ids"]) and
+            np.array_equal(cal_y, saved["y"]) and
+            max_abs_diff <= REPRODUCTION_TOLERANCE):
+        raise RuntimeError("checkpoint no longer reproduces its calibration predictions "
+                           f"(max abs diff {max_abs_diff:.4g} cycles)")
+    checks["calibration_reproduced"] = True
+
     touch = Path(args.touch_log)
     touch.parent.mkdir(parents=True, exist_ok=True)
     with touch.open("a", encoding="utf-8") as handle:
         handle.write(f"[{datetime.now().isoformat(timespec='seconds')}] "
                      f"ncmapss_loso_final A6-Quantile: test access started for "
                      f"{args.dataset} seed {args.seed} after verified training "
-                     f"stage (checkpoint {manifest['checkpoint_sha256'][:12]})\n")
+                     f"stage (checkpoint {manifest['checkpoint_sha256'][:12]}, "
+                     f"calibration reproduced within {max_abs_diff:.2g} cycles)\n")
     bundle = _bundle(args, train_units, calibration_units, load_test=True)
-    model = _build_model(bundle, config, device)
-    state = torch.load(out_dir / "best.pt", map_location=device, weights_only=False)
-    model.load_state_dict(state["model_state"])
-    model.eval()
-    saved = np.load(out_dir / "calibration_predictions.npz")
-    cal_y, cal_q, cal_units, cal_ids, cal_cond = _predict(
-        model, _loader(bundle.calibration_endpoint), device)
-    if not (np.array_equal(cal_units, saved["units"]) and
-            np.array_equal(cal_ids, saved["ids"]) and
-            np.allclose(cal_q, saved["q"], atol=1e-4)):
-        raise RuntimeError("checkpoint no longer reproduces its calibration predictions")
-    checks["calibration_reproduced"] = True
-
     test_y, test_q, test_units, test_ids, test_cond = _predict(
         model, _loader(bundle.test_endpoint), device)
     test_feats = _features(test_q, test_cond, normalization=1.0)
@@ -277,6 +288,9 @@ def _stage_evaluate(args, out_dir, config, epochs, selection_path):
         "freeze_record": "docs/ncmapss-loso-selection-freeze-2026-11-07.md",
         "result_role": "descriptive_recheck",
         "verification": checks, "config": config, "epochs": epochs,
+        "evaluation_device": str(device),
+        "calibration_reproduction_max_abs_diff": max_abs_diff,
+        "reproduction_tolerance_cycles": REPRODUCTION_TOLERANCE,
         "train_units": train_units, "calibration_units": calibration_units,
         "calibration_fracs": G9, "q50_point": point, "rows": rows,
         "references": references, "per_engine_variant": "window_weighted",

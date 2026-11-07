@@ -83,3 +83,24 @@ def test_registered_calibration_units_read_from_p0_record(tmp_path, monkeypatch)
         "calibration_units": [4, 7], "val_units": [3, 5, 6]}))
     monkeypatch.setattr(final, "ROOT", tmp_path)
     assert final._registered_calibration_units("DS03") == [4, 7]
+
+
+def test_a6_evaluate_rejects_changed_weights_before_test(tmp_path):
+    import hashlib
+    import torch
+    dev = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(dev)
+    common = _common(tmp_path, _selection(tmp_path), dev)
+    main(["--stage", "train", *common])
+    run = tmp_path / "final" / "DS03" / "seed_0"
+    state = torch.load(run / "best.pt", weights_only=False)
+    for key, value in state["model_state"].items():
+        if value.dtype.is_floating_point:
+            state["model_state"][key] = value + 1.0        # a real change, not float noise
+    torch.save(state, run / "best.pt")
+    manifest = json.loads((run / "train_manifest.json").read_text())
+    manifest["checkpoint_sha256"] = hashlib.sha256((run / "best.pt").read_bytes()).hexdigest()
+    (run / "train_manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(RuntimeError, match="reproduces"):
+        main(["--stage", "evaluate", *common, "--eval_test"])
+    assert not (tmp_path / "touches.log").exists()           # aborted before test access
