@@ -14,6 +14,7 @@ import json
 import statistics
 import sys
 import tempfile
+from datetime import datetime
 from contextlib import contextmanager, nullcontext
 from pathlib import Path
 
@@ -137,7 +138,7 @@ def _point_predict(model, loader, device, conditions):
 
 
 def _train_point(bundle, method, output, *, epochs, patience, batch_size,
-                 device, fc_source, evaluate_test):
+                 device, fc_source, use_validation):
     set_seed(0)
     model, conditions = _point_model(bundle, method, fc_source, device)
     model = model.to(device)
@@ -147,7 +148,7 @@ def _train_point(bundle, method, output, *, epochs, patience, batch_size,
     if not len(train):
         raise ValueError("no training batches; reduce --batch_size")
     val = None
-    if not evaluate_test:
+    if use_validation:
         val_data = bundle.val_endpoint if conditions else WindowToPatch(bundle.val_endpoint)
         val = DataLoader(val_data, batch_size=batch_size)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3,
@@ -195,21 +196,30 @@ def _train_point(bundle, method, output, *, epochs, patience, batch_size,
         writer.writerows(history)
     result = {"best_epoch": best_epoch, "val_rmse": None if val is None else best,
               "selection_criterion": "fixed_epoch" if val is None else "val_endpoint_rmse"}
-    if evaluate_test:
-        state = torch.load(output / "best.pt", map_location=device, weights_only=False)
-        model.load_state_dict(state["model_state"])
-        test_data = (bundle.test_endpoint if conditions else
-                     WindowToPatch(bundle.test_endpoint))
-        target, prediction, units, sids = _point_predict(
-            model, DataLoader(test_data, batch_size=batch_size), device, conditions)
-        metrics = regression_metrics(target, prediction)
-        metrics.pop("NASA_Score", None)
-        result.update(metrics)
-        with (output / "predictions.csv").open("w", newline="") as handle:
-            writer = csv.writer(handle)
-            writer.writerow(("unit_id", "sample_id", "target_rul", "predicted_rul"))
-            writer.writerows(zip(units, sids, target, prediction))
-        (output / "metrics.json").write_text(json.dumps(result, indent=2))
+    return result
+
+
+def _evaluate_point(bundle, method, checkpoint, output, *, batch_size, device,
+                    fc_source):
+    """Evaluate a verified fixed-epoch point checkpoint on the test endpoints once."""
+    model, conditions = _point_model(bundle, method, fc_source, device)
+    model = model.to(device)
+    state = torch.load(checkpoint, map_location=device, weights_only=False)
+    model.load_state_dict(state["model_state"])
+    test_data = (bundle.test_endpoint if conditions else
+                 WindowToPatch(bundle.test_endpoint))
+    target, prediction, units, sids = _point_predict(
+        model, DataLoader(test_data, batch_size=batch_size), device, conditions)
+    metrics = regression_metrics(target, prediction)
+    metrics.pop("NASA_Score", None)
+    result = {"best_epoch": int(state["best_epoch"]),
+              "selection_criterion": state.get("selection_criterion", "fixed_epoch"),
+              **metrics}
+    with (output / "predictions.csv").open("w", newline="") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(("unit_id", "sample_id", "target_rul", "predicted_rul"))
+        writer.writerows(zip(units, sids, target, prediction))
+    (output / "metrics.json").write_text(json.dumps(result, indent=2))
     return result
 
 
@@ -245,19 +255,24 @@ def _bundle(args, dataset, partition, load_test):
         dev_path=args.dev_path, test_path=args.test_path, load_test=load_test)
 
 
-def _run_one(args, dataset, method, output, partition, epochs, phase, selection=None):
+def _run_one(args, dataset, method, output, partition, epochs, phase, selection=None,
+             checkpoint=None):
+    """phase: development | final_train (never loads test) | final_eval."""
     dev_path = Path(args.dev_path or Path(args.data_root) / "data_set" /
                     ("N-CMAPSS_DS03-012.h5" if dataset == "DS03" else
                      "N-CMAPSS_DS08a-009.h5")).resolve()
     identity = _identity(args, dataset, method, dev_path, phase, epochs,
                          args.fc_source, selection)
+    if checkpoint is not None:
+        identity["evaluated_checkpoint_sha256"] = _sha256(checkpoint)
+    required = {"development": ("best.pt", "history.csv"),
+                "final_train": ("best.pt", "history.csv"),
+                "final_eval": ("predictions.csv", "metrics.json")}[phase]
     if output.exists():
         manifest_path = output / "manifest.json"
         if not manifest_path.is_file():
             raise RuntimeError(f"incomplete output directory: {output}")
         manifest = json.loads(manifest_path.read_text())
-        required = ("best.pt", "history.csv", "predictions.csv", "metrics.json") \
-            if phase == "final" else ("best.pt", "history.csv")
         if manifest.get("identity") != identity or any(
                 not (output / name).is_file() for name in required):
             raise RuntimeError(f"existing result has different identity: {output}")
@@ -265,22 +280,32 @@ def _run_one(args, dataset, method, output, partition, epochs, phase, selection=
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=f".{output.name}.", dir=output.parent) as tmp:
         staging = Path(tmp)
-        bundle = _bundle(args, dataset, partition, phase == "final")
+        bundle = _bundle(args, dataset, partition, phase == "final_eval")
+        if phase != "final_eval" and getattr(bundle, "test_endpoint", None) is not None:
+            raise RuntimeError("development and training stages must not load test")
         if bundle.metadata["dev_units"] != list(range(1, 10)):
             raise RuntimeError("N-CMAPSS baseline protocol requires dev units 1..9")
         if bundle.metadata["train_units"] != sorted(partition["train"]) or \
                 bundle.metadata["val_units"] != sorted(partition["val"]):
             raise RuntimeError("dataset partition differs from registered units")
+        device = torch.device(args.device)
         if method in POINT_METHODS:
-            result = _train_point(
-                bundle, method, staging, epochs=epochs, patience=args.patience,
-                batch_size=args.batch_size, device=torch.device(args.device),
-                fc_source=args.fc_source, evaluate_test=phase == "final")
+            if phase == "final_eval":
+                result = _evaluate_point(bundle, method, checkpoint, staging,
+                                         batch_size=args.batch_size, device=device,
+                                         fc_source=args.fc_source)
+            else:
+                result = _train_point(
+                    bundle, method, staging, epochs=epochs, patience=args.patience,
+                    batch_size=args.batch_size, device=device,
+                    fc_source=args.fc_source, use_validation=phase == "development")
         else:
             result = fit_probabilistic(
                 bundle, method, staging, **{**_prob_kwargs(method, args), "epochs": epochs},
-                fixed_epochs=phase == "final", defer_test=phase != "final",
-                test_dataset=bundle.test_endpoint if phase == "final" else None)
+                fixed_epochs=phase != "development",
+                defer_test=phase != "final_eval",
+                test_dataset=bundle.test_endpoint if phase == "final_eval" else None,
+                evaluate_checkpoint=checkpoint if phase == "final_eval" else None)
             if phase == "development":
                 selected = int(result["best_epochs"][0])
                 with (staging / "history.csv").open(newline="") as handle:
@@ -290,16 +315,47 @@ def _run_one(args, dataset, method, output, partition, epochs, phase, selection=
                     raise RuntimeError("probabilistic best epoch is absent from history")
                 result["best_epoch"] = selected
                 result["val_rmse"] = float(match[0]["val_rmse"])
-        manifest = {"identity": identity, "result": result,
+        final = phase != "development"
+        manifest = {"identity": identity, "result": result, "phase": phase,
                     "train_units": sorted(partition["train"]),
                     "val_units": sorted(partition["val"]),
-                    "calibration_units": sorted(partition["calibration"]) if phase == "final" else [],
+                    "calibration_units": sorted(partition["calibration"]) if final else [],
                     "calibration_units_excluded": CALIBRATION_UNITS,
-                    "test_loaded": phase == "final", "test_evaluated": phase == "final",
-                    "test_result_role": "descriptive_recheck" if phase == "final" else None}
+                    "test_loaded": phase == "final_eval",
+                    "test_evaluated": phase == "final_eval",
+                    "test_result_role": ("descriptive_recheck" if phase == "final_eval"
+                                         else None)}
+        if phase == "final_train":
+            manifest["checkpoint_sha256"] = _sha256(staging / "best.pt")
+            manifest["epochs_trained"] = int(sum(1 for _ in csv.DictReader(
+                (staging / "history.csv").open(newline=""))))
         (staging / "manifest.json").write_text(json.dumps(manifest, indent=2))
         staging.rename(output)
     return result
+
+
+def _sha256(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def _verify_final_train(train_dir, epochs, selection):
+    """Checks that must pass before a checkpoint may be evaluated on test."""
+    manifest = json.loads((train_dir / "manifest.json").read_text())
+    checks = {
+        "phase": manifest.get("phase") == "final_train",
+        "test_not_loaded": manifest.get("test_loaded") is False,
+        "frozen_epochs": (manifest["identity"].get("epochs") == epochs and
+                          manifest.get("epochs_trained") == epochs),
+        "selection_unchanged": (manifest["identity"].get("selection_sha256") ==
+                                _sha256(selection)),
+        "checkpoint_hash": manifest.get("checkpoint_sha256") == _sha256(train_dir / "best.pt"),
+        "seven_search_engines": manifest.get("train_units") == SEARCH_UNITS,
+        "no_validation_set": manifest.get("val_units") == [],
+    }
+    failed = [name for name, ok in checks.items() if not ok]
+    if failed:
+        raise RuntimeError(f"{train_dir}: training verification failed: {failed}")
+    return checks
 
 
 def _read_selection(path, dataset, method):
@@ -328,7 +384,8 @@ def _write_csv(path, rows):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--phase", required=True, choices=("development", "final"))
+    parser.add_argument("--phase", required=True,
+                        choices=("development", "final_train", "final_eval"))
     parser.add_argument("--data_root", required=True)
     parser.add_argument("--datasets", nargs="+", choices=("DS03", "DS08a"),
                         default=["DS03", "DS08a"])
@@ -347,6 +404,8 @@ def main(argv=None):
                         help="first K folds for a partial smoke; zero runs all seven")
     parser.add_argument("--selection", help="frozen JSON required for final training")
     parser.add_argument("--eval_test", action="store_true")
+    parser.add_argument("--touch_log", default=str(
+        ROOT / "results_v4/chapter4_main_logs/test_touches.log"))
     parser.add_argument("--device", default="cpu")
     args = parser.parse_args(argv)
     if not 1 <= args.max_epochs <= DEV_MAX_EPOCHS or args.patience < 1 or args.batch_size < 1:
@@ -354,11 +413,16 @@ def main(argv=None):
                      f"epochs <= {DEV_MAX_EPOCHS}")
     if not 0 <= args.folds <= 7 or args.mc_samples < 0:
         parser.error("folds must be 0..7 and MC samples nonnegative")
-    if args.phase == "final":
-        if not args.eval_test or not args.selection:
-            parser.error("final requires --selection and --eval_test")
+    if args.phase == "final_train":
+        if not args.selection or args.eval_test:
+            parser.error("final_train requires --selection and never accesses test")
         if args.folds or args.mc_samples:
-            parser.error("final does not allow fold or MC smoke overrides")
+            parser.error("final stages do not allow fold or MC smoke overrides")
+    elif args.phase == "final_eval":
+        if not args.eval_test or not args.selection:
+            parser.error("final_eval requires --selection and --eval_test")
+        if args.folds or args.mc_samples:
+            parser.error("final stages do not allow fold or MC smoke overrides")
     elif args.eval_test or args.selection:
         parser.error("development cannot load test or use a frozen selection")
     if args.phase == "development" and args.folds == 0 and \
@@ -368,11 +432,29 @@ def main(argv=None):
                      f"patience {DEV_PATIENCE}, batch 32")
     if args.device == "auto":
         args.device = "cuda" if torch.cuda.is_available() else "cpu"
+    final = args.phase in {"final_train", "final_eval"}
     frozen_epochs = ({(dataset, method): _read_selection(args.selection, dataset, method)
                       for dataset in args.datasets for method in args.methods}
-                     if args.phase == "final" else {})
+                     if final else {})
     out = Path(args.output_dir)
     rows = []
+    verification = {}
+    if args.phase == "final_eval":
+        # Verify every requested training run before touching test for any.
+        for dataset in args.datasets:
+            for method in args.methods:
+                train_dir = out / "final" / dataset / method / "train"
+                if not (train_dir / "manifest.json").is_file():
+                    raise RuntimeError(f"missing verified training stage: {train_dir}")
+                verification[(dataset, method)] = _verify_final_train(
+                    train_dir, frozen_epochs[(dataset, method)], args.selection)
+        touch = Path(args.touch_log)
+        touch.parent.mkdir(parents=True, exist_ok=True)
+        with touch.open("a", encoding="utf-8") as handle:
+            handle.write(f"[{datetime.now().isoformat(timespec='seconds')}] "
+                         f"ncmapss_loso_baselines final_eval: test access started for "
+                         f"{','.join(args.datasets)} x {','.join(args.methods)} after "
+                         f"verified fixed-epoch training (descriptive recheck)\n")
     for dataset in args.datasets:
         for method in args.methods:
             if args.phase == "development":
@@ -401,17 +483,35 @@ def main(argv=None):
                 epochs = frozen_epochs[(dataset, method)]
                 partition = {"train": SEARCH_UNITS, "val": [],
                              "calibration": CALIBRATION_UNITS}
-                run = out / dataset / method
-                result = _run_one(args, dataset, method, run, partition,
-                                  epochs, "final", args.selection)
-                rows.append({"dataset": dataset, "method": method,
-                             "epochs": epochs, "RMSE": result.get("RMSE"),
-                             "MAE": result.get("MAE"), "PICP": result.get("PICP"),
-                             "MPIW": result.get("MPIW"),
-                             "IntervalScore": result.get("IntervalScore")})
-                print(f"[{dataset}/{method}] fixed={epochs} RMSE={result.get('RMSE')}", flush=True)
+                train_dir = out / "final" / dataset / method / "train"
+                if args.phase == "final_train":
+                    result = _run_one(args, dataset, method, train_dir, partition,
+                                      epochs, "final_train", args.selection)
+                    manifest = json.loads((train_dir / "manifest.json").read_text())
+                    rows.append({"dataset": dataset, "method": method,
+                                 "frozen_epochs": epochs,
+                                 "epochs_trained": manifest["epochs_trained"],
+                                 "checkpoint_sha256": manifest["checkpoint_sha256"],
+                                 "test_loaded": manifest["test_loaded"]})
+                    print(f"[{dataset}/{method}] trained {manifest['epochs_trained']}"
+                          f"/{epochs} epochs; test not loaded", flush=True)
+                else:
+                    result = _run_one(args, dataset, method,
+                                      out / "final" / dataset / method / "eval",
+                                      partition, epochs, "final_eval", args.selection,
+                                      checkpoint=train_dir / "best.pt")
+                    rows.append({"dataset": dataset, "method": method,
+                                 "epochs": epochs, "RMSE": result.get("RMSE"),
+                                 "MAE": result.get("MAE"), "PICP": result.get("PICP"),
+                                 "MPIW": result.get("MPIW"),
+                                 "IntervalScore": result.get("IntervalScore"),
+                                 "verification": ";".join(
+                                     sorted(verification[(dataset, method)]))})
+                    print(f"[{dataset}/{method}] fixed={epochs} RMSE={result.get('RMSE')}",
+                          flush=True)
     out.mkdir(parents=True, exist_ok=True)
-    _write_csv(out / ("development.csv" if args.phase == "development" else "final.csv"), rows)
+    _write_csv(out / {"development": "development.csv", "final_train": "final_train.csv",
+                      "final_eval": "final_eval.csv"}[args.phase], rows)
     if args.phase == "development":
         summary = []
         for dataset in args.datasets:

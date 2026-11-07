@@ -1,0 +1,185 @@
+{
+  "status": "frozen",
+  "frozen_at": "2026-11-07",
+  "amendment": "docs/ncmapss-loso-selection-freeze-2026-11-07.md",
+  "test_accessed_before_freeze_by_this_protocol": false,
+  "budget_rule": "low median of the seven LOSO folds' selected epochs; common cap 120, patience 30",
+  "datasets": {
+    "DS03": {
+      "search_units": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8,
+        9
+      ],
+      "calibration_units": [
+        4,
+        7
+      ],
+      "n_folds": 7,
+      "criterion": "raw_interval_score",
+      "config": {
+        "activation": "legacy",
+        "lr": 0.0003,
+        "dropout": 0.1,
+        "weight_decay": 0.001
+      },
+      "budget_epoch": 27,
+      "boundary_censored": false,
+      "a6_development": {
+        "fold_budget_range": [
+          22,
+          108
+        ],
+        "pinball_mean": 3.954,
+        "q50_rmse": 15.66,
+        "raw_interval_score": 50.72,
+        "raw_PICP": 0.607,
+        "raw_MPIW": 31.71,
+        "n_cap_stopped_folds_frozen_config": 1,
+        "cap_stop_note": "held unit 3 selected epoch 108, stopped at the 120 cap"
+      },
+      "pinball_rule_sensitivity": {
+        "config_lr": 0.0003,
+        "budget_epoch": 27,
+        "pinball_mean": 3.901,
+        "raw_interval_score": 51.27,
+        "agrees_with_frozen_choice": true
+      },
+      "methods": {
+        "a6_point": {
+          "epochs": 49,
+          "n_stopped_by_cap": 2,
+          "n_boundary_censored": 0
+        },
+        "fc_stgnn": {
+          "epochs": 63,
+          "n_stopped_by_cap": 2,
+          "n_boundary_censored": 2
+        },
+        "hnn": {
+          "epochs": 44,
+          "n_stopped_by_cap": 1,
+          "n_boundary_censored": 0
+        },
+        "edl_nig": {
+          "epochs": 78,
+          "n_stopped_by_cap": 2,
+          "n_boundary_censored": 1
+        },
+        "lstm_prob": {
+          "epochs": 6,
+          "n_stopped_by_cap": 1,
+          "n_boundary_censored": 1,
+          "status_note": "not converged under the common 120/30 budget"
+        },
+        "tcn_transformer_mc": {
+          "epochs": 47,
+          "n_stopped_by_cap": 2,
+          "n_boundary_censored": 1
+        },
+        "msauq": {
+          "epochs": 25,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0
+        },
+        "bcpt": {
+          "epochs": 38,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0
+        }
+      }
+    },
+    "DS08a": {
+      "search_units": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8,
+        9
+      ],
+      "calibration_units": [
+        4,
+        7
+      ],
+      "n_folds": 7,
+      "criterion": "raw_interval_score",
+      "config": {
+        "activation": "legacy",
+        "lr": 0.001,
+        "dropout": 0.1,
+        "weight_decay": 0.001
+      },
+      "budget_epoch": 22,
+      "boundary_censored": false,
+      "a6_development": {
+        "fold_budget_range": [
+          9,
+          49
+        ],
+        "pinball_mean": 4.396,
+        "q50_rmse": 17.01,
+        "raw_interval_score": 56.45,
+        "raw_PICP": 0.607,
+        "raw_MPIW": 35.82,
+        "n_cap_stopped_folds_frozen_config": 0,
+        "cap_stop_note": "the comparison's one cap-stopped run (lr 3e-4, held unit 1) belongs to the unselected config"
+      },
+      "pinball_rule_sensitivity": {
+        "config_lr": 0.0003,
+        "budget_epoch": 35,
+        "pinball_mean": 4.365,
+        "raw_interval_score": 61.16,
+        "agrees_with_frozen_choice": false
+      },
+      "methods": {
+        "a6_point": {
+          "epochs": 18,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0
+        },
+        "fc_stgnn": {
+          "epochs": 34,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0
+        },
+        "hnn": {
+          "epochs": 46,
+          "n_stopped_by_cap": 1,
+          "n_boundary_censored": 0
+        },
+        "edl_nig": {
+          "epochs": 31,
+          "n_stopped_by_cap": 1,
+          "n_boundary_censored": 0
+        },
+        "lstm_prob": {
+          "epochs": 5,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0,
+          "status_note": "not converged under the common 120/30 budget"
+        },
+        "tcn_transformer_mc": {
+          "epochs": 37,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0
+        },
+        "msauq": {
+          "epochs": 43,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0
+        },
+        "bcpt": {
+          "epochs": 38,
+          "n_stopped_by_cap": 0,
+          "n_boundary_censored": 0
+        }
+      }
+    }
+  }
+}

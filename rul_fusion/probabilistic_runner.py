@@ -347,7 +347,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
                       edl_hidden_dim=128, mc_samples=None, bcpt_gamma=0.2,
                       bcpt_lam=0.1,
                       device="auto", num_workers=0, config=None,
-                      test_dataset=None, defer_test=False, fixed_epochs=False):
+                      test_dataset=None, defer_test=False, fixed_epochs=False,
+                      evaluate_checkpoint=None):
     """Train a probabilistic baseline; evaluate test once."""
     supported = set(PAPER_METHOD_DEFAULTS)
     if kind not in supported:
@@ -389,7 +390,26 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
     models, history, best_epochs = [], [], []
     start_train = time.perf_counter()
 
-    if kind == "ensemble":
+    if evaluate_checkpoint is not None:
+        # Evaluation-only path for a verified, already-trained checkpoint:
+        # no training loop runs; the saved state is restored and the test
+        # block below evaluates it once.
+        if defer_test or test_loader is None:
+            raise ValueError("evaluate_checkpoint requires a test dataset and defer_test=False")
+        if kind == "ensemble":
+            raise ValueError("checkpoint evaluation does not support ensembles")
+        state = torch.load(evaluate_checkpoint, map_location=device_obj, weights_only=False)
+        window = bundle.train[0][0].shape[0]
+        keys = ("lu_state", "hu_state") if kind == BCPT_KIND else ("model_state",)
+        for key in keys:
+            restored = _model(kind, bundle.sensor_dim, bundle.condition_dim, dropout,
+                              window, edl_hidden_dim, edl_sensor_indices)
+            restored.load_state_dict(state[key])
+            models.append(restored.to(device_obj))
+        best_epochs.append(int(state["best_epoch"]))
+        selection_criterion = state.get("selection_criterion", "fixed_epoch")
+
+    if kind == "ensemble" and evaluate_checkpoint is None:
         optimizers = []
         for member in range(member_count):
             set_seed(seed + member * 1009)
@@ -458,7 +478,7 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
         weights /= weights.sum(axis=1, keepdims=True)
         return 1.0 + weights.mean(axis=0) if high else 1.0 - weights.mean(axis=0)
 
-    if kind == BCPT_KIND:
+    if kind == BCPT_KIND and evaluate_checkpoint is None:
         lu = _model(kind, bundle.sensor_dim, bundle.condition_dim, dropout,
                     bundle.train[0][0].shape[0]).to(device_obj)
         hu = _model(kind, bundle.sensor_dim, bundle.condition_dim, dropout,
@@ -543,7 +563,8 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
         best_epochs.append(int(state["best_epoch"]))
         selection_criterion = "fixed_epoch" if fixed_epochs else "val_fused_rmse"
 
-    for member in range(member_count if kind not in {"ensemble", BCPT_KIND} else 0):
+    for member in range(member_count if kind not in {"ensemble", BCPT_KIND}
+                        and evaluate_checkpoint is None else 0):
         member_seed = seed + member * 1009
         set_seed(member_seed)
         model = _model(kind, bundle.sensor_dim, bundle.condition_dim, dropout,

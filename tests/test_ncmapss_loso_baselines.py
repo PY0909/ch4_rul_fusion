@@ -39,55 +39,78 @@ def test_development_fold_excludes_calibration_and_never_loads_test(tmp_path):
     assert len(list(csv.DictReader((out / "development.csv").open()))) == 2
 
 
-def test_final_requires_frozen_selection_and_explicit_test_gate(tmp_path, capsys):
-    dev = tmp_path / "N-CMAPSS_DS03-012.h5"
-    _write_ncmapss_nine_units(dev)
-    selection = tmp_path / "selection.json"
-    selection.write_text(json.dumps({
-        "status": "candidate", "datasets": {"DS03": {"methods": {
-            "a6_point": {"epochs": 1}, "lstm_prob": {"epochs": 1}}}}}))
-    args = ["--phase", "final", "--data_root", str(tmp_path),
-            "--datasets", "DS03", "--methods", "a6_point", "lstm_prob",
-            "--dev_path", str(dev), "--test_path", str(dev),
-            "--selection", str(selection), "--output_dir", str(tmp_path / "final"),
-            "--device", "cpu"]
-    with pytest.raises(SystemExit):
-        main(args)
-    assert "--eval_test" in capsys.readouterr().err
-    with pytest.raises(ValueError, match="frozen"):
-        main(args + ["--eval_test"])
-    data = json.loads(selection.read_text())
-    data["status"] = "frozen"
-    data["datasets"]["DS03"].update({
-        "search_units": [1, 2, 3, 5, 6, 8, 9],
-        "calibration_units": [4, 7], "n_folds": 7})
-    selection.write_text(json.dumps(data))
-    main(args + ["--eval_test"])
-    run = tmp_path / "final" / "DS03" / "a6_point"
-    manifest = json.loads((run / "manifest.json").read_text())
-    assert manifest["train_units"] == [1, 2, 3, 5, 6, 8, 9]
-    assert manifest["val_units"] == []
-    assert manifest["calibration_units"] == [4, 7]
-    assert manifest["test_evaluated"] is True
-    assert (run / "predictions.csv").exists()
-    prob = tmp_path / "final" / "DS03" / "lstm_prob"
-    assert (prob / "predictions.csv").exists()
-    assert json.loads((prob / "manifest.json").read_text())["val_units"] == []
-
-
-def test_final_prevalidates_every_selected_method_before_test(tmp_path):
+def _frozen(tmp_path, methods):
     selection = tmp_path / "selection.json"
     selection.write_text(json.dumps({
         "status": "frozen", "datasets": {"DS03": {
             "search_units": [1, 2, 3, 5, 6, 8, 9],
             "calibration_units": [4, 7], "n_folds": 7,
-            "methods": {"a6_point": {"epochs": 1}}}}}))
+            "methods": {m: {"epochs": 1} for m in methods}}}}))
+    return selection
+
+
+def test_final_train_never_loads_test_and_eval_needs_verified_checkpoint(tmp_path, capsys):
+    dev = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(dev)
+    selection = tmp_path / "selection.json"
+    selection.write_text(json.dumps({"status": "candidate", "datasets": {}}))
+    log = tmp_path / "touches.log"
+    common = ["--data_root", str(tmp_path), "--datasets", "DS03",
+              "--methods", "a6_point", "lstm_prob", "--dev_path", str(dev),
+              "--test_path", str(dev), "--selection", str(selection),
+              "--output_dir", str(tmp_path / "out"), "--device", "cpu",
+              "--touch_log", str(log)]
+    with pytest.raises(SystemExit):                       # training never takes --eval_test
+        main(["--phase", "final_train", *common, "--eval_test"])
+    with pytest.raises(ValueError, match="frozen"):
+        main(["--phase", "final_train", *common])
+    _frozen(tmp_path, ["a6_point", "lstm_prob"])
+    main(["--phase", "final_train", *common])
+    for method in ("a6_point", "lstm_prob"):
+        run = tmp_path / "out" / "final" / "DS03" / method / "train"
+        manifest = json.loads((run / "manifest.json").read_text())
+        assert manifest["test_loaded"] is False and manifest["epochs_trained"] == 1
+        assert manifest["train_units"] == [1, 2, 3, 5, 6, 8, 9]
+        assert manifest["val_units"] == [] and manifest["calibration_units"] == [4, 7]
+        assert not (run / "predictions.csv").exists()
+    assert not log.exists()                               # no test access yet
+    with pytest.raises(SystemExit):
+        main(["--phase", "final_eval", *common])          # needs --eval_test
+    assert "--eval_test" in capsys.readouterr().err
+    main(["--phase", "final_eval", *common, "--eval_test"])
+    for method in ("a6_point", "lstm_prob"):
+        evaluated = tmp_path / "out" / "final" / "DS03" / method / "eval"
+        assert (evaluated / "predictions.csv").exists()
+        manifest = json.loads((evaluated / "manifest.json").read_text())
+        assert manifest["test_evaluated"] is True
+    assert "final_eval" in log.read_text()
+
+
+def test_final_eval_refuses_tampered_checkpoint_before_test(tmp_path):
+    dev = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(dev)
+    selection = _frozen(tmp_path, ["a6_point"])
+    log = tmp_path / "touches.log"
+    common = ["--data_root", str(tmp_path), "--datasets", "DS03",
+              "--methods", "a6_point", "--dev_path", str(dev), "--test_path", str(dev),
+              "--selection", str(selection), "--output_dir", str(tmp_path / "out"),
+              "--device", "cpu", "--touch_log", str(log)]
+    main(["--phase", "final_train", *common])
+    checkpoint = tmp_path / "out" / "final" / "DS03" / "a6_point" / "train" / "best.pt"
+    checkpoint.write_bytes(checkpoint.read_bytes() + b"tamper")
+    with pytest.raises(RuntimeError, match="checkpoint_hash"):
+        main(["--phase", "final_eval", *common, "--eval_test"])
+    assert not log.exists()
+
+
+def test_final_prevalidates_every_selected_method_before_training(tmp_path):
+    selection = _frozen(tmp_path, ["a6_point"])
     out = tmp_path / "final"
     with pytest.raises(ValueError, match="lstm_prob"):
-        main(["--phase", "final", "--data_root", str(tmp_path),
+        main(["--phase", "final_train", "--data_root", str(tmp_path),
               "--datasets", "DS03", "--methods", "a6_point", "lstm_prob",
-              "--selection", str(selection), "--eval_test",
-              "--output_dir", str(out), "--device", "cpu"])
+              "--selection", str(selection), "--output_dir", str(out),
+              "--device", "cpu"])
     assert not out.exists()
 
 

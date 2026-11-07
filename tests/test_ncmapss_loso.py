@@ -220,22 +220,22 @@ def test_loso_search_rejects_changed_calibration_ids(tmp_path, monkeypatch):
 def test_loso_final_requires_frozen_selection_and_explicit_test(tmp_path, capsys):
     args = ["--dataset", "DS03", "--data_root", str(tmp_path)]
     with pytest.raises(SystemExit):
-        final_main(args)
-    assert "--selection_file" in capsys.readouterr().err
+        final_main(args)                                  # --stage is required
+    assert "--stage" in capsys.readouterr().err
 
     selection = tmp_path / "selection.json"
     selection.write_text(json.dumps({
         "status": "frozen", "datasets": {"DS03": {
             "config": {"activation": "legacy", "lr": 0.001,
                        "dropout": 0.1, "weight_decay": 0.001},
-            "budget_epoch": 26, "criterion": "pinball_mean",
+            "budget_epoch": 26, "criterion": "raw_interval_score",
             "n_folds": 7, "boundary_censored": False,
             "search_units": [1, 2, 3, 5, 6, 8, 9],
             "calibration_units": [4, 7],
         }},
     }))
     with pytest.raises(SystemExit):
-        final_main(args + ["--selection_file", str(selection)])
+        final_main(args + ["--stage", "evaluate", "--selection_file", str(selection)])
     assert "--eval_test" in capsys.readouterr().err
 
     record = json.loads(selection.read_text())
@@ -255,7 +255,7 @@ def test_loso_final_synthetic_frozen_run(tmp_path, monkeypatch):
         "status": "frozen", "datasets": {"DS03": {
             "config": {"activation": "legacy", "lr": 0.001,
                        "dropout": 0.1, "weight_decay": 0.001},
-            "budget_epoch": 1, "criterion": "pinball_mean",
+            "budget_epoch": 1, "criterion": "raw_interval_score",
             "n_folds": 7, "boundary_censored": False,
             "search_units": [1, 2, 3, 5, 6, 8, 9],
             "calibration_units": [4, 7],
@@ -264,14 +264,20 @@ def test_loso_final_synthetic_frozen_run(tmp_path, monkeypatch):
     monkeypatch.setattr(final, "ROOT", tmp_path)
     monkeypatch.setattr(final, "_registered_calibration_units",
                         lambda _dataset: [4, 7])
-    final.main(["--dataset", "DS03", "--data_root", str(tmp_path),
-                "--selection_file", str(selection), "--eval_test",
-                "--output_dir", str(tmp_path / "final"), "--device", "cpu"])
-    result = json.loads((tmp_path / "final/DS03/seed_0/summary.json").read_text())
+    common = ["--dataset", "DS03", "--data_root", str(tmp_path),
+              "--selection_file", str(selection),
+              "--output_dir", str(tmp_path / "final"), "--device", "cpu"]
+    final.main(["--stage", "train", *common])
+    touch_path = tmp_path / "results_v4/chapter4_main_logs/test_touches.log"
+    assert not touch_path.exists()                         # training never touches test
+    final.main(["--stage", "evaluate", *common, "--eval_test"])
+    result = json.loads(
+        (tmp_path / "final/DS03/seed_0/evaluation/summary.json").read_text())
     assert result["train_units"] == [1, 2, 3, 5, 6, 8, 9]
     assert result["calibration_units"] == [4, 7]
     assert len(result["rows"]) == 3
     assert all(row["n_cal_windows"] == 18 for row in result["rows"])
-    touch = (tmp_path / "results_v4/chapter4_main_logs/test_touches.log").read_text()
+    touch = touch_path.read_text()
     assert "test access started" in touch
     assert "official test evaluated once" in touch
+
