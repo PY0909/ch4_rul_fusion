@@ -46,10 +46,10 @@ FC_DIMS = dict(indim_fea=2, Conv_out=4, lstmhidden_dim=8, lstmout_dim=12,
 # A6-Point d32 / 2 heads / 2 routers with weight decay 1e-3; FC-STGNN wd 0.
 A6_POINT_DIMS = dict(d_model=32, num_heads=2, num_routers=2)
 POINT_WEIGHT_DECAY = {"a6_point": 1e-3, "fc_stgnn": 0.0}
-# Uniform development budget for all eight baselines, set by
-# docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md.
-DEV_MAX_EPOCHS = 400
-DEV_PATIENCE = 100
+# Common development budget shared with the A6-Quantile budget comparison
+# (docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md).
+DEV_MAX_EPOCHS = 120
+DEV_PATIENCE = 30
 BOUNDARY_MARGIN = 10
 DEFAULT_FC_SOURCES = (
     Path("/home/v2/FCSTGNN/FC_STGNN"),
@@ -384,8 +384,13 @@ def main(argv=None):
                     result = _run_one(args, dataset, method, run, partition,
                                       args.max_epochs, "development")
                     epoch = result.get("best_epoch", result.get("best_epochs", [None])[0])
+                    with (run / "history.csv").open(newline="") as handle:
+                        stop_epoch = sum(1 for _ in csv.DictReader(handle))
                     rows.append({"dataset": dataset, "method": method,
                                  "held_unit": held, "best_epoch": epoch,
+                                 "stop_epoch": stop_epoch,
+                                 "stop_reason": ("cap" if stop_epoch >= args.max_epochs
+                                                 else "patience"),
                                  "boundary_censored": (
                                      epoch is not None and
                                      int(epoch) > args.max_epochs - BOUNDARY_MARGIN),
@@ -423,6 +428,8 @@ def main(argv=None):
                                     [row["val_rmse"] for row in group])),
                                 "n_boundary_censored": int(sum(
                                     bool(row["boundary_censored"]) for row in group)),
+                                "n_stopped_by_cap": int(sum(
+                                    row["stop_reason"] == "cap" for row in group)),
                                 "selection_criterion": group[0]["selection_criterion"],
                                 "selection_status": "development_candidate"})
         _write_csv(out / "development_summary.csv", summary)

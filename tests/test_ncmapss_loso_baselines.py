@@ -133,7 +133,7 @@ def test_a6_point_matches_p0_lock_and_uniform_budget(tmp_path):
     from scripts import run_ncmapss_loso_baselines as runner
     assert runner.A6_POINT_DIMS == {"d_model": 32, "num_heads": 2, "num_routers": 2}
     assert runner.POINT_WEIGHT_DECAY == {"a6_point": 1e-3, "fc_stgnn": 0.0}
-    assert (runner.DEV_MAX_EPOCHS, runner.DEV_PATIENCE) == (400, 100)
+    assert (runner.DEV_MAX_EPOCHS, runner.DEV_PATIENCE) == (120, 30)
     bundle = types.SimpleNamespace(sensor_dim=14, condition_dim=4)
     model, uses_conditions = runner._point_model(bundle, "a6_point", None, None)
     assert uses_conditions and model.d_model == 32
@@ -153,6 +153,8 @@ def test_development_rows_flag_boundary_censoring(tmp_path):
     rows = list(csv.DictReader((out / "development.csv").open()))
     # With a 2-epoch cap every selected epoch lies within cap - 10.
     assert rows and all(row["boundary_censored"] == "True" for row in rows)
+    assert all(row["stop_reason"] in {"cap", "patience"} for row in rows)
+    assert all(int(row["stop_epoch"]) <= 2 for row in rows)
     manifest = json.loads((out / "manifest.json").read_text())
     assert manifest["status"] == "partial_smoke"
     assert manifest["a6_point_dims"]["d_model"] == 32

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Corrected eight-baseline LOSO development run
 # (docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md):
-# A6-Point at the P0 lock (d32/2/2, wd 1e-3), uniform 400-epoch cap with
-# patience 100 for every method, outputs in a fresh v2 directory. The
-# superseded 120/30 run in results_v4/ncmapss_loso_baselines stays untouched.
+# A6-Point at the P0 lock (d32/2/2, wd 1e-3), the common 120-epoch cap with
+# patience 30 shared with the A6-Quantile comparison, outputs in a fresh v2
+# directory. The superseded run in results_v4/ncmapss_loso_baselines stays
+# untouched.
 set -euo pipefail
 
 ROOT=/root/autodl-tmp/ch4_rul_fusion
