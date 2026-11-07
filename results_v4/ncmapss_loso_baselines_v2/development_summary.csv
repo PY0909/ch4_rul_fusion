@@ -1,0 +1,3 @@
+candidate_fixed_epochs,dataset,mean_held_rmse,method,n_boundary_censored,n_folds,n_stopped_by_cap,selection_criterion,selection_status
+49,DS03,7.117263905287517,a6_point,0,7,2,val_endpoint_rmse,development_candidate
+18,DS08a,14.499134996221313,a6_point,0,7,0,val_endpoint_rmse,development_candidate

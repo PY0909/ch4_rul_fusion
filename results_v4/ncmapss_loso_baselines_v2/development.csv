@@ -1,0 +1,15 @@
+best_epoch,boundary_censored,dataset,held_unit,method,selection_criterion,stop_epoch,stop_reason,val_rmse
+40,False,DS03,1,a6_point,val_endpoint_rmse,70,patience,11.227495013857803
+106,False,DS03,2,a6_point,val_endpoint_rmse,120,cap,3.718411770270854
+43,False,DS03,3,a6_point,val_endpoint_rmse,73,patience,4.423297414885938
+92,False,DS03,5,a6_point,val_endpoint_rmse,120,cap,4.962284765925434
+49,False,DS03,6,a6_point,val_endpoint_rmse,79,patience,2.9728763896959216
+21,False,DS03,8,a6_point,val_endpoint_rmse,51,patience,13.313882962067188
+69,False,DS03,9,a6_point,val_endpoint_rmse,99,patience,9.202599020309483
+21,False,DS08a,1,a6_point,val_endpoint_rmse,51,patience,13.493088241901972
+35,False,DS08a,2,a6_point,val_endpoint_rmse,65,patience,7.281714519976409
+27,False,DS08a,3,a6_point,val_endpoint_rmse,57,patience,17.357149591701305
+5,False,DS08a,5,a6_point,val_endpoint_rmse,35,patience,13.68132025712302
+18,False,DS08a,6,a6_point,val_endpoint_rmse,48,patience,10.24072377673495
+6,False,DS08a,8,a6_point,val_endpoint_rmse,36,patience,15.998861888483617
+8,False,DS08a,9,a6_point,val_endpoint_rmse,38,patience,23.44108669762792

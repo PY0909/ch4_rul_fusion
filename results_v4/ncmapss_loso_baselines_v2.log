@@ -1,0 +1,16 @@
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS03/a6_point] held=1 epoch=40
+[DS03/a6_point] held=2 epoch=106
+[DS03/a6_point] held=3 epoch=43
+[DS03/a6_point] held=5 epoch=92
+[DS03/a6_point] held=6 epoch=49
+[DS03/a6_point] held=8 epoch=21
+[DS03/a6_point] held=9 epoch=69
+[DS08a/a6_point] held=1 epoch=21
+[DS08a/a6_point] held=2 epoch=35
+[DS08a/a6_point] held=3 epoch=27
+[DS08a/a6_point] held=5 epoch=5
+[DS08a/a6_point] held=6 epoch=18
+[DS08a/a6_point] held=8 epoch=6
+[DS08a/a6_point] held=9 epoch=8

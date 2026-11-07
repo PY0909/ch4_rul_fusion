@@ -1,0 +1,31 @@
+{
+  "phase": "development",
+  "status": "complete_merged",
+  "test_loaded": false,
+  "amendment": "docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md",
+  "max_epochs": 120,
+  "patience": 30,
+  "boundary_margin": 10,
+  "search_units": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8,
+    9
+  ],
+  "corrected_methods": [
+    "a6_point"
+  ],
+  "sources": {
+    "original": {
+      "path": "/Users/ppy/\u7814/ch4_rul_fusion/results_v4/ncmapss_loso_baselines",
+      "development_sha256": "59e6083b49e48d528fe6d2e71073fd325271ce8275038f7e5d51178d650dda46"
+    },
+    "corrected": {
+      "path": "/Users/ppy/\u7814/ch4_rul_fusion/results_v4/ncmapss_loso_baselines_v2",
+      "development_sha256": "f586139b05a7cfc0eebea23a8a01157f3a3a972d534414a68698925d0864c4ee"
+    }
+  }
+}

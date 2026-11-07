@@ -1,0 +1,36 @@
+{
+  "phase": "development",
+  "test_loaded": false,
+  "amendment": "docs/ncmapss-loso-baseline-correction-amendment-2026-11-07.md",
+  "search_units": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8,
+    9
+  ],
+  "calibration_units_excluded": [
+    4,
+    7
+  ],
+  "status": "complete_methods_subset",
+  "methods": [
+    "a6_point"
+  ],
+  "max_epochs": 120,
+  "patience": 30,
+  "boundary_margin": 10,
+  "a6_point_dims": {
+    "d_model": 32,
+    "num_heads": 2,
+    "num_routers": 2
+  },
+  "point_weight_decay": {
+    "a6_point": 0.001,
+    "fc_stgnn": 0.0
+  },
+  "method_specific_selection": true,
+  "common_ranking_metric": "held_out_endpoint_rmse_after_frozen_selection"
+}

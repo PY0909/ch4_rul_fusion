@@ -1,0 +1,17 @@
+candidate_fixed_epochs,dataset,max_best_epoch,mean_held_rmse,method,min_best_epoch,n_boundary_censored,n_folds,n_stopped_by_cap,selection_criterion,selection_status,source
+49,DS03,106,7.117263905287517,a6_point,21,0,7,2,val_endpoint_rmse,development_candidate,a6_point_p0_lock_rerun
+63,DS03,119,10.434918401565207,fc_stgnn,7,2,7,2,val_endpoint_rmse,development_candidate,original_120_30_run
+44,DS03,106,10.67374453716141,hnn,2,0,7,1,val_nll,development_candidate,original_120_30_run
+78,DS03,111,3.589151526689509,edl_nig,9,1,7,2,val_rmse,development_candidate,original_120_30_run
+6,DS03,119,18.17514949990053,lstm_prob,5,1,7,1,val_rmse,development_candidate,original_120_30_run
+47,DS03,118,4.641267792159103,tcn_transformer_mc,27,1,7,2,val_rmse,development_candidate,original_120_30_run
+25,DS03,55,2.7040446961285567,msauq,9,0,7,0,val_rmse,development_candidate,original_120_30_run
+38,DS03,56,18.22569177028021,bcpt,36,0,7,0,val_fused_rmse,development_candidate,original_120_30_run
+18,DS08a,35,14.499134996221313,a6_point,5,0,7,0,val_endpoint_rmse,development_candidate,a6_point_p0_lock_rerun
+34,DS08a,57,14.935083423957048,fc_stgnn,9,0,7,0,val_endpoint_rmse,development_candidate,original_120_30_run
+46,DS08a,98,8.375557158565568,hnn,23,0,7,1,val_nll,development_candidate,original_120_30_run
+31,DS08a,98,6.4183904477714195,edl_nig,8,0,7,1,val_rmse,development_candidate,original_120_30_run
+5,DS08a,8,17.0278638834985,lstm_prob,4,0,7,0,val_rmse,development_candidate,original_120_30_run
+37,DS08a,54,8.172898072591057,tcn_transformer_mc,26,0,7,0,val_rmse,development_candidate,original_120_30_run
+43,DS08a,69,5.722484191655961,msauq,5,0,7,0,val_rmse,development_candidate,original_120_30_run
+38,DS08a,58,16.617561766320794,bcpt,32,0,7,0,val_fused_rmse,development_candidate,original_120_30_run
