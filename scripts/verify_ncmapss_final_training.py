@@ -43,15 +43,16 @@ def verify():
             "checkpoint_hash": m["checkpoint_sha256"] == _sha(run / "best.pt"),
             "calibration_hash": m["calibration_sha256"] == _sha(run / "calibration_predictions.npz"),
             "selection_hash": m["selection_sha256"] == selection_sha,
-            # information only: an existing evaluation directory means this
-            # run was already evaluated; it is not a training-integrity failure
-            "already_evaluated": (run / "evaluation").exists(),
         }
+        # information only: an existing evaluation directory means this run was
+        # already evaluated; it is not a training-integrity failure
+        rows_extra = {"already_evaluated": (run / "evaluation").exists()}
         rows.append({"dataset": dataset, "model": "A6-Quantile (main)",
                      "frozen_epochs": entry["budget_epoch"],
                      "epochs_trained": m["epochs_trained"],
                      "checkpoint_sha256": m["checkpoint_sha256"][:12],
                      "all_checks_pass": all(checks.values()),
+                     **rows_extra,
                      "failed": ";".join(k for k, ok in checks.items() if not ok)})
         for method, spec in entry["methods"].items():
             run = BASELINE_ROOT / dataset / method / "train"
@@ -66,13 +67,13 @@ def verify():
                 "calibration_engines_unused": m["calibration_units"] == CALIBRATION_UNITS,
                 "checkpoint_hash": m["checkpoint_sha256"] == _sha(run / "best.pt"),
                 "selection_hash": m["identity"]["selection_sha256"] == selection_sha,
-                "already_evaluated": (run.parent / "eval").exists(),
             }
             rows.append({"dataset": dataset, "model": method,
                          "frozen_epochs": spec["epochs"],
                          "epochs_trained": m["epochs_trained"],
                          "checkpoint_sha256": m["checkpoint_sha256"][:12],
                          "all_checks_pass": all(checks.values()),
+                         "already_evaluated": (run.parent / "eval").exists(),
                          "failed": ";".join(k for k, ok in checks.items() if not ok)})
     return rows
 
