@@ -225,6 +225,10 @@ def _stage_evaluate(args, out_dir, config, epochs, selection_path):
     manifest, checks = _verify_training(out_dir, config, epochs, selection_path)
     eval_dir = out_dir / "evaluation"
     if eval_dir.exists() and any(eval_dir.iterdir()):
+        if args.skip_evaluated:
+            print(f"[{args.dataset}] evaluation already recorded; skipping "
+                  f"(no new test access)", flush=True)
+            return
         raise FileExistsError("test evaluation already recorded for this run")
     device = _device(args)
     train_units, calibration_units = manifest["train_units"], manifest["calibration_units"]
@@ -355,6 +359,9 @@ def main(argv=None):
         ROOT / "results_v4/ncmapss_loso_final"))
     parser.add_argument("--touch_log", default=str(
         ROOT / "results_v4/chapter4_main_logs/test_touches.log"))
+    parser.add_argument("--skip_evaluated", action="store_true",
+                        help="resume support: report and skip runs already "
+                             "evaluated, without any new test access")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--device", default="auto")
     args = parser.parse_args(argv)

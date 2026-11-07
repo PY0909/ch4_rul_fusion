@@ -404,6 +404,9 @@ def main(argv=None):
                         help="first K folds for a partial smoke; zero runs all seven")
     parser.add_argument("--selection", help="frozen JSON required for final training")
     parser.add_argument("--eval_test", action="store_true")
+    parser.add_argument("--skip_evaluated", action="store_true",
+                        help="resume support: methods with a completed eval are "
+                             "skipped without any new test access")
     parser.add_argument("--touch_log", default=str(
         ROOT / "results_v4/chapter4_main_logs/test_touches.log"))
     parser.add_argument("--device", default="cpu")
@@ -436,6 +439,15 @@ def main(argv=None):
     frozen_epochs = ({(dataset, method): _read_selection(args.selection, dataset, method)
                       for dataset in args.datasets for method in args.methods}
                      if final else {})
+    if args.phase == "final_eval" and args.skip_evaluated:
+        args.methods = [m for m in args.methods if not all(
+            (out / "final" / dataset / m / "eval" / name).is_file()
+            for dataset in args.datasets
+            for name in ("predictions.csv", "metrics.json"))]
+        if not args.methods:
+            print("all requested evaluations already recorded; nothing to do",
+                  flush=True)
+            return
     out = Path(args.output_dir)
     rows = []
     verification = {}
