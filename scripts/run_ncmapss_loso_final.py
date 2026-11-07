@@ -57,7 +57,7 @@ def _sha256(path):
 
 def _registered_calibration_units(dataset):
     path = (ROOT / "results_v4/ncmapss_comparison/cqr" / dataset
-            / "seed_0" / "calibrator.json")
+            / "seed_0" / "cqr_variants_calibrators.json")
     data = json.loads(path.read_text(encoding="utf-8"))
     return [int(u) for u in data["calibration_units"]]
 

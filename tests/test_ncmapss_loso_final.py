@@ -73,3 +73,13 @@ def test_a6_final_refuses_tampering_and_old_criterion(tmp_path):
     (tmp_path / "old").mkdir()
     with pytest.raises(ValueError, match="criterion"):
         main(["--stage", "train", *old])
+
+
+def test_registered_calibration_units_read_from_p0_record(tmp_path, monkeypatch):
+    from scripts import run_ncmapss_loso_final as final
+    record = tmp_path / "results_v4/ncmapss_comparison/cqr/DS03/seed_0"
+    record.mkdir(parents=True)
+    (record / "cqr_variants_calibrators.json").write_text(json.dumps({
+        "calibration_units": [4, 7], "val_units": [3, 5, 6]}))
+    monkeypatch.setattr(final, "ROOT", tmp_path)
+    assert final._registered_calibration_units("DS03") == [4, 7]
