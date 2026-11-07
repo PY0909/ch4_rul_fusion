@@ -181,3 +181,20 @@ def test_development_rows_flag_boundary_censoring(tmp_path):
     manifest = json.loads((out / "manifest.json").read_text())
     assert manifest["status"] == "partial_smoke"
     assert manifest["a6_point_dims"]["d_model"] == 32
+
+
+def test_skip_evaluated_resumes_without_new_test_access(tmp_path):
+    dev = tmp_path / "N-CMAPSS_DS03-012.h5"
+    _write_ncmapss_nine_units(dev)
+    selection = _frozen(tmp_path, ["a6_point"])
+    log = tmp_path / "touches.log"
+    common = ["--data_root", str(tmp_path), "--datasets", "DS03",
+              "--methods", "a6_point", "--dev_path", str(dev), "--test_path", str(dev),
+              "--selection", str(selection), "--output_dir", str(tmp_path / "out"),
+              "--device", "cpu", "--touch_log", str(log)]
+    main(["--phase", "final_train", *common])
+    main(["--phase", "final_eval", *common, "--eval_test"])
+    assert "final_eval" in log.read_text()
+    before = log.read_text()
+    main(["--phase", "final_eval", *common, "--eval_test", "--skip_evaluated"])
+    assert log.read_text() == before            # skip: zero new test access

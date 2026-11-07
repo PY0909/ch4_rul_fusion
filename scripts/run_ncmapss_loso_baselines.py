@@ -440,8 +440,9 @@ def main(argv=None):
                       for dataset in args.datasets for method in args.methods}
                      if final else {})
     if args.phase == "final_eval" and args.skip_evaluated:
+        out_root = Path(args.output_dir)
         args.methods = [m for m in args.methods if not all(
-            (out / "final" / dataset / m / "eval" / name).is_file()
+            (out_root / "final" / dataset / m / "eval" / name).is_file()
             for dataset in args.datasets
             for name in ("predictions.csv", "metrics.json"))]
         if not args.methods:
