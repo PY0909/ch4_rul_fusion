@@ -275,7 +275,29 @@ def _run_one(args, dataset, method, output, partition, epochs, phase, selection=
         manifest = json.loads(manifest_path.read_text())
         if manifest.get("identity") != identity or any(
                 not (output / name).is_file() for name in required):
+            if phase == "final_eval":
+                # Resume across code edits: an existing evaluation produced from
+                # the same verified checkpoint under the same frozen selection is
+                # reusable; only the runner's own source hash may differ. Anything
+                # else (data, config, epochs, checkpoint, selection) is still a
+                # hard mismatch.
+                prior = manifest.get("identity", {})
+                same = (prior.get("evaluated_checkpoint_sha256") ==
+                        identity["evaluated_checkpoint_sha256"] and
+                        prior.get("selection_sha256") == identity["selection_sha256"] and
+                        prior.get("dataset") == identity["dataset"] and
+                        prior.get("method") == identity["method"] and
+                        prior.get("epochs") == identity["epochs"] and
+                        prior.get("dev_size") == identity["dev_size"] and
+                        prior.get("dev_mtime_ns") == identity["dev_mtime_ns"])
+                if same:
+                    print(f"[{dataset}/{method}] evaluation already recorded; "
+                          f"reusing (no new test access)", flush=True)
+                    return manifest["result"]
             raise RuntimeError(f"existing result has different identity: {output}")
+        if phase == "final_eval":
+            print(f"[{dataset}/{method}] evaluation already recorded; "
+                  f"reusing (no new test access)", flush=True)
         return manifest["result"]
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=f".{output.name}.", dir=output.parent) as tmp:
