@@ -1,0 +1,70 @@
+{
+  "identity": {
+    "dataset": "DS08a",
+    "method": "edl_nig",
+    "phase": "final_eval",
+    "epochs": 31,
+    "patience": 30,
+    "batch_size": 32,
+    "history": 16,
+    "mc_samples_override": 0,
+    "dev_path": "/root/autodl-tmp/kst_light_v2/dataset/data_set/N-CMAPSS_DS08a-009.h5",
+    "dev_size": 3236762200,
+    "dev_mtime_ns": 1610529682000000000,
+    "source_hashes": {
+      "scripts/run_ncmapss_loso_baselines.py": "8959c1761d7216c5da7638f6ab4dcf38f8b183821eb4117a40f7a6b2a2a677a0",
+      "rul_fusion/data.py": "bfbd04618f9dfe2c34a48fa70ee0ce29b1713ed9baa283cbbe085d36d6b62273",
+      "rul_fusion/model.py": "f1cfa86186c4623b3f844c102905e45cac74090925f1b04b11554af6b9cfddc4",
+      "rul_fusion/probabilistic.py": "c68f8cbb1b03583a58d7f2aa9ef3292b9fcdba83918f9eef2837cba6155c8a44",
+      "rul_fusion/probabilistic_runner.py": "3d1e1119aa42cbaa53e62da99d55fc062aa35b726a1b9ef615be8b0e26c8cf5c",
+      "scripts/run_ncmapss_probabilistic.py": "b659c3fbaa52225ec765a08531962751cfea8a4587b698d011533b12e73b0259"
+    },
+    "selection_sha256": "034f126a6daa4057fad7056e38f5e2faca908de150d65bc2b6261e0b582533b8",
+    "evaluated_checkpoint_sha256": "f43aac179c793f1c7b4d90d4597a4336001ced820acd07be1bc016e1c2307fc2"
+  },
+  "result": {
+    "MAE": 10.608022650082907,
+    "RMSE": 16.01914238974499,
+    "NLL": 3.82353424326025,
+    "CRPS": 7.7943097824249366,
+    "PICP": 0.7916666666666666,
+    "MPIW": 33.29022467082658,
+    "coverage_gap": 0.008333333333333415,
+    "IntervalScore": 53.548168199517384,
+    "dataset": "DS08a",
+    "method": "edl_nig",
+    "seed": 0,
+    "device": "cuda",
+    "best_epochs": [
+      31
+    ],
+    "ensemble_members": 1,
+    "selection_criterion": "fixed_epoch",
+    "train_seconds": 0.003913000226020813,
+    "inference_seconds": 0.01595451682806015,
+    "mc_samples": 0,
+    "parameter_count": 51972
+  },
+  "phase": "final_eval",
+  "train_units": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8,
+    9
+  ],
+  "val_units": [],
+  "calibration_units": [
+    4,
+    7
+  ],
+  "calibration_units_excluded": [
+    4,
+    7
+  ],
+  "test_loaded": true,
+  "test_evaluated": true,
+  "test_result_role": "descriptive_recheck"
+}

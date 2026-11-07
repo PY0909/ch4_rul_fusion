@@ -1,0 +1,23 @@
+{
+  "MAE": 16.894105275472004,
+  "RMSE": 19.33571408898148,
+  "NLL": 4.470829358622612,
+  "CRPS": 11.464541804172582,
+  "PICP": 0.9583333333333334,
+  "MPIW": 69.12980723960477,
+  "coverage_gap": 0.15833333333333333,
+  "IntervalScore": 69.44468278070336,
+  "dataset": "DS03",
+  "method": "lstm_prob",
+  "seed": 0,
+  "device": "cpu",
+  "best_epochs": [
+    6
+  ],
+  "ensemble_members": 1,
+  "selection_criterion": "fixed_epoch",
+  "train_seconds": 3.57863387465477,
+  "inference_seconds": 11.702282816171646,
+  "mc_samples": 0,
+  "parameter_count": 1874880
+}

@@ -1,0 +1,6 @@
+{
+  "best_epoch": 34,
+  "selection_criterion": "fixed_epoch",
+  "MAE": 15.102788468201956,
+  "RMSE": 19.27233631291151
+}

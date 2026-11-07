@@ -18,3 +18,11 @@
 [2026-11-05T09:40:42] ncmapss_probabilistic: official test evaluated for DS03 bcpt seed 0
 [2026-11-05T11:44:52] ncmapss_cqr_expanded_cuts (Arm B, pre-registered): official test endpoints evaluated once for DS03 seed 0 under grids G9/G17 on the frozen checkpoint; both grids and Arm A reported side by side, no selection
 [2026-11-05T11:51:05] ncmapss_cqr_expanded_cuts (Arm B, pre-registered): official test endpoints evaluated once for DS08a seed 0 under grids G9/G17 on the frozen checkpoint; both grids and Arm A reported side by side, no selection
+[2026-11-04T12:22:27] ncmapss_cqr: official test evaluated once for DS03 seed 0 (global + window-weighted CQR variants, registered split, frozen checkpoint)
+[2026-11-07T21:19:30] ncmapss_loso_final A6-Quantile: test access started for DS03 seed 0 after verified training stage (checkpoint fcdd2cdd3297)
+[2026-11-07T21:33:38] ncmapss_loso_final A6-Quantile: DS03 evaluation attempt aborted BEFORE test load - calibration reproduction check failed at 1e-4 tolerance (CUDA-trained checkpoint re-inferred on CPU); no test data was accessed; retry follows at registered 0.01-cycle tolerance
+[2026-11-07T21:35:18] ncmapss_loso_final A6-Quantile: test access started for DS03 seed 0 after verified training stage (checkpoint fcdd2cdd3297, calibration reproduced within 0.0015 cycles)
+[2026-11-07T21:37:39] ncmapss_loso_final A6-Quantile: official test evaluated once for DS03 (descriptive recheck; P0/Arm B reported side by side)
+[2026-11-07T21:38:57] ncmapss_loso_final A6-Quantile: test access started for DS08a seed 0 after verified training stage (checkpoint 532d84bdf01e, calibration reproduced within 0.0019 cycles)
+[2026-11-07T22:11:03] ncmapss_loso_baselines final_eval: test access started for DS03,DS08a x a6_point,fc_stgnn,hnn,edl_nig,lstm_prob,tcn_transformer_mc,msauq,bcpt after verified fixed-epoch training (descriptive recheck)
+[2026-11-07T22:20:03] ncmapss_loso_baselines final_eval: test access started for DS03,DS08a x a6_point,fc_stgnn,hnn,edl_nig,lstm_prob,tcn_transformer_mc,msauq,bcpt after verified fixed-epoch training (descriptive recheck)

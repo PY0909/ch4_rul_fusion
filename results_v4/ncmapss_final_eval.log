@@ -1,0 +1,252 @@
+=== pre-test verification 2026-11-07 21:33:38 ===
+DS03   A6-Quantile (main)    27/27  ckpt fcdd2cdd3297 PASS
+DS03   a6_point              49/49  ckpt fddce565f214 PASS
+DS03   fc_stgnn              63/63  ckpt dcf5a25cab50 PASS
+DS03   hnn                   44/44  ckpt de844548cc91 PASS
+DS03   edl_nig               78/78  ckpt 691ca0eec109 PASS
+DS03   lstm_prob              6/6   ckpt d521f7091d11 PASS
+DS03   tcn_transformer_mc    47/47  ckpt 4bda35510139 PASS
+DS03   msauq                 25/25  ckpt 3fbfd7ab0763 PASS
+DS03   bcpt                  38/38  ckpt a2837fa68853 PASS
+DS08a  A6-Quantile (main)    22/22  ckpt 532d84bdf01e PASS
+DS08a  a6_point              18/18  ckpt 2506914ae5fc PASS
+DS08a  fc_stgnn              34/34  ckpt c6be508dbab4 PASS
+DS08a  hnn                   46/46  ckpt 0ab75018e4e6 PASS
+DS08a  edl_nig               31/31  ckpt f43aac179c79 PASS
+DS08a  lstm_prob              5/5   ckpt 308f5854f273 PASS
+DS08a  tcn_transformer_mc    37/37  ckpt 2813ea3c2b2c PASS
+DS08a  msauq                 43/43  ckpt 373eff081121 PASS
+DS08a  bcpt                  38/38  ckpt 54ee054eddf6 PASS
+18/18 training runs verified -> /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_verification.csv
+=== A6-Quantile evaluate DS03 (cpu) 2026-11-07 21:33:38 ===
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS03] q50 point: {'MAE': 16.482578953107197, 'RMSE': 20.014888432957996}
+loso_tuned_G9      global_block_max_cqr   thr=  28.768 PICP=1.000 MPIW=  89.349 IS=  89.349
+loso_tuned_G9      window_weighted        thr=  17.754 PICP=0.875 MPIW=  67.321 IS=  74.082
+loso_tuned_G9      block_max_weighted     thr=  28.768 PICP=1.000 MPIW=  89.349 IS=  89.349
+A_P0_4cuts         global_block_max_cqr   thr=  16.627 PICP=0.917 MPIW=  69.084 IS=  82.454
+A_P0_4cuts         window_weighted        thr=  16.627 PICP=0.917 MPIW=  69.084 IS=  82.454
+A_P0_4cuts         block_max_weighted     thr=  16.627 PICP=0.917 MPIW=  69.084 IS=  82.454
+B_G9_frozen_ckpt   window_weighted        thr=  10.994 PICP=0.917 MPIW=  57.816 IS=  75.882
+=== A6-Quantile evaluate DS08a (cpu) 2026-11-07 21:37:41 ===
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS08a] q50 point: {'MAE': 14.799549261728922, 'RMSE': 17.17782262423043}
+loso_tuned_G9      global_block_max_cqr   thr=  24.251 PICP=1.000 MPIW=  82.801 IS=  82.801
+loso_tuned_G9      window_weighted        thr=  12.201 PICP=0.958 MPIW=  58.700 IS=  61.193
+loso_tuned_G9      block_max_weighted     thr=  24.251 PICP=1.000 MPIW=  82.801 IS=  82.801
+A_P0_4cuts         global_block_max_cqr   thr=  16.376 PICP=0.917 MPIW=  61.063 IS=  64.029
+A_P0_4cuts         window_weighted        thr=  16.376 PICP=0.917 MPIW=  61.063 IS=  64.029
+A_P0_4cuts         block_max_weighted     thr=  16.376 PICP=0.917 MPIW=  61.063 IS=  64.029
+B_G9_frozen_ckpt   window_weighted        thr=  20.411 PICP=0.958 MPIW=  69.133 IS=  69.992
+=== baselines final_eval (cpu) 2026-11-07 21:40:54 ===
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS03/a6_point] fixed=49 RMSE=14.16355534011776
+[DS03/fc_stgnn] fixed=63 RMSE=16.920327367490593
+MAE: 9.71 RMSE: 12.18 NLL: 4.9527 CRPS: 7.5511 PICP: 0.3750 MPIW: 15.1971
+[DS03/hnn] fixed=44 RMSE=12.179364408391521
+MAE: 4.00 RMSE: 5.13 NLL: 2.9474 CRPS: 2.8112 PICP: 0.9583 MPIW: 20.6905
+[DS03/edl_nig] fixed=78 RMSE=5.129022855446638
+MAE: 16.89 RMSE: 19.34 NLL: 4.4708 CRPS: 11.4645 PICP: 0.9583 MPIW: 69.1298
+[DS03/lstm_prob] fixed=6 RMSE=19.33571408898148
+=== pre-test verification 2026-11-07 21:51:00 ===
+DS03   A6-Quantile (main)    27/27  ckpt fcdd2cdd3297 FAIL no_evaluation_yet
+DS03   a6_point              49/49  ckpt fddce565f214 FAIL no_evaluation_yet
+DS03   fc_stgnn              63/63  ckpt dcf5a25cab50 FAIL no_evaluation_yet
+DS03   hnn                   44/44  ckpt de844548cc91 FAIL no_evaluation_yet
+DS03   edl_nig               78/78  ckpt 691ca0eec109 FAIL no_evaluation_yet
+DS03   lstm_prob              6/6   ckpt d521f7091d11 FAIL no_evaluation_yet
+DS03   tcn_transformer_mc    47/47  ckpt 4bda35510139 PASS
+DS03   msauq                 25/25  ckpt 3fbfd7ab0763 PASS
+DS03   bcpt                  38/38  ckpt a2837fa68853 PASS
+DS08a  A6-Quantile (main)    22/22  ckpt 532d84bdf01e FAIL no_evaluation_yet
+DS08a  a6_point              18/18  ckpt 2506914ae5fc PASS
+DS08a  fc_stgnn              34/34  ckpt c6be508dbab4 PASS
+DS08a  hnn                   46/46  ckpt 0ab75018e4e6 PASS
+DS08a  edl_nig               31/31  ckpt f43aac179c79 PASS
+DS08a  lstm_prob              5/5   ckpt 308f5854f273 PASS
+DS08a  tcn_transformer_mc    37/37  ckpt 2813ea3c2b2c PASS
+DS08a  msauq                 43/43  ckpt 373eff081121 PASS
+DS08a  bcpt                  38/38  ckpt 54ee054eddf6 PASS
+11/18 training runs verified -> /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_verification.csv
+=== pre-test verification 2026-11-07 21:55:30 ===
+DS03   A6-Quantile (main)    27/27  ckpt fcdd2cdd3297 PASS
+DS03   a6_point              49/49  ckpt fddce565f214 PASS
+DS03   fc_stgnn              63/63  ckpt dcf5a25cab50 PASS
+DS03   hnn                   44/44  ckpt de844548cc91 PASS
+DS03   edl_nig               78/78  ckpt 691ca0eec109 PASS
+DS03   lstm_prob              6/6   ckpt d521f7091d11 PASS
+DS03   tcn_transformer_mc    47/47  ckpt 4bda35510139 FAIL already_evaluated
+DS03   msauq                 25/25  ckpt 3fbfd7ab0763 FAIL already_evaluated
+DS03   bcpt                  38/38  ckpt a2837fa68853 FAIL already_evaluated
+DS08a  A6-Quantile (main)    22/22  ckpt 532d84bdf01e PASS
+DS08a  a6_point              18/18  ckpt 2506914ae5fc FAIL already_evaluated
+DS08a  fc_stgnn              34/34  ckpt c6be508dbab4 FAIL already_evaluated
+DS08a  hnn                   46/46  ckpt 0ab75018e4e6 FAIL already_evaluated
+DS08a  edl_nig               31/31  ckpt f43aac179c79 FAIL already_evaluated
+DS08a  lstm_prob              5/5   ckpt 308f5854f273 FAIL already_evaluated
+DS08a  tcn_transformer_mc    37/37  ckpt 2813ea3c2b2c FAIL already_evaluated
+DS08a  msauq                 43/43  ckpt 373eff081121 FAIL already_evaluated
+DS08a  bcpt                  38/38  ckpt 54ee054eddf6 FAIL already_evaluated
+7/18 training runs verified -> /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_verification.csv
+=== pre-test verification 2026-11-07 21:59:41 ===
+DS03   A6-Quantile (main)    27/27  ckpt fcdd2cdd3297 PASS
+DS03   a6_point              49/49  ckpt fddce565f214 PASS
+DS03   fc_stgnn              63/63  ckpt dcf5a25cab50 PASS
+DS03   hnn                   44/44  ckpt de844548cc91 PASS
+DS03   edl_nig               78/78  ckpt 691ca0eec109 PASS
+DS03   lstm_prob              6/6   ckpt d521f7091d11 PASS
+DS03   tcn_transformer_mc    47/47  ckpt 4bda35510139 PASS
+DS03   msauq                 25/25  ckpt 3fbfd7ab0763 PASS
+DS03   bcpt                  38/38  ckpt a2837fa68853 PASS
+DS08a  A6-Quantile (main)    22/22  ckpt 532d84bdf01e PASS
+DS08a  a6_point              18/18  ckpt 2506914ae5fc PASS
+DS08a  fc_stgnn              34/34  ckpt c6be508dbab4 PASS
+DS08a  hnn                   46/46  ckpt 0ab75018e4e6 PASS
+DS08a  edl_nig               31/31  ckpt f43aac179c79 PASS
+DS08a  lstm_prob              5/5   ckpt 308f5854f273 PASS
+DS08a  tcn_transformer_mc    37/37  ckpt 2813ea3c2b2c PASS
+DS08a  msauq                 43/43  ckpt 373eff081121 PASS
+DS08a  bcpt                  38/38  ckpt 54ee054eddf6 PASS
+18/18 training runs verified -> /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_verification.csv
+=== A6-Quantile evaluate DS03 (cuda) 2026-11-07 21:59:41 ===
+Traceback (most recent call last):
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_final.py", line 377, in <module>
+    main()
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_final.py", line 373, in main
+    _stage_evaluate(args, out_dir, config, epochs, selection_path)
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_final.py", line 228, in _stage_evaluate
+    raise FileExistsError("test evaluation already recorded for this run")
+FileExistsError: test evaluation already recorded for this run
+=== pre-test verification 2026-11-07 22:05:08 ===
+DS03   A6-Quantile (main)    27/27  ckpt fcdd2cdd3297 PASS
+DS03   a6_point              49/49  ckpt fddce565f214 PASS
+DS03   fc_stgnn              63/63  ckpt dcf5a25cab50 PASS
+DS03   hnn                   44/44  ckpt de844548cc91 PASS
+DS03   edl_nig               78/78  ckpt 691ca0eec109 PASS
+DS03   lstm_prob              6/6   ckpt d521f7091d11 PASS
+DS03   tcn_transformer_mc    47/47  ckpt 4bda35510139 PASS
+DS03   msauq                 25/25  ckpt 3fbfd7ab0763 PASS
+DS03   bcpt                  38/38  ckpt a2837fa68853 PASS
+DS08a  A6-Quantile (main)    22/22  ckpt 532d84bdf01e PASS
+DS08a  a6_point              18/18  ckpt 2506914ae5fc PASS
+DS08a  fc_stgnn              34/34  ckpt c6be508dbab4 PASS
+DS08a  hnn                   46/46  ckpt 0ab75018e4e6 PASS
+DS08a  edl_nig               31/31  ckpt f43aac179c79 PASS
+DS08a  lstm_prob              5/5   ckpt 308f5854f273 PASS
+DS08a  tcn_transformer_mc    37/37  ckpt 2813ea3c2b2c PASS
+DS08a  msauq                 43/43  ckpt 373eff081121 PASS
+DS08a  bcpt                  38/38  ckpt 54ee054eddf6 PASS
+18/18 training runs verified -> /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_verification.csv
+=== A6-Quantile evaluate DS03 (cuda) 2026-11-07 22:05:08 ===
+[DS03] evaluation already recorded; skipping (no new test access)
+=== A6-Quantile evaluate DS08a (cuda) 2026-11-07 22:05:11 ===
+[DS08a] evaluation already recorded; skipping (no new test access)
+=== baselines final_eval (cuda) 2026-11-07 22:05:14 ===
+Traceback (most recent call last):
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_baselines.py", line 568, in <module>
+    main()
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_baselines.py", line 443, in main
+    args.methods = [m for m in args.methods if not all(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_baselines.py", line 443, in <listcomp>
+    args.methods = [m for m in args.methods if not all(
+                                                   ^^^^
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_baselines.py", line 444, in <genexpr>
+    (out / "final" / dataset / m / "eval" / name).is_file()
+     ^^^
+NameError: cannot access free variable 'out' where it is not associated with a value in enclosing scope. Did you mean: 'oct'?
+=== pre-test verification 2026-11-07 22:10:54 ===
+DS03   A6-Quantile (main)    27/27  ckpt fcdd2cdd3297 PASS
+DS03   a6_point              49/49  ckpt fddce565f214 PASS
+DS03   fc_stgnn              63/63  ckpt dcf5a25cab50 PASS
+DS03   hnn                   44/44  ckpt de844548cc91 PASS
+DS03   edl_nig               78/78  ckpt 691ca0eec109 PASS
+DS03   lstm_prob              6/6   ckpt d521f7091d11 PASS
+DS03   tcn_transformer_mc    47/47  ckpt 4bda35510139 PASS
+DS03   msauq                 25/25  ckpt 3fbfd7ab0763 PASS
+DS03   bcpt                  38/38  ckpt a2837fa68853 PASS
+DS08a  A6-Quantile (main)    22/22  ckpt 532d84bdf01e PASS
+DS08a  a6_point              18/18  ckpt 2506914ae5fc PASS
+DS08a  fc_stgnn              34/34  ckpt c6be508dbab4 PASS
+DS08a  hnn                   46/46  ckpt 0ab75018e4e6 PASS
+DS08a  edl_nig               31/31  ckpt f43aac179c79 PASS
+DS08a  lstm_prob              5/5   ckpt 308f5854f273 PASS
+DS08a  tcn_transformer_mc    37/37  ckpt 2813ea3c2b2c PASS
+DS08a  msauq                 43/43  ckpt 373eff081121 PASS
+DS08a  bcpt                  38/38  ckpt 54ee054eddf6 PASS
+18/18 training runs verified -> /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_verification.csv
+=== A6-Quantile evaluate DS03 (cuda) 2026-11-07 22:10:54 ===
+[DS03] evaluation already recorded; skipping (no new test access)
+=== A6-Quantile evaluate DS08a (cuda) 2026-11-07 22:10:57 ===
+[DS08a] evaluation already recorded; skipping (no new test access)
+=== baselines final_eval (cuda) 2026-11-07 22:11:00 ===
+Traceback (most recent call last):
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_baselines.py", line 569, in <module>
+    main()
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_baselines.py", line 512, in main
+    result = _run_one(args, dataset, method,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/autodl-tmp/ch4_rul_fusion/scripts/run_ncmapss_loso_baselines.py", line 278, in _run_one
+    raise RuntimeError(f"existing result has different identity: {output}")
+RuntimeError: existing result has different identity: /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_baselines/final/DS03/a6_point/eval
+=== pre-test verification 2026-11-07 22:19:54 ===
+DS03   A6-Quantile (main)    27/27  ckpt fcdd2cdd3297 PASS
+DS03   a6_point              49/49  ckpt fddce565f214 PASS
+DS03   fc_stgnn              63/63  ckpt dcf5a25cab50 PASS
+DS03   hnn                   44/44  ckpt de844548cc91 PASS
+DS03   edl_nig               78/78  ckpt 691ca0eec109 PASS
+DS03   lstm_prob              6/6   ckpt d521f7091d11 PASS
+DS03   tcn_transformer_mc    47/47  ckpt 4bda35510139 PASS
+DS03   msauq                 25/25  ckpt 3fbfd7ab0763 PASS
+DS03   bcpt                  38/38  ckpt a2837fa68853 PASS
+DS08a  A6-Quantile (main)    22/22  ckpt 532d84bdf01e PASS
+DS08a  a6_point              18/18  ckpt 2506914ae5fc PASS
+DS08a  fc_stgnn              34/34  ckpt c6be508dbab4 PASS
+DS08a  hnn                   46/46  ckpt 0ab75018e4e6 PASS
+DS08a  edl_nig               31/31  ckpt f43aac179c79 PASS
+DS08a  lstm_prob              5/5   ckpt 308f5854f273 PASS
+DS08a  tcn_transformer_mc    37/37  ckpt 2813ea3c2b2c PASS
+DS08a  msauq                 43/43  ckpt 373eff081121 PASS
+DS08a  bcpt                  38/38  ckpt 54ee054eddf6 PASS
+18/18 training runs verified -> /root/autodl-tmp/ch4_rul_fusion/results_v4/ncmapss_loso_final_verification.csv
+=== A6-Quantile evaluate DS03 (cuda) 2026-11-07 22:19:54 ===
+[DS03] evaluation already recorded; skipping (no new test access)
+=== A6-Quantile evaluate DS08a (cuda) 2026-11-07 22:19:57 ===
+[DS08a] evaluation already recorded; skipping (no new test access)
+=== baselines final_eval (cuda) 2026-11-07 22:20:00 ===
+[DS03/a6_point] evaluation already recorded; reusing (no new test access)
+[DS03/a6_point] fixed=49 RMSE=14.16355534011776
+[DS03/fc_stgnn] evaluation already recorded; reusing (no new test access)
+[DS03/fc_stgnn] fixed=63 RMSE=16.920327367490593
+[DS03/hnn] evaluation already recorded; reusing (no new test access)
+[DS03/hnn] fixed=44 RMSE=12.179364408391521
+[DS03/edl_nig] evaluation already recorded; reusing (no new test access)
+[DS03/edl_nig] fixed=78 RMSE=5.129022855446638
+[DS03/lstm_prob] evaluation already recorded; reusing (no new test access)
+[DS03/lstm_prob] fixed=6 RMSE=19.33571408898148
+MAE: 6.34 RMSE: 9.09 NLL: 4.3968 CRPS: 4.9238 PICP: 0.5000 MPIW: 12.0066
+[DS03/tcn_transformer_mc] fixed=47 RMSE=9.092239768391906
+MAE: 6.37 RMSE: 9.36 NLL: 32.9677 CRPS: 5.8388 PICP: 0.2917 MPIW: 3.6852
+[DS03/msauq] fixed=25 RMSE=9.36206837457445
+MAE: 24.12 RMSE: 30.43 NLL: 6.8431 CRPS: 19.6846 PICP: 0.4167 MPIW: 29.9266
+[DS03/bcpt] fixed=38 RMSE=30.432373488197893
+/root/miniconda3/envs/kaf_profiti/lib/python3.11/site-packages/torch/nn/modules/conv.py:370: UserWarning: Using padding='same' with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:1036.)
+  return F.conv1d(
+[DS08a/a6_point] fixed=18 RMSE=16.360724608972227
+[DS08a/fc_stgnn] fixed=34 RMSE=19.27233631291151
+MAE: 11.30 RMSE: 17.91 NLL: 3.9085 CRPS: 8.3285 PICP: 0.7083 MPIW: 27.8377
+[DS08a/hnn] fixed=46 RMSE=17.907960780597563
+MAE: 10.61 RMSE: 16.02 NLL: 3.8235 CRPS: 7.7943 PICP: 0.7917 MPIW: 33.2902
+[DS08a/edl_nig] fixed=31 RMSE=16.01914238974499
+MAE: 14.11 RMSE: 15.82 NLL: 4.3365 CRPS: 9.5982 PICP: 1.0000 MPIW: 64.9410
+[DS08a/lstm_prob] fixed=5 RMSE=15.815256890123855
+MAE: 11.58 RMSE: 17.66 NLL: 6.4383 CRPS: 9.7614 PICP: 0.5000 MPIW: 13.7594
+[DS08a/tcn_transformer_mc] fixed=37 RMSE=17.657595167614428
+MAE: 9.52 RMSE: 13.25 NLL: 24.3153 CRPS: 8.6800 PICP: 0.0833 MPIW: 4.0920
+[DS08a/msauq] fixed=43 RMSE=13.245024003970329
+MAE: 19.22 RMSE: 24.95 NLL: 6.1741 CRPS: 15.7633 PICP: 0.4167 MPIW: 26.2916
+[DS08a/bcpt] fixed=38 RMSE=24.954821128890988
+=== evaluation done 2026-11-07 22:22:21 ===

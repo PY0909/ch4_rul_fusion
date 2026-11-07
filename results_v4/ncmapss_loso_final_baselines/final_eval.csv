@@ -1,0 +1,17 @@
+IntervalScore,MAE,MPIW,PICP,RMSE,dataset,epochs,method,verification
+,9.532160475850105,,,14.16355534011776,DS03,49,a6_point,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+,12.292525013287863,,,16.920327367490593,DS03,63,fc_stgnn,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+56.430327779338306,9.70860424141089,15.197112722491077,0.375,12.179364408391521,DS03,44,hnn,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+21.078879740963533,4.00290201107661,20.690498746322007,0.9583333333333334,5.129022855446638,DS03,78,edl_nig,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+69.44468278070336,16.894105275472004,69.12980723960477,0.9583333333333334,19.33571408898148,DS03,6,lstm_prob,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+37.3678482055664,6.341563226779303,12.006580402950446,0.5,9.092239768391906,DS03,47,tcn_transformer_mc,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+53.7196509201531,6.365962866892417,3.685150119472933,0.2916666666666667,9.36206837457445,DS03,25,msauq,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+157.70577828089395,24.121140340964,29.926576614379883,0.4166666666666667,30.432373488197893,DS03,38,bcpt,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+,14.230822642644247,,,16.360724608972227,DS08a,18,a6_point,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+,15.102788468201956,,,19.27233631291151,DS08a,34,fc_stgnn,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+57.54810664138597,11.30108231306076,27.837689815088307,0.7083333333333334,17.907960780597563,DS08a,46,hnn,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+53.548168199517384,10.608022650082907,33.29022467082658,0.7916666666666666,16.01914238974499,DS08a,31,edl_nig,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+64.94100867685017,14.11141300201416,64.94100867685017,1.0,15.815256890123855,DS08a,5,lstm_prob,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+82.64480724930763,11.576080705391036,13.75942737857501,0.5,17.657595167614428,DS08a,37,tcn_transformer_mc,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+78.94317290378677,9.517734910150368,4.092010514680598,0.08333333333333333,13.245024003970329,DS08a,43,msauq,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded
+125.63126262029012,19.219154953956604,26.291641235351562,0.4166666666666667,24.954821128890988,DS08a,38,bcpt,checkpoint_hash;frozen_epochs;no_validation_set;phase;selection_unchanged;seven_search_engines;test_not_loaded

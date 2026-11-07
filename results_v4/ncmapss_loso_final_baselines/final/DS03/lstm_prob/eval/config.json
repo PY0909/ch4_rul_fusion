@@ -1,0 +1,357 @@
+{
+  "model": "lstm_prob",
+  "seed": 0,
+  "epochs": 6,
+  "batch_size": 32,
+  "lr": 0.001,
+  "weight_decay": 0.001,
+  "patience": 30,
+  "fixed_epochs": true,
+  "dropout": 0.03,
+  "selection_criterion": "fixed_epoch",
+  "ensemble_members": 1,
+  "evidence_weight": 0.01,
+  "edl_hidden_dim": 128,
+  "mc_samples": 0,
+  "bcpt_gamma": 0.2,
+  "bcpt_lam": 0.1,
+  "edl_sensor_indices": null,
+  "edl_sensor_ids_original": null,
+  "interval_alpha": 0.2,
+  "data": {
+    "dataset": "DS03",
+    "dev_units": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "train_units": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      8,
+      9
+    ],
+    "val_units": [],
+    "calibration_units": [
+      4,
+      7
+    ],
+    "test_units": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "history": 16,
+    "include_virtual": false,
+    "uses_T": false,
+    "aggregation": "unit-cycle mean; T is degradation metadata and is excluded",
+    "split_seed": 0,
+    "scaler_mode": "global",
+    "calibration_ratio": null,
+    "registered_split": false,
+    "min_calibration_units": 1,
+    "unit_override": {
+      "train": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        8,
+        9
+      ],
+      "val": [],
+      "calibration": [
+        4,
+        7
+      ]
+    },
+    "validation_protocol": "fixed_cuts",
+    "calibration_fracs": null,
+    "val_endpoint": [],
+    "calibration_endpoint": [
+      {
+        "unit": 4,
+        "frac": 0.25,
+        "cut": 15,
+        "length": 60,
+        "label_raw": 44.0
+      },
+      {
+        "unit": 4,
+        "frac": 0.5,
+        "cut": 30,
+        "length": 60,
+        "label_raw": 29.0
+      },
+      {
+        "unit": 4,
+        "frac": 0.75,
+        "cut": 44,
+        "length": 60,
+        "label_raw": 15.0
+      },
+      {
+        "unit": 4,
+        "frac": 0.9,
+        "cut": 53,
+        "length": 60,
+        "label_raw": 6.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.25,
+        "cut": 20,
+        "length": 80,
+        "label_raw": 59.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.5,
+        "cut": 40,
+        "length": 80,
+        "label_raw": 39.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.75,
+        "cut": 59,
+        "length": 80,
+        "label_raw": 20.0
+      },
+      {
+        "unit": 7,
+        "frac": 0.9,
+        "cut": 71,
+        "length": 80,
+        "label_raw": 8.0
+      }
+    ],
+    "val_endpoint_protocol": "fixed cuts at life fractions {0.25, 0.5, 0.75, 0.9} per validation unit, endpoint windows, raw remaining flight RUL labels",
+    "test_endpoint_protocol": "test trajectories in the public release run to failure (final Y=0), so the frozen evaluation uses the same fixed cuts {0.25, 0.5, 0.75, 0.9} per test unit; labels are the file's Y at each cut",
+    "test_endpoint": [
+      {
+        "unit": 10,
+        "frac": 0.25,
+        "cut": 16,
+        "length": 66,
+        "label_raw": 49.0
+      },
+      {
+        "unit": 10,
+        "frac": 0.5,
+        "cut": 32,
+        "length": 66,
+        "label_raw": 33.0
+      },
+      {
+        "unit": 10,
+        "frac": 0.75,
+        "cut": 49,
+        "length": 66,
+        "label_raw": 16.0
+      },
+      {
+        "unit": 10,
+        "frac": 0.9,
+        "cut": 58,
+        "length": 66,
+        "label_raw": 7.0
+      },
+      {
+        "unit": 11,
+        "frac": 0.25,
+        "cut": 14,
+        "length": 59,
+        "label_raw": 44.0
+      },
+      {
+        "unit": 11,
+        "frac": 0.5,
+        "cut": 29,
+        "length": 59,
+        "label_raw": 29.0
+      },
+      {
+        "unit": 11,
+        "frac": 0.75,
+        "cut": 44,
+        "length": 59,
+        "label_raw": 14.0
+      },
+      {
+        "unit": 11,
+        "frac": 0.9,
+        "cut": 52,
+        "length": 59,
+        "label_raw": 6.0
+      },
+      {
+        "unit": 12,
+        "frac": 0.25,
+        "cut": 23,
+        "length": 93,
+        "label_raw": 69.0
+      },
+      {
+        "unit": 12,
+        "frac": 0.5,
+        "cut": 46,
+        "length": 93,
+        "label_raw": 46.0
+      },
+      {
+        "unit": 12,
+        "frac": 0.75,
+        "cut": 69,
+        "length": 93,
+        "label_raw": 23.0
+      },
+      {
+        "unit": 12,
+        "frac": 0.9,
+        "cut": 83,
+        "length": 93,
+        "label_raw": 9.0
+      },
+      {
+        "unit": 13,
+        "frac": 0.25,
+        "cut": 19,
+        "length": 77,
+        "label_raw": 57.0
+      },
+      {
+        "unit": 13,
+        "frac": 0.5,
+        "cut": 38,
+        "length": 77,
+        "label_raw": 38.0
+      },
+      {
+        "unit": 13,
+        "frac": 0.75,
+        "cut": 57,
+        "length": 77,
+        "label_raw": 19.0
+      },
+      {
+        "unit": 13,
+        "frac": 0.9,
+        "cut": 68,
+        "length": 77,
+        "label_raw": 8.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.25,
+        "cut": 19,
+        "length": 76,
+        "label_raw": 56.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.5,
+        "cut": 38,
+        "length": 76,
+        "label_raw": 37.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.75,
+        "cut": 56,
+        "length": 76,
+        "label_raw": 19.0
+      },
+      {
+        "unit": 14,
+        "frac": 0.9,
+        "cut": 68,
+        "length": 76,
+        "label_raw": 7.0
+      },
+      {
+        "unit": 15,
+        "frac": 0.25,
+        "cut": 16,
+        "length": 67,
+        "label_raw": 50.0
+      },
+      {
+        "unit": 15,
+        "frac": 0.5,
+        "cut": 33,
+        "length": 67,
+        "label_raw": 33.0
+      },
+      {
+        "unit": 15,
+        "frac": 0.75,
+        "cut": 50,
+        "length": 67,
+        "label_raw": 16.0
+      },
+      {
+        "unit": 15,
+        "frac": 0.9,
+        "cut": 59,
+        "length": 67,
+        "label_raw": 7.0
+      }
+    ]
+  },
+  "scaler": {
+    "mean": [
+      574.5712280273438,
+      1335.958984375,
+      1640.06689453125,
+      1141.0394287109375,
+      13.920600891113281,
+      10.959878921508789,
+      14.132588386535645,
+      17.046649932861328,
+      249.7774658203125,
+      254.28318786621094,
+      11.014909744262695,
+      1932.6427001953125,
+      8253.630859375,
+      2.675159454345703,
+      12876.369140625,
+      0.5038570165634155,
+      56.905757904052734,
+      497.3389892578125
+    ],
+    "scale": [
+      8.817935943603516,
+      13.292308807373047,
+      18.47376251220703,
+      20.06332778930664,
+      1.6110693216323853,
+      1.407487154006958,
+      1.635604739189148,
+      1.8101489543914795,
+      22.377763748168945,
+      22.87565803527832,
+      1.5229908227920532,
+      45.89767074584961,
+      42.722564697265625,
+      0.23411819338798523,
+      4629.3134765625,
+      0.06309575587511063,
+      6.214956760406494,
+      11.763946533203125
+    ]
+  }
+}

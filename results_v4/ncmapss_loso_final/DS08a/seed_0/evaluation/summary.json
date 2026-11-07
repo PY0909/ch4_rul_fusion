@@ -1,0 +1,128 @@
+{
+  "freeze_record": "docs/ncmapss-loso-selection-freeze-2026-11-07.md",
+  "result_role": "descriptive_recheck",
+  "verification": {
+    "stage": true,
+    "test_not_loaded_in_training": true,
+    "selection_unchanged": true,
+    "config_matches_frozen": true,
+    "epochs_match_frozen": true,
+    "checkpoint_hash": true,
+    "calibration_hash": true,
+    "calibration_reproduced": true
+  },
+  "config": {
+    "activation": "legacy",
+    "lr": 0.001,
+    "dropout": 0.1,
+    "weight_decay": 0.001
+  },
+  "epochs": 22,
+  "evaluation_device": "cpu",
+  "calibration_reproduction_max_abs_diff": 0.0019378662109375,
+  "reproduction_tolerance_cycles": 0.01,
+  "train_units": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8,
+    9
+  ],
+  "calibration_units": [
+    4,
+    7
+  ],
+  "calibration_fracs": [
+    0.1,
+    0.2,
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "q50_point": {
+    "MAE": 14.799549261728922,
+    "RMSE": 17.17782262423043
+  },
+  "rows": [
+    {
+      "dataset": "DS08a",
+      "arm": "loso_tuned_G9",
+      "variant": "global_block_max_cqr",
+      "threshold": 24.25118637084961,
+      "n_cal_windows": 18,
+      "PICP": 1.0,
+      "MPIW": 82.80128173033397,
+      "IntervalScore": 82.80128173033397,
+      "coverage_gap": 0.19999999999999996
+    },
+    {
+      "dataset": "DS08a",
+      "arm": "loso_tuned_G9",
+      "variant": "window_weighted",
+      "threshold": 12.200767517089844,
+      "n_cal_windows": 18,
+      "PICP": 0.9583333333333334,
+      "MPIW": 58.70044402281443,
+      "IntervalScore": 61.193150798479714,
+      "coverage_gap": 0.15833333333333333
+    },
+    {
+      "dataset": "DS08a",
+      "arm": "loso_tuned_G9",
+      "variant": "block_max_weighted",
+      "threshold": 24.25118637084961,
+      "n_cal_windows": 18,
+      "PICP": 1.0,
+      "MPIW": 82.80128173033397,
+      "IntervalScore": 82.80128173033397,
+      "coverage_gap": 0.19999999999999996
+    }
+  ],
+  "references": [
+    {
+      "dataset": "DS08a",
+      "arm": "A_P0_4cuts",
+      "variant": "global_block_max_cqr",
+      "threshold": 16.376373291015625,
+      "PICP": 0.9166666666666666,
+      "MPIW": 61.062650760014854,
+      "IntervalScore": 64.0285747051239
+    },
+    {
+      "dataset": "DS08a",
+      "arm": "A_P0_4cuts",
+      "variant": "window_weighted",
+      "threshold": 16.376373291015625,
+      "PICP": 0.9166666666666666,
+      "MPIW": 61.062650760014854,
+      "IntervalScore": 64.0285747051239
+    },
+    {
+      "dataset": "DS08a",
+      "arm": "A_P0_4cuts",
+      "variant": "block_max_weighted",
+      "threshold": 16.376373291015625,
+      "PICP": 0.9166666666666666,
+      "MPIW": 61.062650760014854,
+      "IntervalScore": 64.0285747051239
+    },
+    {
+      "dataset": "DS08a",
+      "arm": "B_G9_frozen_ckpt",
+      "variant": "window_weighted",
+      "threshold": 20.411357879638672,
+      "PICP": 0.9583333333333334,
+      "MPIW": 69.13261731465657,
+      "IntervalScore": 69.99243259429932
+    }
+  ],
+  "per_engine_variant": "window_weighted",
+  "test_loaded": true,
+  "generated": "2026-11-07T21:40:52"
+}

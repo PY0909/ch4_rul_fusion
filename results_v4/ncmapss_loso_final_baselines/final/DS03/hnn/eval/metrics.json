@@ -1,0 +1,23 @@
+{
+  "MAE": 9.70860424141089,
+  "RMSE": 12.179364408391521,
+  "NLL": 4.952730062476264,
+  "CRPS": 7.551062453793698,
+  "PICP": 0.375,
+  "MPIW": 15.197112722491077,
+  "coverage_gap": 0.42500000000000004,
+  "IntervalScore": 56.430327779338306,
+  "dataset": "DS03",
+  "method": "hnn",
+  "seed": 0,
+  "device": "cpu",
+  "best_epochs": [
+    44
+  ],
+  "ensemble_members": 1,
+  "selection_criterion": "fixed_epoch",
+  "train_seconds": 0.005735822021961212,
+  "inference_seconds": 15.44328074157238,
+  "mc_samples": 0,
+  "parameter_count": 52066
+}

@@ -1,0 +1,23 @@
+{
+  "MAE": 6.365962866892417,
+  "RMSE": 9.36206837457445,
+  "NLL": 32.96765265677369,
+  "CRPS": 5.838781328520208,
+  "PICP": 0.2916666666666667,
+  "MPIW": 3.685150119472933,
+  "coverage_gap": 0.5083333333333333,
+  "IntervalScore": 53.7196509201531,
+  "dataset": "DS03",
+  "method": "msauq",
+  "seed": 0,
+  "device": "cuda",
+  "best_epochs": [
+    25
+  ],
+  "ensemble_members": 1,
+  "selection_criterion": "fixed_epoch",
+  "train_seconds": 0.011849336326122284,
+  "inference_seconds": 0.35547512024641037,
+  "mc_samples": 100,
+  "parameter_count": 76801
+}
