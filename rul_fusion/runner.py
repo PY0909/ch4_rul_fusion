@@ -146,6 +146,15 @@ def fit_and_evaluate(bundle: DataBundle, model: nn.Module, output_dir,
                                                    "learning_rate"])
             writer.writeheader()
             writer.writerows(history)
+        run_config = {"model": model.__class__.__name__, "seed": seed,
+                      "device": str(device_obj), "epochs": epochs, "batch_size": batch_size,
+                      "lr": lr, "weight_decay": weight_decay, "patience": patience,
+                      "train_drop_last": train_drop_last,
+                      "data": bundle.metadata, "scaler": bundle.scaler.state_dict()}
+        if config:
+            run_config.update(config)
+        (output_dir / "config.json").write_text(json.dumps(run_config, indent=2),
+                                                 encoding="utf-8")
         return result
     test_loss, test_y, test_p, test_units, test_sample_ids = _evaluate(model, test_loader, device_obj)
     metrics = regression_metrics(test_y, test_p)

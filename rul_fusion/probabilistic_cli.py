@@ -58,7 +58,8 @@ def main(argv=None):
     bundle = build_cmapss_datasets(
         args.data_root, args.dataset, history=args.history, rul_cap=args.rul_cap,
         split_seed=args.split_seed, calibration_ratio=args.calibration_ratio,
-        scaler_mode=scaler_mode, validation_protocol="fixed_cuts")
+        scaler_mode=scaler_mode, validation_protocol="fixed_cuts",
+        load_test=not args.defer_test)
     output = Path(args.output_dir) / args.dataset / args.method / f"seed_{args.seed}"
     fit_probabilistic(
         bundle, args.method, output, seed=args.seed, epochs=epochs,

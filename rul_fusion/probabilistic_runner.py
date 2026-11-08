@@ -639,10 +639,24 @@ def fit_probabilistic(bundle, kind, output_dir, *, seed=0, epochs=None, batch_si
     train_seconds = time.perf_counter() - start_train
     if defer_test:
         _save_history(output_dir / "history.csv", history)
-        return {"dataset": bundle.metadata.get("dataset"), "method": kind,
-                "seed": int(seed), "best_epochs": best_epochs,
-                "selection_criterion": selection_criterion,
-                "train_seconds": train_seconds, "test_evaluated": False}
+        deferred = {"dataset": bundle.metadata.get("dataset"), "method": kind,
+                    "seed": int(seed), "best_epochs": best_epochs,
+                    "selection_criterion": selection_criterion,
+                    "train_seconds": train_seconds, "test_evaluated": False}
+        deferred_config = {"model": kind, "seed": seed, "epochs": epochs,
+                           "batch_size": batch_size, "lr": lr,
+                           "weight_decay": weight_decay, "patience": patience,
+                           "dropout": dropout, "mc_samples": mc_samples,
+                           "selection_criterion": selection_criterion,
+                           "test_evaluated": False, "data": bundle.metadata}
+        if config:
+            deferred_config.update(config)
+        (output_dir / "config.json").write_text(json.dumps(deferred_config, indent=2,
+                                                           default=str),
+                                                encoding="utf-8")
+        (output_dir / "calibration_only.json").write_text(json.dumps(deferred, indent=2),
+                                                          encoding="utf-8")
+        return deferred
     inference_start = time.perf_counter()
     extra_columns: list = []
     extra_rows: list = []
