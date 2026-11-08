@@ -48,7 +48,7 @@ def fit_and_evaluate(bundle: DataBundle, model: nn.Module, output_dir,
                      train_drop_last: bool = False,
                      config: Optional[dict] = None,
                      optimizer_name: str = "adamw", use_scheduler: bool = True,
-                     grad_clip: bool = True):
+                     grad_clip: bool = True, evaluate_test: bool = True):
     if optimizer_name not in {"adamw", "adam"}:
         raise ValueError("optimizer_name must be 'adamw' or 'adam'")
     set_seed(seed)
@@ -133,6 +133,20 @@ def fit_and_evaluate(bundle: DataBundle, model: nn.Module, output_dir,
         best_epoch = epochs
     state = torch.load(checkpoint, map_location=device_obj, weights_only=False)
     model.load_state_dict(state["model_state"])
+    if not evaluate_test:
+        result = {"dataset": bundle.metadata.get("dataset"),
+                  "best_epoch": int(best_epoch), "val_RMSE": float(best_val),
+                  "selection_criterion": selection_criterion,
+                  "seed": int(seed), "test_evaluated": False}
+        (output_dir / "calibration_only.json").write_text(
+            json.dumps(result, indent=2), encoding="utf-8")
+        with (output_dir / "history.csv").open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=["epoch", "train_loss", "val_loss",
+                                                   "val_rmse_all", "val_endpoint_rmse",
+                                                   "learning_rate"])
+            writer.writeheader()
+            writer.writerows(history)
+        return result
     test_loss, test_y, test_p, test_units, test_sample_ids = _evaluate(model, test_loader, device_obj)
     metrics = regression_metrics(test_y, test_p)
     result = {**metrics, "dataset": bundle.metadata.get("dataset"),

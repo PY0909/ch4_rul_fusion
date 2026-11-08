@@ -12,7 +12,8 @@ METHODS = sorted(PAPER_METHOD_DEFAULTS)
 
 def build_parser():
     parser = argparse.ArgumentParser(description="Probabilistic RUL baselines for C-MAPSS")
-    parser.add_argument("--dataset", required=True, choices=["FD002", "FD004"])
+    parser.add_argument("--dataset", required=True,
+                        choices=["FD001", "FD002", "FD003", "FD004"])
     parser.add_argument("--data_root", required=True)
     parser.add_argument("--method", required=True, choices=METHODS)
     parser.add_argument("--output_dir", default="results_v4/chapter4_main")
@@ -35,6 +36,8 @@ def build_parser():
                         help="MC-dropout draws for tcn_transformer_mc/msauq/bcpt")
     parser.add_argument("--bcpt_gamma", type=float, default=0.2)
     parser.add_argument("--bcpt_lam", type=float, default=0.1)
+    parser.add_argument("--defer_test", action="store_true",
+                        help="train/validate only; no test evaluation")
     parser.add_argument("--device", default="auto")
     parser.add_argument("--num_workers", type=int, default=0)
     return parser
@@ -59,6 +62,7 @@ def main(argv=None):
     output = Path(args.output_dir) / args.dataset / args.method / f"seed_{args.seed}"
     fit_probabilistic(
         bundle, args.method, output, seed=args.seed, epochs=epochs,
+        defer_test=args.defer_test,
         batch_size=batch_size, lr=lr, weight_decay=weight_decay,
         patience=patience, dropout=dropout,
         ensemble_members=args.ensemble_members, evidence_weight=args.evidence_weight,

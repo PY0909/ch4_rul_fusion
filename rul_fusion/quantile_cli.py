@@ -12,7 +12,8 @@ from .uncertainty import A6QuantileRUL
 
 def build_parser():
     parser = argparse.ArgumentParser(description="A6 quantile and conformal RUL prediction")
-    parser.add_argument("--dataset", required=True, choices=["FD002", "FD004", "DS03", "DS08a"])
+    parser.add_argument("--dataset", required=True,
+                        choices=["FD001", "FD002", "FD003", "FD004", "DS03", "DS08a"])
     parser.add_argument("--data_root", required=True)
     parser.add_argument("--output_dir", default="results_v4/uncertainty")
     parser.add_argument("--seed", type=int, default=0)
@@ -70,7 +71,7 @@ def main(argv=None):
         bundle = build_cmapss_datasets(
             args.data_root, args.dataset, history=history, rul_cap=rul_cap,
             split_seed=args.split_seed, calibration_ratio=args.calibration_ratio, scaler_mode=scaler,
-            validation_protocol="fixed_cuts")
+            validation_protocol="fixed_cuts", load_test=not args.defer_test)
     else:
         bundle = build_ncmapss_datasets(
             args.data_root, args.dataset, history=history, split_seed=args.split_seed,

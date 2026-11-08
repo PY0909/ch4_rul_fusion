@@ -292,3 +292,25 @@ def test_ncmapss_registered_split_min_calibration_guard(tmp_path):
     with pytest.raises(ValueError, match="not constant"):
         build_ncmapss_datasets(tmp_path, "DS03", history=2, dev_path=path,
                                test_path=path, split_seed=0)
+
+
+def test_cmapss_accepts_fd001_fd003_and_load_test_false_skips_files(tmp_path):
+    data = tmp_path / "CMAPSSData"
+    data.mkdir()
+    rows = [[engine, cycle, 0.1, 0.2, 0.3] + [float(engine + cycle + i) for i in range(21)]
+            for engine in [1, 2, 3, 4, 5] for cycle in range(1, 6)]
+    for name in ("FD001", "FD003"):
+        np.savetxt(data / f"train_{name}.txt", np.asarray(rows), fmt="%.6f")
+        bundle = build_cmapss_datasets(tmp_path, name, history=3, split_seed=0,
+                                       scaler_mode="grouped",
+                                       validation_protocol="fixed_cuts",
+                                       load_test=False)
+        assert bundle.metadata["dataset"] == name
+        assert bundle.metadata["test_loaded"] is False
+        assert len(bundle.test) == 0 and bundle.metadata["test_units"] == []
+    try:
+        build_cmapss_datasets(tmp_path, "FD005", load_test=False)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("FD005 must stay outside the whitelist")

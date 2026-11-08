@@ -11,7 +11,8 @@ from .runner import fit_and_evaluate, set_seed
 
 def build_parser():
     parser = argparse.ArgumentParser(description="Point RUL prediction with multi-scale routing and sensor graph")
-    parser.add_argument("--dataset", required=True, choices=["FD002", "FD004", "DS03", "DS08a"])
+    parser.add_argument("--dataset", required=True,
+                        choices=["FD001", "FD002", "FD003", "FD004", "DS03", "DS08a"])
     parser.add_argument("--data_root", required=True)
     parser.add_argument("--model", default="fusion", choices=["fusion", "fc_stgnn"],
                         help="fusion: the multi-scale routed sensor-graph model; "
@@ -85,6 +86,9 @@ def build_parser():
     parser.add_argument("--disable_shared_specific", action="store_true")
     parser.add_argument("--device", default="auto")
     parser.add_argument("--num_workers", type=int, default=0)
+    parser.add_argument("--defer_test", action="store_true",
+                        help="train/validate only; write calibration_only artifacts "
+                             "and do not evaluate the official test")
     parser.add_argument("--output_dir", default="results")
     return parser
 
@@ -102,7 +106,8 @@ def main(argv=None):
                                        calibration_ratio=args.calibration_ratio,
                                        scaler_mode=args.scaler,
                                        condition_features=args.condition_features,
-                                       validation_protocol=args.validation_protocol)
+                                       validation_protocol=args.validation_protocol,
+                                       load_test=not args.defer_test)
     else:
         bundle = build_ncmapss_datasets(args.data_root, args.dataset, history=history,
                                          split_seed=args.split_seed,
@@ -141,7 +146,7 @@ def main(argv=None):
                      train_drop_last=train_drop_last,
                      optimizer_name=args.optimizer, use_scheduler=not args.no_scheduler,
                      grad_clip=not args.no_grad_clip,
-                     config=config)
+                     config=config, evaluate_test=not args.defer_test)
 
 
 if __name__ == "__main__":

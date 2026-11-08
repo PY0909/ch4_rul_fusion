@@ -278,10 +278,11 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
                           calibration_ratio: Optional[float] = None,
                           scaler_mode: str = "global",
                           condition_features: str = "settings",
-                          validation_protocol: str = "legacy_endpoint") -> DataBundle:
+                          validation_protocol: str = "legacy_endpoint",
+                          load_test: bool = True) -> DataBundle:
     dataset = dataset.upper()
-    if dataset not in {"FD002", "FD004"}:
-        raise ValueError("C-MAPSS dataset must be FD002 or FD004")
+    if dataset not in {"FD001", "FD002", "FD003", "FD004"}:
+        raise ValueError("C-MAPSS dataset must be FD001, FD002, FD003 or FD004")
     if scaler_mode not in {"global", "grouped", "minmax", "zscore_grouped"}:
         raise ValueError("scaler_mode must be 'global', 'grouped', 'minmax', "
                          "or 'zscore_grouped'")
@@ -295,7 +296,11 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
     train_path = root / f"train_{dataset}.txt"
     test_path = root / f"test_{dataset}.txt"
     rul_path = root / f"RUL_{dataset}.txt"
-    for path in (train_path, test_path, rul_path):
+    # With load_test=False the official test files are not required and are
+    # never read: the training stage of a first-touch protocol cannot even
+    # load the untouched test split.
+    for path in ((train_path,) if not load_test
+                 else (train_path, test_path, rul_path)):
         if not path.exists():
             raise FileNotFoundError(path)
 
@@ -366,14 +371,18 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
             z = scaler.transform(np.concatenate([x, w], axis=1))
             scaled_records[u] = (z[:, :sensor_dim], z[:, sensor_dim:], y)
 
-    test_engine, test_cycle, test_sensor, test_condition = _read_cmapss(test_path)
-    if condition_features == "settings_cycle":
-        test_condition = np.concatenate(
-            [test_condition, test_cycle[:, None].astype(np.float32)], axis=1)
-    test_rul = np.loadtxt(rul_path, dtype=np.float32).reshape(-1)
     test_records = {}
     unseen_before_test = list(group_scaler.unseen) if group_scaler else []
-    for pos, unit in enumerate(sorted(np.unique(test_engine))):
+    if load_test:
+        test_engine, test_cycle, test_sensor, test_condition = _read_cmapss(test_path)
+        if condition_features == "settings_cycle":
+            test_condition = np.concatenate(
+                [test_condition, test_cycle[:, None].astype(np.float32)], axis=1)
+        test_rul = np.loadtxt(rul_path, dtype=np.float32).reshape(-1)
+        test_units_sorted = sorted(np.unique(test_engine))
+    else:
+        test_units_sorted = []
+    for pos, unit in enumerate(test_units_sorted):
         idx = np.where(test_engine == unit)[0]
         idx = idx[np.argsort(test_cycle[idx])]
         x, w = test_sensor[idx], test_condition[idx]
@@ -390,7 +399,7 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
             test_records[int(unit)] = (z[:, :sensor_dim], z[:, sensor_dim:],
                                        np.asarray([test_rul[pos]], dtype=np.float32))
     unseen_test_groups = ([g for g in group_scaler.unseen if g not in unseen_before_test]
-                          if group_scaler else [])
+                          if group_scaler and load_test else [])
 
     endpoint_fracs = [0.25, 0.5, 0.75, 0.9] if validation_protocol == "fixed_cuts" else None
     endpoint_rng = np.random.default_rng(1_000_003 * split_seed + 11)
@@ -409,6 +418,7 @@ def build_cmapss_datasets(data_root, dataset: str, history: int = 50,
         "condition_features": condition_features,
         "validation_protocol": validation_protocol,
         "calibration_ratio": calibration_ratio,
+        "test_loaded": bool(load_test),
         "val_endpoint": endpoint_cuts,
         "calibration_endpoint": calibration_endpoint_cuts,
         "val_endpoint_protocol": ("fixed cuts at life fractions {0.25, 0.5, 0.75, 0.9} per "
